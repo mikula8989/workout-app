@@ -1,0 +1,103 @@
+{
+  "version": "2026-08-30-v2",
+  "days": {
+    "sunday": {
+      "label": "Sunday",
+      "focus": "Recovery + mobility",
+      "equipment": [
+        "Exercise mat",
+        "Optional pool / bike / walking shoes"
+      ],
+      "later": "Optional swim or Zone 2 outside the 30-minute mobility timer",
+      "steps": [
+        {
+          "title": "Calm 360° breathing",
+          "type": "work",
+          "slotSec": 180,
+          "details": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back — do NOT force it into the floor. Put your hands around the lower ribs. Inhale slowly through the nose and let the lower ribs, belly and back expand 360°. Let the pelvic floor soften on the inhale. Exhale slowly and let the ribs settle without hard bracing.",
+          "setup": "On your back, knees bent, feet flat. Support your head if that is more comfortable.",
+          "feel": "Expansion around lower ribs, belly and back; calm breathing and pelvic-floor relaxation.",
+          "avoid": "Do not flatten the low back, suck the belly in, brace hard or hold your breath.",
+          "minuteCue": "Check: ribs + belly + back are all moving, not only the upper chest."
+        },
+        {
+          "title": "90/90 hip switches",
+          "type": "work",
+          "slotSec": 180,
+          "details": "8 / side, smooth and controlled.",
+          "minuteCue": "Keep switching sides smoothly."
+        },
+        {
+          "title": "Cossack squat / adductor mobility",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2 × 6 / side. Stay in a comfortable range.",
+          "minuteCue": "Change the side you are emphasizing."
+        },
+        {
+          "title": "Hamstring sweeps",
+          "type": "work",
+          "slotSec": 120,
+          "details": "10 / side.",
+          "minuteCue": "1-minute marker: continue, change side or start the next set as planned."
+        },
+        {
+          "title": "Half split",
+          "type": "work",
+          "slotSec": 240,
+          "details": "From half-kneeling, shift hips back over the rear knee and straighten the front leg until you feel a hamstring stretch. Keep pelvis square and spine long.",
+          "minuteCue": "Change side."
+        },
+        {
+          "title": "Seated forward fold",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 60 s.",
+          "minuteCue": "Relax shoulders, re-lengthen spine; do not force deeper."
+        },
+        {
+          "title": "Hip-flexor stretch",
+          "type": "work",
+          "slotSec": 120,
+          "details": "Half-kneeling: one knee down, opposite foot forward. Gently tuck the pelvis (belt buckle slightly toward ribs) and squeeze the glute of the kneeling-side leg. Then shift the whole pelvis only a little forward. The stretch should be at the front of the rear hip/thigh.",
+          "setup": "Hands may rest on hips or front thigh for balance.",
+          "feel": "Front of hip / upper thigh of the leg whose knee is on the floor.",
+          "avoid": "Do not just lunge far forward or arch the low back.",
+          "minuteCue": "Change side."
+        },
+        {
+          "title": "Ankle rocks",
+          "type": "work",
+          "slotSec": 120,
+          "details": "Face a wall or use a split/kneeling stance with one foot flat. Keep the heel planted and move the knee forward over the toes, then back. Let the knee track roughly over the 2nd–3rd toe. Hands can touch the wall or knee for balance, but they do not drive the movement.",
+          "setup": "Start with toes a few centimetres from a wall; adjust distance so the heel stays down.",
+          "feel": "Movement/stretch around the ankle and calf while the heel stays planted.",
+          "avoid": "Do not lift the heel or let the knee collapse inward.",
+          "minuteCue": "Change ankle."
+        },
+        {
+          "title": "Open book",
+          "type": "work",
+          "slotSec": 120,
+          "details": "8 / side.",
+          "minuteCue": "Change side."
+        },
+        {
+          "title": "Lat / overhead stretch",
+          "type": "work",
+          "slotSec": 120,
+          "details": "60 s / side.",
+          "minuteCue": "Change side."
+        },
+        {
+          "title": "Doorway pec + child's pose side reach",
+          "type": "work",
+          "slotSec": 180,
+          "details": "Finish easy; slow breathing.",
+          "minuteCue": "Change stretch / side."
+        }
+      ],
+      "totalSec": 1800
+    }
+  }
+}
