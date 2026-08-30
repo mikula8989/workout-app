@@ -7,6 +7,7 @@ let currentDayKey = null;
 let steps = [];
 let stepIndex = 0;
 let stepRemaining = 0;
+let stepElapsed = 0;
 let totalRemaining = 1800;
 let timerId = null;
 let running = false;
@@ -57,6 +58,20 @@ async function loadProgram(){
   try{
     const res = await fetch("./program.json", {cache:"no-store"});
     PROGRAM = await res.json();
+
+    // Small live override layer so training/content changes do not require replacing
+    // the whole base program file. Missing override is harmless.
+    try{
+      const overrideRes = await fetch("./program-overrides.json", {cache:"no-store"});
+      if(overrideRes.ok){
+        const overrides = await overrideRes.json();
+        PROGRAM = {
+          ...PROGRAM,
+          ...overrides,
+          days: {...PROGRAM.days, ...(overrides.days || {})}
+        };
+      }
+    }catch(_){}
   }catch(e){
     const cached = localStorage.getItem("workoutProgram");
     if(cached) PROGRAM = JSON.parse(cached);
@@ -77,7 +92,8 @@ function beep(kind="next"){
   if(!soundEnabled) return;
   setupAudio();
   const ctx = window.audioCtx;
-  const patterns = kind === "rest" ? [[520,0,.10]]
+  const patterns = kind === "minute" ? [[660,0,.065],[660,.10,.065],[660,.20,.065]]
+                 : kind === "rest" ? [[500,0,.12]]
                  : kind === "done" ? [[880,0,.12],[980,.16,.12],[1180,.32,.18]]
                  : [[820,0,.10],[980,.14,.12]];
   patterns.forEach(([freq,delay,dur])=>{
@@ -89,7 +105,11 @@ function beep(kind="next"){
     o.connect(g).connect(ctx.destination);
     o.start(ctx.currentTime+delay); o.stop(ctx.currentTime+delay+dur+.03);
   });
-  if(navigator.vibrate) navigator.vibrate(kind==="done" ? [120,80,120,80,180] : [80]);
+  if(navigator.vibrate){
+    if(kind==="done") navigator.vibrate([120,80,120,80,180]);
+    else if(kind==="minute") navigator.vibrate([35,45,35,45,35]);
+    else navigator.vibrate([80]);
+  }
 }
 
 async function requestWakeLock(){
@@ -114,6 +134,7 @@ async function startSession(){
   steps=day.steps;
   stepIndex=0;
   stepRemaining=steps[0].slotSec;
+  stepElapsed=0;
   totalRemaining=day.totalSec || steps.reduce((a,b)=>a+b.slotSec,0);
   homeView.classList.add("hidden"); doneView.classList.add("hidden"); sessionView.classList.remove("hidden");
   await requestFullscreen();
@@ -127,7 +148,13 @@ async function startSession(){
 function tick(){
   if(!running) return;
   stepRemaining--;
+  stepElapsed++;
   totalRemaining--;
+
+  if(steps[stepIndex]?.type === "work" && stepElapsed > 0 && stepElapsed % 60 === 0 && stepRemaining > 0){
+    beep("minute");
+  }
+
   if(stepRemaining <= 0){
     advanceStep();
   }else renderTimers();
@@ -138,6 +165,7 @@ function advanceStep(){
   }
   stepIndex++;
   stepRemaining=steps[stepIndex].slotSec;
+  stepElapsed=0;
   beep(steps[stepIndex].type==="rest" ? "rest" : "next");
   renderStep();
 }
@@ -146,6 +174,7 @@ function previousStep(){
   totalRemaining += (steps[stepIndex].slotSec - stepRemaining);
   stepIndex--;
   stepRemaining=steps[stepIndex].slotSec;
+  stepElapsed=0;
   renderStep();
 }
 function skipStep(){
@@ -166,6 +195,25 @@ function renderStep(){
   $("#stepDetails").textContent=s.details || "";
   $("#phaseCard").className="phase-card " + (s.type==="rest" ? "rest" : "work");
   $("#nextTitle").textContent=steps[stepIndex+1]?.title || "Session complete";
+
+  const rows = [
+    ["setupRow","stepSetup",s.setup],
+    ["feelRow","stepFeel",s.feel],
+    ["avoidRow","stepAvoid",s.avoid],
+    ["minuteRow","stepMinuteCue",s.minuteCue || (s.type==="work" && s.slotSec>=120 ? "60-second time marker: continue, switch side or start the next set as planned." : null)]
+  ];
+  let any = false;
+  rows.forEach(([rowId,textId,value])=>{
+    const row=document.getElementById(rowId);
+    if(value){
+      document.getElementById(textId).textContent=value;
+      row.classList.remove("hidden");
+      any=true;
+    }else{
+      row.classList.add("hidden");
+    }
+  });
+  $("#techniqueBox").classList.toggle("hidden", !any || s.type==="rest");
   renderTimers();
 }
 function togglePause(){
