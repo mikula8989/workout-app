@@ -1,0 +1,689 @@
+{
+  "version": "2026-08-30-v1",
+  "timezone": "Europe/Vilnius",
+  "defaultSessionMinutes": 30,
+  "days": {
+    "monday": {
+      "label": "Monday",
+      "focus": "Posture + hamstrings + mobility",
+      "equipment": [
+        "Exercise mat",
+        "Wall",
+        "Optional light band"
+      ],
+      "later": "Evening gym: quads + pull + Zone 2",
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 240,
+          "details": "5 slow 360° breaths. Then 5 × 3 s submax pelvic-floor lifts; 6–8 s full relaxation after every lift. Finish with 1 easy deep-core control set."
+        },
+        {
+          "title": "REST / prepare conditioning",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Stand up, loosen shoulders."
+        },
+        {
+          "title": "Fast march / jumping jacks",
+          "type": "work",
+          "slotSec": 120,
+          "details": "Easy primer. Keep it around RPE 6/10 — do not fatigue legs before evening gym."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Breathe normally."
+        },
+        {
+          "title": "Chin tucks",
+          "type": "work",
+          "slotSec": 120,
+          "details": "2 × 10 controlled reps. Keep the back of the neck long."
+        },
+        {
+          "title": "REST / move to wall",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Set up for wall slides."
+        },
+        {
+          "title": "Wall slides",
+          "type": "work",
+          "slotSec": 120,
+          "details": "2 × 10. Ribs down, move only through a clean range."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Move to the floor."
+        },
+        {
+          "title": "Prone Y–T–W",
+          "type": "work",
+          "slotSec": 210,
+          "details": "2 rounds × 6 each position. Slow and controlled."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Prepare hamstring mobility."
+        },
+        {
+          "title": "Hamstring sweeps",
+          "type": "work",
+          "slotSec": 150,
+          "details": "2 × 10 / side. Dynamic, not aggressive."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Set up half split."
+        },
+        {
+          "title": "Half split",
+          "type": "work",
+          "slotSec": 210,
+          "details": "2 × 45 s / side. Keep pelvis square."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Move near wall for ankle rocks."
+        },
+        {
+          "title": "Ankle rocks / knee-to-wall",
+          "type": "work",
+          "slotSec": 150,
+          "details": "2 × 10 / side. Heel stays down."
+        },
+        {
+          "title": "World's Greatest Stretch",
+          "type": "work",
+          "slotSec": 340,
+          "details": "Alternate sides with calm breathing. Use the remaining time as controlled mobility."
+        }
+      ],
+      "totalSec": 1800
+    },
+    "tuesday": {
+      "label": "Tuesday",
+      "focus": "Handstand + shoulders + biceps + triceps",
+      "equipment": [
+        "Exercise mat",
+        "Wall",
+        "Dumbbells"
+      ],
+      "later": null,
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 240,
+          "details": "5 slow breaths → 5 × 3 s submax lifts with 6–8 s full relaxation → 1 easy deep-core control set."
+        },
+        {
+          "title": "REST / stand up",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Prepare for burpees."
+        },
+        {
+          "title": "Burpees",
+          "type": "work",
+          "slotSec": 120,
+          "details": "Primer only. Smooth pace, not all-out."
+        },
+        {
+          "title": "REST / prepare wall",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Shake out wrists and shoulders."
+        },
+        {
+          "title": "Handstand practice",
+          "type": "work",
+          "slotSec": 330,
+          "details": "Practice wall-assisted or free attempts. Keep breathing; stop/regress if pressure or doming appears."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Prepare dumbbells."
+        },
+        {
+          "title": "Pike push-ups",
+          "type": "work",
+          "slotSec": 210,
+          "details": "3 × 8–12. Fit all sets into this block. Clean reps; short rests."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Pick lateral-raise dumbbells."
+        },
+        {
+          "title": "DB lateral raise",
+          "type": "work",
+          "slotSec": 220,
+          "details": "4 × 12–20. 1–2 reps in reserve. Control the lowering."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Set up for triceps."
+        },
+        {
+          "title": "DB overhead triceps extension",
+          "type": "work",
+          "slotSec": 200,
+          "details": "4 × 10–15. Do not grind; keep breathing."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Switch to curls."
+        },
+        {
+          "title": "Alternating / supinating DB curl",
+          "type": "work",
+          "slotSec": 200,
+          "details": "4 × 8–12. Full elbow extension; no swinging."
+        },
+        {
+          "title": "Lat / overhead stretch",
+          "type": "work",
+          "slotSec": 125,
+          "details": "Easy finish. 45–60 s / side."
+        }
+      ],
+      "totalSec": 1800
+    },
+    "wednesday": {
+      "label": "Wednesday",
+      "focus": "Pelvic/hip stability + core + L-sit",
+      "equipment": [
+        "Exercise mat",
+        "Dumbbell",
+        "2 yoga blocks"
+      ],
+      "later": null,
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 240,
+          "details": "5 slow breaths → 5 × 3 s submax lifts → 6–8 s full relaxation each rep. No constant gripping."
+        },
+        {
+          "title": "REST / prepare floor",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Set up mat."
+        },
+        {
+          "title": "Mountain climbers",
+          "type": "work",
+          "slotSec": 120,
+          "details": "3 × ~30–35 s work with brief easy breathing between."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Prepare Copenhagen plank."
+        },
+        {
+          "title": "Copenhagen plank",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2–3 × 20–30 s / side. Quality first."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Stay on side."
+        },
+        {
+          "title": "Side plank leg raise",
+          "type": "work",
+          "slotSec": 220,
+          "details": "2–3 × 6–10 / side. Keep pelvis stacked."
+        },
+        {
+          "title": "REST / grab dumbbell",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Prepare single-leg deadlift."
+        },
+        {
+          "title": "Single-leg DB deadlift",
+          "type": "work",
+          "slotSec": 250,
+          "details": "3 × 8–10 / side. Hips square, neutral spine, controlled balance."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Move to mat."
+        },
+        {
+          "title": "DB pullover dead bug",
+          "type": "work",
+          "slotSec": 220,
+          "details": "2–3 × 6–8 / side. No abdominal doming; exhale smoothly."
+        },
+        {
+          "title": "REST / set yoga blocks",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Place blocks securely."
+        },
+        {
+          "title": "Tuck L-sit on yoga blocks",
+          "type": "work",
+          "slotSec": 240,
+          "details": "3 clean holds. Goal 10–20 s. Press blocks down, shoulders depressed, hips clear, knees tucked."
+        },
+        {
+          "title": "Downshift breathing",
+          "type": "work",
+          "slotSec": 125,
+          "details": "Relax pelvic floor completely and finish with calm breathing."
+        }
+      ],
+      "totalSec": 1800
+    },
+    "thursday": {
+      "label": "Thursday",
+      "focus": "Posture + hips + mobility",
+      "equipment": [
+        "Exercise mat",
+        "Wall"
+      ],
+      "later": "Evening gym: quads + pull + hamstrings + cardio",
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 240,
+          "details": "5 slow breaths → 5 × 3 s submax lifts with full relaxation → easy deep-core control."
+        },
+        {
+          "title": "REST / stand up",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Prepare low-impact conditioning."
+        },
+        {
+          "title": "Fast high-knee march / step-ups",
+          "type": "work",
+          "slotSec": 120,
+          "details": "Easy primer only. Save legs for evening gym."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Move to wall."
+        },
+        {
+          "title": "Chin tucks",
+          "type": "work",
+          "slotSec": 130,
+          "details": "2–3 × 10 controlled reps."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Prepare wall slides."
+        },
+        {
+          "title": "Wall slides",
+          "type": "work",
+          "slotSec": 130,
+          "details": "2 × 10. Keep ribs controlled."
+        },
+        {
+          "title": "REST / floor",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Move to prone position."
+        },
+        {
+          "title": "Reverse snow angels",
+          "type": "work",
+          "slotSec": 160,
+          "details": "2 × 10 slow reps."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Prepare 90/90."
+        },
+        {
+          "title": "90/90 hip switches",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 8 / side. Smooth hip rotation."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Set up half split."
+        },
+        {
+          "title": "Half split",
+          "type": "work",
+          "slotSec": 210,
+          "details": "2 × 45 s / side."
+        },
+        {
+          "title": "Hip-flexor stretch",
+          "type": "work",
+          "slotSec": 170,
+          "details": "~45–60 s / side. Glute lightly engaged."
+        },
+        {
+          "title": "Open book",
+          "type": "work",
+          "slotSec": 340,
+          "details": "1 × 8 / side. Breathe into the upper back."
+        }
+      ],
+      "totalSec": 1800
+    },
+    "friday": {
+      "label": "Friday",
+      "focus": "Conditioning + triceps + front abs + mobility",
+      "equipment": [
+        "Exercise mat",
+        "2 dumbbells"
+      ],
+      "later": null,
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 240,
+          "details": "5 slow breaths → 5 × 3 s submax lifts + 6–8 s full relaxation → 1 easy deep-core control set."
+        },
+        {
+          "title": "REST / stand up",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Prepare burpees."
+        },
+        {
+          "title": "Burpees",
+          "type": "work",
+          "slotSec": 150,
+          "details": "3 × ~30 s work with brief easy recovery. Primer, not max effort."
+        },
+        {
+          "title": "REST / set dumbbells",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Place two dumbbells close together on the floor."
+        },
+        {
+          "title": "Close-grip DB push-ups",
+          "type": "work",
+          "slotSec": 270,
+          "details": "3 × 8–15. Grip dumbbells, elbows relatively close, controlled reps."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Set up supported / near-bird-dog position."
+        },
+        {
+          "title": "DB triceps kickback",
+          "type": "work",
+          "slotSec": 300,
+          "details": "3 × 12–20 / arm. Upper arm stays fixed; squeeze at full extension."
+        },
+        {
+          "title": "REST / move to mat",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Prepare hollow hold."
+        },
+        {
+          "title": "Hollow body hold",
+          "type": "work",
+          "slotSec": 210,
+          "details": "3 × 20–30 s. Keep lower back controlled; regress if doming."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Prepare reverse crunch."
+        },
+        {
+          "title": "Reverse crunch",
+          "type": "work",
+          "slotSec": 210,
+          "details": "3 × 12–15. Curl pelvis; avoid swinging."
+        },
+        {
+          "title": "REST / mobility",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Transition to mobility."
+        },
+        {
+          "title": "90/90 hip switches",
+          "type": "work",
+          "slotSec": 120,
+          "details": "1–2 × 8 / side."
+        },
+        {
+          "title": "Hamstring sweeps",
+          "type": "work",
+          "slotSec": 100,
+          "details": "2 × 10 / side."
+        },
+        {
+          "title": "Seated forward fold",
+          "type": "work",
+          "slotSec": 50,
+          "details": "2 controlled holds. Relax into range; do not bounce."
+        }
+      ],
+      "totalSec": 1800
+    },
+    "saturday": {
+      "label": "Saturday",
+      "focus": "L-sit + shoulders + biceps + conditioning",
+      "equipment": [
+        "Exercise mat",
+        "Dumbbells",
+        "2 yoga blocks"
+      ],
+      "later": null,
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 240,
+          "details": "5 slow breaths → 5 × 3 s submax lifts + full relaxation → 1 easy deep-core control set."
+        },
+        {
+          "title": "REST / grab dumbbells",
+          "type": "rest",
+          "slotSec": 20,
+          "details": "Prepare squat-to-press."
+        },
+        {
+          "title": "DB squat-to-press / thruster",
+          "type": "work",
+          "slotSec": 150,
+          "details": "3 × 8–10 at a controlled pace. Conditioning, not failure."
+        },
+        {
+          "title": "REST / set yoga blocks",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Place blocks securely."
+        },
+        {
+          "title": "Tuck L-sit on yoga blocks",
+          "type": "work",
+          "slotSec": 240,
+          "details": "3 clean holds, 10–20 s target. Progress leverage only when holds are clean."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Prepare shoulder press."
+        },
+        {
+          "title": "DB shoulder press",
+          "type": "work",
+          "slotSec": 250,
+          "details": "3 × 8–12. 1–2 reps in reserve."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Switch to curls."
+        },
+        {
+          "title": "Alternating DB curl",
+          "type": "work",
+          "slotSec": 250,
+          "details": "4 × 8–12. Supinate strongly, no torso swing."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Use lighter dumbbells for lateral raises."
+        },
+        {
+          "title": "DB lateral raise",
+          "type": "work",
+          "slotSec": 220,
+          "details": "3 × 12–20. Controlled lowering."
+        },
+        {
+          "title": "REST",
+          "type": "rest",
+          "slotSec": 25,
+          "details": "Switch grip for hammer curls."
+        },
+        {
+          "title": "Hammer curl",
+          "type": "work",
+          "slotSec": 230,
+          "details": "4 × 10–15. Keep elbows close to torso."
+        },
+        {
+          "title": "Quick shoulder / hamstring mobility",
+          "type": "work",
+          "slotSec": 75,
+          "details": "Use the remaining time for relaxed mobility."
+        }
+      ],
+      "totalSec": 1800
+    },
+    "sunday": {
+      "label": "Sunday",
+      "focus": "Recovery + mobility",
+      "equipment": [
+        "Exercise mat",
+        "Optional pool / bike / walking shoes"
+      ],
+      "later": "Optional swim or Zone 2 outside the 30-minute mobility timer",
+      "steps": [
+        {
+          "title": "Calm 360° breathing",
+          "type": "work",
+          "slotSec": 180,
+          "details": "5–8 slow breaths. Pelvic floor fully relaxes on inhale."
+        },
+        {
+          "title": "90/90 hip switches",
+          "type": "work",
+          "slotSec": 180,
+          "details": "8 / side, smooth and controlled."
+        },
+        {
+          "title": "Cossack squat / adductor mobility",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2 × 6 / side. Stay in a comfortable range."
+        },
+        {
+          "title": "Hamstring sweeps",
+          "type": "work",
+          "slotSec": 120,
+          "details": "10 / side."
+        },
+        {
+          "title": "Half split",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2 × 60 s / side."
+        },
+        {
+          "title": "Seated forward fold",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 60 s."
+        },
+        {
+          "title": "Hip-flexor stretch",
+          "type": "work",
+          "slotSec": 120,
+          "details": "60 s / side."
+        },
+        {
+          "title": "Ankle rocks",
+          "type": "work",
+          "slotSec": 120,
+          "details": "10 / side."
+        },
+        {
+          "title": "Open book",
+          "type": "work",
+          "slotSec": 120,
+          "details": "8 / side."
+        },
+        {
+          "title": "Lat / overhead stretch",
+          "type": "work",
+          "slotSec": 120,
+          "details": "60 s / side."
+        },
+        {
+          "title": "Doorway pec + child's pose side reach",
+          "type": "work",
+          "slotSec": 180,
+          "details": "Finish easy; slow breathing."
+        }
+      ],
+      "totalSec": 1800
+    }
+  }
+}

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#111111" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Workout</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon-192.png" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main id="app" class="app-shell">
+    <section id="homeView" class="view">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">WORKOUT</div>
+          <h1 id="dayTitle">Today</h1>
+          <p id="focusText" class="muted"></p>
+        </div>
+        <button id="installBtn" class="ghost hidden">Install</button>
+      </header>
+
+      <div id="dayTabs" class="day-tabs"></div>
+
+      <section class="card hero-card">
+        <div class="hero-row">
+          <div>
+            <div class="eyebrow">MORNING SESSION</div>
+            <div class="big-time">30:00</div>
+          </div>
+          <div class="status-pill">AUTO-TIMED</div>
+        </div>
+        <p id="laterText" class="later muted"></p>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Prepare before Start</h2>
+          <span id="exerciseCount" class="muted"></span>
+        </div>
+        <div id="equipmentList" class="chips"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Today's sequence</h2>
+          <span class="muted">preview</span>
+        </div>
+        <ol id="previewList" class="preview-list"></ol>
+      </section>
+
+      <button id="startBtn" class="primary start-btn">START 30:00</button>
+      <p class="tiny muted center">Start requests fullscreen + screen wake lock when supported.</p>
+    </section>
+
+    <section id="sessionView" class="view hidden session-view">
+      <header class="session-header">
+        <button id="exitBtn" class="ghost">Exit</button>
+        <div class="session-total-wrap">
+          <div class="eyebrow">TOTAL LEFT</div>
+          <div id="totalLeft" class="total-left">30:00</div>
+        </div>
+        <button id="soundBtn" class="ghost">Sound on</button>
+      </header>
+
+      <div class="overall-progress"><div id="overallBar"></div></div>
+
+      <section id="phaseCard" class="phase-card work">
+        <div id="phaseType" class="phase-type">WORK</div>
+        <h2 id="stepTitle">Exercise</h2>
+        <div id="stepTimer" class="step-timer">00:00</div>
+        <p id="stepDetails" class="step-details"></p>
+      </section>
+
+      <div class="next-card">
+        <div class="eyebrow">UP NEXT</div>
+        <div id="nextTitle">—</div>
+      </div>
+
+      <div class="session-controls">
+        <button id="prevBtn" class="ghost wide">← Previous</button>
+        <button id="pauseBtn" class="primary wide">Pause</button>
+        <button id="nextBtn" class="ghost wide">Next →</button>
+      </div>
+
+      <div id="wakeStatus" class="tiny muted center"></div>
+    </section>
+
+    <section id="doneView" class="view hidden done-view">
+      <div class="done-icon">✓</div>
+      <h1>Session complete</h1>
+      <p class="muted">30 minutes done.</p>
+      <button id="doneBtn" class="primary">Back to day</button>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
