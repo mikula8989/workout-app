@@ -1,0 +1,11 @@
+{
+  "version": "2026-08-31-gym-v1",
+  "days": {
+    "monday": {
+      "later": "Evening gym: Hack Squat 4×10–15 · Negative Pull-ups 3×3–5 · Leg Press 3×10–15 · Chest-Supported Row 3×8–12 · Leg Extension 3×12–15 · Face Pull 2×15–20 · 45° Back Extension 3×10–15 · Zone 2 20–25 min. Back extensions go after strength work and before cardio."
+    },
+    "thursday": {
+      "later": "Evening gym: Pull-ups/Assisted 4×4–8 · DB/Cable Row 3×10–12 · Rear-Delts 2×15–20 · DB Cyclist Squat 3×8–12 · Bulgarian Split Squat 3×8–10/side · Leg Extension 2–3×12–15 · Seated Hamstring Curl 3×10–15 · 45° Back Extension 3×10–15 · Intervals 8–10 min + Zone 2 10–15 min. Back extensions go after strength work and before cardio."
+    }
+  }
+}
