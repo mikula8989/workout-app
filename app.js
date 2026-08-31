@@ -54,24 +54,34 @@ function renderHome(){
   renderDayTabs();
 }
 
+function applyOverrides(base, overrides){
+  if(!overrides) return base;
+  const mergedDays = {...(base.days || {})};
+  for(const [key, dayOverride] of Object.entries(overrides.days || {})){
+    mergedDays[key] = {...(mergedDays[key] || {}), ...dayOverride};
+  }
+  return {...base, ...overrides, days: mergedDays};
+}
+
+async function loadOptionalOverrides(path){
+  try{
+    const res = await fetch(path, {cache:"no-store"});
+    if(!res.ok) return null;
+    return await res.json();
+  }catch(_){
+    return null;
+  }
+}
+
 async function loadProgram(){
   try{
     const res = await fetch("./program.json", {cache:"no-store"});
     PROGRAM = await res.json();
 
-    // Small live override layer so training/content changes do not require replacing
-    // the whole base program file. Missing override is harmless.
-    try{
-      const overrideRes = await fetch("./program-overrides.json", {cache:"no-store"});
-      if(overrideRes.ok){
-        const overrides = await overrideRes.json();
-        PROGRAM = {
-          ...PROGRAM,
-          ...overrides,
-          days: {...PROGRAM.days, ...(overrides.days || {})}
-        };
-      }
-    }catch(_){}
+    // Content overrides can replace a whole day or only selected day fields.
+    // This keeps the app code stable while allowing programme and gym changes independently.
+    PROGRAM = applyOverrides(PROGRAM, await loadOptionalOverrides("./program-overrides.json"));
+    PROGRAM = applyOverrides(PROGRAM, await loadOptionalOverrides("./gym-overrides.json"));
   }catch(e){
     const cached = localStorage.getItem("workoutProgram");
     if(cached) PROGRAM = JSON.parse(cached);
