@@ -1,4 +1,3 @@
-
 const $ = (s) => document.querySelector(s);
 const homeView = $("#homeView"), sessionView = $("#sessionView"), doneView = $("#doneView");
 
@@ -14,16 +13,39 @@ let running = false;
 let soundEnabled = true;
 let wakeLock = null;
 let deferredPrompt = null;
+let sessionHistorySnapshot = {};
 const WEEK = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
 const ABBR = ["M","T","W","T","F","S","S"];
+const PROGRESS_HISTORY_KEY = "workoutProgressHistoryV1";
+const PROGRESS_DRAFT_KEY = "workoutProgressDraftV1";
 
 function fmt(sec){
   sec = Math.max(0, Math.round(sec));
   return `${String(Math.floor(sec/60)).padStart(2,"0")}:${String(sec%60).padStart(2,"0")}`;
 }
 function dayKeyFromToday(){
-  const js = new Date().getDay(); // 0 Sun
+  const js = new Date().getDay();
   return WEEK[(js + 6) % 7];
+}
+function localDateKey(){
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function readJson(key, fallback={}){
+  try{ return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+  catch(_){ return fallback; }
+}
+function writeJson(key, value){
+  try{ localStorage.setItem(key, JSON.stringify(value)); }catch(_){}
+}
+function exerciseKey(dayKey, title){
+  return `${dayKey}::${title}`;
+}
+function draftKey(dayKey, title){
+  return `${localDateKey()}::${exerciseKey(dayKey,title)}`;
 }
 function nonRestSteps(day){
   return day.steps.filter(s => s.type !== "rest");
@@ -54,23 +76,13 @@ function renderHome(){
   renderDayTabs();
 }
 
-function applyOverrides(base, overrides){
-  if(!overrides) return base;
-  const mergedDays = {...(base.days || {})};
-  for(const [key, dayOverride] of Object.entries(overrides.days || {})){
-    mergedDays[key] = {...(mergedDays[key] || {}), ...dayOverride};
-  }
-  return {...base, ...overrides, days: mergedDays};
-}
-
-async function loadOptionalOverrides(path){
-  try{
-    const res = await fetch(path, {cache:"no-store"});
-    if(!res.ok) return null;
-    return await res.json();
-  }catch(_){
-    return null;
-  }
+function mergeProgram(base, patch){
+  if(!patch) return base;
+  const merged = {...base, ...patch, days:{...(base.days || {})}};
+  Object.entries(patch.days || {}).forEach(([key, value])=>{
+    merged.days[key] = {...(base.days?.[key] || {}), ...value};
+  });
+  return merged;
 }
 
 async function loadProgram(){
@@ -78,10 +90,12 @@ async function loadProgram(){
     const res = await fetch("./program.json", {cache:"no-store"});
     PROGRAM = await res.json();
 
-    // Content overrides can replace a whole day or only selected day fields.
-    // This keeps the app code stable while allowing programme and gym changes independently.
-    PROGRAM = applyOverrides(PROGRAM, await loadOptionalOverrides("./program-overrides.json"));
-    PROGRAM = applyOverrides(PROGRAM, await loadOptionalOverrides("./gym-overrides.json"));
+    for(const file of ["./program-overrides.json", "./gym-overrides.json"]){
+      try{
+        const overrideRes = await fetch(file, {cache:"no-store"});
+        if(overrideRes.ok) PROGRAM = mergeProgram(PROGRAM, await overrideRes.json());
+      }catch(_){}
+    }
   }catch(e){
     const cached = localStorage.getItem("workoutProgram");
     if(cached) PROGRAM = JSON.parse(cached);
@@ -90,6 +104,134 @@ async function loadProgram(){
   localStorage.setItem("workoutProgram", JSON.stringify(PROGRAM));
   currentDayKey = dayKeyFromToday();
   renderHome();
+}
+
+function repScheme(step){
+  if(step?.progression?.sets && step?.progression?.minReps && step?.progression?.maxReps){
+    return {
+      sets:Number(step.progression.sets),
+      min:Number(step.progression.minReps),
+      max:Number(step.progression.maxReps)
+    };
+  }
+  const text = step?.details || "";
+  const m = text.match(/(\d+)\s*[×x]\s*(\d+)\s*[–-]\s*(\d+)/i);
+  if(!m) return null;
+  const after = text.slice((m.index || 0) + m[0].length);
+  if(/^\s*s\b/i.test(after)) return null;
+  return {sets:Number(m[1]), min:Number(m[2]), max:Number(m[3])};
+}
+
+function progressionState(step){
+  const scheme = repScheme(step);
+  if(!scheme) return null;
+  const key = exerciseKey(currentDayKey, step.title);
+  const dKey = draftKey(currentDayKey, step.title);
+  const drafts = readJson(PROGRESS_DRAFT_KEY, {});
+  const previous = sessionHistorySnapshot[key] || null;
+  const draft = drafts[dKey] || {
+    weight: previous?.weight ?? "",
+    reps: Array(scheme.sets).fill("")
+  };
+  while(draft.reps.length < scheme.sets) draft.reps.push("");
+  draft.reps = draft.reps.slice(0, scheme.sets);
+  return {scheme, key, dKey, draft, previous};
+}
+
+function saveProgressDraft(state){
+  const drafts = readJson(PROGRESS_DRAFT_KEY, {});
+  drafts[state.dKey] = state.draft;
+  writeJson(PROGRESS_DRAFT_KEY, drafts);
+}
+
+function progressionMessage(state){
+  const reps = state.draft.reps.map(v=>Number(v)).filter(v=>Number.isFinite(v) && v>0);
+  const complete = reps.length === state.scheme.sets;
+  const allTop = complete && reps.every(v=>v >= state.scheme.max);
+  const previousReps = (state.previous?.reps || []).map(Number).filter(v=>Number.isFinite(v) && v>0);
+  const prevTotal = previousReps.reduce((a,b)=>a+b,0);
+  const todayTotal = reps.reduce((a,b)=>a+b,0);
+
+  if(allTop){
+    return {text:`✓ ${state.scheme.max} reps reached on every set. Next session: increase the weight by the smallest practical step.`, ready:true};
+  }
+  if(previousReps.length === state.scheme.sets){
+    if(complete && todayTotal > prevTotal){
+      return {text:`Progress: ${todayTotal} total reps vs ${prevTotal} last time. Keep this weight until every set reaches ${state.scheme.max}.`, ready:false};
+    }
+    return {text:`Goal: beat ${prevTotal} total clean reps at the same weight, even if it is only +1 rep across the whole exercise.`, ready:false};
+  }
+  return {text:`First tracked session: record every set. Stay around 1–2 RIR and build toward ${state.scheme.max} reps on every set.`, ready:false};
+}
+
+function renderProgression(step){
+  const box = $("#progressionBox");
+  const state = progressionState(step);
+  if(!state || step.type === "rest"){
+    box.classList.add("hidden");
+    return;
+  }
+
+  box.classList.remove("hidden");
+  $("#progressionTarget").textContent = `${state.scheme.sets} sets · target ${state.scheme.min}–${state.scheme.max} reps`;
+  $("#progressWeight").value = state.draft.weight ?? "";
+
+  if(state.previous?.reps?.length){
+    const w = state.previous.weight ? `${state.previous.weight} kg · ` : "";
+    const total = state.previous.reps.map(Number).reduce((a,b)=>a+(Number.isFinite(b)?b:0),0);
+    $("#previousPerformance").innerHTML = `<strong>Previous:</strong> ${w}${state.previous.reps.join(" / ")} <span class="muted">(${total} total)</span>`;
+  }else{
+    $("#previousPerformance").innerHTML = `<strong>Previous:</strong> no tracked session yet`;
+  }
+
+  $("#setInputs").style.gridTemplateColumns = `repeat(${Math.min(state.scheme.sets,4)}, minmax(0,1fr))`;
+  $("#setInputs").innerHTML = state.draft.reps.map((value,i)=>`
+    <label class="set-entry">
+      <span>SET ${i+1}</span>
+      <input class="set-rep-input" data-set="${i}" type="number" inputmode="numeric" min="0" max="50" step="1" placeholder="–" value="${value}">
+    </label>`).join("");
+
+  function refreshGoal(){
+    const msg = progressionMessage(state);
+    $("#progressionGoal").textContent = msg.text;
+    $("#progressionGoal").classList.toggle("ready", msg.ready);
+  }
+
+  $("#progressWeight").oninput = (e)=>{
+    state.draft.weight = e.target.value;
+    saveProgressDraft(state);
+    refreshGoal();
+  };
+  document.querySelectorAll(".set-rep-input").forEach(input=>{
+    input.oninput = (e)=>{
+      const i = Number(e.target.dataset.set);
+      state.draft.reps[i] = e.target.value;
+      saveProgressDraft(state);
+      refreshGoal();
+    };
+  });
+  refreshGoal();
+}
+
+function commitCompletedProgressForDay(){
+  const drafts = readJson(PROGRESS_DRAFT_KEY, {});
+  const history = readJson(PROGRESS_HISTORY_KEY, {});
+  const prefix = `${localDateKey()}::${currentDayKey}::`;
+  Object.entries(drafts).forEach(([dKey, draft])=>{
+    if(!dKey.startsWith(prefix)) return;
+    const title = dKey.slice(prefix.length);
+    const step = (PROGRAM.days[currentDayKey]?.steps || []).find(s=>s.title===title);
+    const scheme = repScheme(step);
+    if(!scheme) return;
+    const reps = (draft.reps || []).map(Number);
+    if(reps.length !== scheme.sets || reps.some(v=>!Number.isFinite(v) || v<=0)) return;
+    history[exerciseKey(currentDayKey,title)] = {
+      date:localDateKey(),
+      weight:draft.weight || "",
+      reps
+    };
+  });
+  writeJson(PROGRESS_HISTORY_KEY, history);
 }
 
 function setupAudio(){
@@ -140,6 +282,7 @@ async function requestFullscreen(){
 }
 async function startSession(){
   setupAudio();
+  sessionHistorySnapshot = readJson(PROGRESS_HISTORY_KEY, {});
   const day=PROGRAM.days[currentDayKey];
   steps=day.steps;
   stepIndex=0;
@@ -224,6 +367,7 @@ function renderStep(){
     }
   });
   $("#techniqueBox").classList.toggle("hidden", !any || s.type==="rest");
+  renderProgression(s);
   renderTimers();
 }
 function togglePause(){
@@ -231,11 +375,13 @@ function togglePause(){
   $("#pauseBtn").textContent=running ? "Pause" : "Resume";
 }
 async function finishSession(){
+  commitCompletedProgressForDay();
   running=false; clearInterval(timerId); timerId=null; totalRemaining=0; renderTimers(); beep("done");
   if(wakeLock){ try{ await wakeLock.release(); }catch(e){} wakeLock=null; }
   sessionView.classList.add("hidden"); doneView.classList.remove("hidden");
 }
 async function exitSession(){
+  commitCompletedProgressForDay();
   running=false; clearInterval(timerId); timerId=null;
   if(wakeLock){ try{ await wakeLock.release(); }catch(e){} wakeLock=null; }
   if(document.fullscreenElement){ try{ await document.exitFullscreen(); }catch(e){} }
