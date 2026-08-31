@@ -13,7 +13,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100%}
 body{min-height:100svh}
-button{font:inherit}
+button,input{font:inherit}
 .app-shell{width:min(760px,100%);margin:0 auto;padding:22px 18px calc(28px + env(safe-area-inset-bottom))}
 .view{min-height:calc(100svh - 44px)}
 .hidden{display:none!important}
@@ -61,16 +61,6 @@ h2{margin:0;font-size:20px}
 .wide{flex:1}
 .done-view{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .done-icon{width:100px;height:100px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--text);font-size:58px;font-weight:900;margin-bottom:18px}
-@media(max-width:520px){
-  .app-shell{padding:16px 14px calc(22px + env(safe-area-inset-bottom))}
-  h1{font-size:30px}
-  .step-timer{font-size:72px}
-  .phase-card{min-height:52svh;padding:22px 16px}
-  .phase-card h2{font-size:27px}
-  .ghost,.primary{padding:12px 13px}
-  .session-controls{gap:8px}
-}
-
 .technique-box{
   width:min(590px,100%);
   margin:20px auto 0;
@@ -91,7 +81,62 @@ h2{margin:0;font-size:20px}
 }
 .technique-row:last-child{border-bottom:0}
 .technique-row strong{font-size:10px;letter-spacing:.12em;color:var(--muted);padding-top:3px}
+.progression-box{
+  width:min(590px,100%);
+  margin:18px auto 0;
+  padding:16px;
+  border:2px solid #4a4a50;
+  border-radius:20px;
+  background:#111114;
+  text-align:left;
+}
+.progression-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px}
+.progression-head>div{min-width:0}
+#progressionTarget{display:block;font-size:17px;margin-top:3px}
+.weight-field{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+.weight-field span{font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--muted)}
+.weight-field input{
+  width:84px;
+  min-height:44px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:var(--card2);
+  color:var(--text);
+  text-align:center;
+  font-size:18px;
+  font-weight:800;
+}
+.previous-performance{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--card2);font-size:13px;color:#d4d4d8;line-height:1.35}
+.set-inputs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.set-entry{display:flex;flex-direction:column;gap:5px;align-items:center;min-width:0}
+.set-entry span{font-size:10px;font-weight:900;letter-spacing:.08em;color:var(--muted)}
+.set-entry input{
+  width:100%;
+  min-width:0;
+  min-height:54px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#252529;
+  color:var(--text);
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
+.set-entry input:focus,.weight-field input:focus{outline:2px solid var(--text);outline-offset:2px}
+.progression-goal{margin-top:12px;font-size:13px;font-weight:750;line-height:1.4;color:#e4e4e7}
+.progression-goal.ready{font-size:14px;color:var(--text)}
 @media(max-width:520px){
+  .app-shell{padding:16px 14px calc(22px + env(safe-area-inset-bottom))}
+  h1{font-size:30px}
+  .step-timer{font-size:72px}
+  .phase-card{min-height:52svh;padding:22px 16px}
+  .phase-card h2{font-size:27px}
+  .ghost,.primary{padding:12px 13px}
+  .session-controls{gap:8px}
   .technique-box{margin-top:15px;padding:12px}
   .technique-row{grid-template-columns:72px 1fr;font-size:13px}
+  .progression-box{padding:14px 12px}
+  .set-inputs{gap:6px}
+  .set-entry input{min-height:50px;font-size:20px}
 }
