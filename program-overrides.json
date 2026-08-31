@@ -1,6 +1,78 @@
 {
-  "version": "2026-08-30-v2",
+  "version": "2026-08-31-v2.1",
   "days": {
+    "monday": {
+      "label": "Monday",
+      "focus": "Posture + dynamic yoga mobility",
+      "equipment": [
+        "Exercise mat",
+        "Wall"
+      ],
+      "later": "Evening gym: quads + pull + Zone 2",
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor + deep core",
+          "type": "work",
+          "slotSec": 240,
+          "details": "Start with about 5 slow 360° breaths. Then do 5 × 3 s submaximal pelvic-floor lifts, with 6–8 s of complete relaxation after every lift. Finish with a short easy deep-core control set.",
+          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back; do not force it flat into the floor.",
+          "feel": "Lower ribs, belly and back expand on the inhale. Pelvic floor fully relaxes between contractions.",
+          "avoid": "No breath holding, hard bracing or continuous pelvic-floor clenching.",
+          "minuteCue": "Check that you are breathing into ribs + belly + back and fully relaxing between lifts."
+        },
+        {
+          "title": "Light conditioning",
+          "type": "work",
+          "slotSec": 120,
+          "details": "Fast march or easy jumping jacks. Keep it light, around RPE 6/10 — the goal is to wake up, not fatigue the legs before evening gym.",
+          "minuteCue": "Stay easy and smooth; do not turn this into HIIT."
+        },
+        {
+          "title": "Chin tucks",
+          "type": "work",
+          "slotSec": 120,
+          "details": "2 × 10 slow controlled reps. Draw the head straight back rather than looking down.",
+          "feel": "Gentle work deep in the front of the neck; back of the neck stays long.",
+          "avoid": "Do not jam the chin down toward the chest.",
+          "minuteCue": "Start the second controlled set."
+        },
+        {
+          "title": "Wall slides",
+          "type": "work",
+          "slotSec": 120,
+          "details": "2 × 10 controlled reps. Slide the arms upward only as far as you can while keeping the ribs controlled.",
+          "avoid": "Do not compensate by strongly arching the low back or flaring the ribs.",
+          "minuteCue": "Start the second set."
+        },
+        {
+          "title": "Prone Y–T–W",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 rounds of about 6 reps in each Y, T and W position. Move slowly and focus on shoulder-blade control rather than lifting the hands high.",
+          "minuteCue": "Continue the sequence; move into the next letter or second round."
+        },
+        {
+          "title": "Dynamic Yoga Flow",
+          "type": "work",
+          "slotSec": 600,
+          "details": "Flow continuously: Downward Dog → Plank → Cobra or Upward Dog → Downward Dog → Low Lunge (Anjaneyasana) + both arms overhead → Downward Dog → repeat with the other leg. Keep moving smoothly rather than holding long static stretches.",
+          "setup": "Use the whole mat. In Low Lunge, the rear knee can stay on the floor; lift both arms overhead and grow tall through the torso.",
+          "feel": "Whole-body mobility: shoulders, spine, front of hips, calves and posterior chain, with calm breathing throughout.",
+          "avoid": "Do not force Upward Dog if Cobra feels better. Avoid painful end ranges or holding your breath.",
+          "minuteCue": "Keep the flow moving; make sure both lead legs are getting equal time."
+        },
+        {
+          "title": "World’s Greatest Stretch",
+          "type": "work",
+          "slotSec": 420,
+          "details": "From a long lunge, bring the inside elbow toward the floor or inside of the front foot, then rotate the same-side arm upward for thoracic rotation. Return and change sides. Keep it dynamic and alternate rather than sitting in one position for a long time.",
+          "feel": "Hip/groin opening plus thoracic rotation and a broad stretch through the whole body.",
+          "avoid": "Do not force the elbow to the floor or twist through pain.",
+          "minuteCue": "Switch the lead side / keep alternating sides."
+        }
+      ],
+      "totalSec": 1800
+    },
     "sunday": {
       "label": "Sunday",
       "focus": "Recovery + mobility",
