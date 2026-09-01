@@ -1,9 +1,9 @@
 {
-  "version": "2026-08-31-v2.1",
+  "version": "2026-09-01-v2.2",
   "days": {
     "monday": {
       "label": "Monday",
-      "focus": "Posture + dynamic yoga mobility",
+      "focus": "Posture + deep core + two-part yoga mobility",
       "equipment": [
         "Exercise mat",
         "Wall"
@@ -11,21 +11,31 @@
       "later": "Evening gym: quads + pull + Zone 2",
       "steps": [
         {
-          "title": "360° breathing + pelvic floor + deep core",
+          "title": "360° breathing + pelvic floor",
           "type": "work",
           "slotSec": 240,
-          "details": "Start with about 5 slow 360° breaths. Then do 5 × 3 s submaximal pelvic-floor lifts, with 6–8 s of complete relaxation after every lift. Finish with a short easy deep-core control set.",
+          "details": "About 5 slow 360° breaths, then 5 × 3 s submaximal pelvic-floor lifts with 6–8 s of complete relaxation after every lift.",
           "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back; do not force it flat into the floor.",
           "feel": "Lower ribs, belly and back expand on the inhale. Pelvic floor fully relaxes between contractions.",
           "avoid": "No breath holding, hard bracing or continuous pelvic-floor clenching.",
-          "minuteCue": "Check that you are breathing into ribs + belly + back and fully relaxing between lifts."
+          "minuteCue": "Keep the breathing calm and make the relaxation phase as deliberate as the lift."
+        },
+        {
+          "title": "Deep core + control primer",
+          "type": "work",
+          "slotSec": 300,
+          "details": "Dead-bug heel taps 5–8/side, then bird dog 5–8/side. Repeat calmly if time remains.",
+          "setup": "For dead bug keep ribs controlled and move only as far as the abdomen stays flat. For bird dog reach opposite arm and leg long without twisting the pelvis.",
+          "feel": "Deep abdominal control and trunk stability without maximal bracing.",
+          "avoid": "No abdominal doming/coning, breath holding or lumbar pinching.",
+          "minuteCue": "Quality over speed; reset the breath if the trunk starts to compensate."
         },
         {
           "title": "Light conditioning",
           "type": "work",
           "slotSec": 120,
-          "details": "Fast march or easy jumping jacks. Keep it light, around RPE 6/10 — the goal is to wake up, not fatigue the legs before evening gym.",
-          "minuteCue": "Stay easy and smooth; do not turn this into HIIT."
+          "details": "Fast march or easy jumping jacks. Keep it light, around RPE 6/10 — wake up without fatiguing the legs before evening gym.",
+          "minuteCue": "Stay easy and smooth; this is not HIIT."
         },
         {
           "title": "Chin tucks",
@@ -52,23 +62,105 @@
           "minuteCue": "Continue the sequence; move into the next letter or second round."
         },
         {
-          "title": "Dynamic Yoga Flow",
+          "title": "Yoga Flow A — front/back chain",
           "type": "work",
-          "slotSec": 600,
-          "details": "Flow continuously: Downward Dog → Plank → Cobra or Upward Dog → Downward Dog → Low Lunge (Anjaneyasana) + both arms overhead → Downward Dog → repeat with the other leg. Keep moving smoothly rather than holding long static stretches.",
-          "setup": "Use the whole mat. In Low Lunge, the rear knee can stay on the floor; lift both arms overhead and grow tall through the torso.",
-          "feel": "Whole-body mobility: shoulders, spine, front of hips, calves and posterior chain, with calm breathing throughout.",
-          "avoid": "Do not force Upward Dog if Cobra feels better. Avoid painful end ranges or holding your breath.",
-          "minuteCue": "Keep the flow moving; make sure both lead legs are getting equal time."
+          "slotSec": 300,
+          "details": "Flow continuously: Downward Dog → Plank → Cobra or Upward Dog → Downward Dog → Low Lunge (Anjaneyasana) + both arms overhead → return and repeat with the other leg.",
+          "setup": "Use the whole mat. In Low Lunge the rear knee can stay down; lift both arms overhead and grow tall through the torso.",
+          "feel": "Shoulders, spine, front of hips, calves and posterior chain working together.",
+          "avoid": "Do not force Upward Dog if Cobra feels better. Avoid painful end ranges or breath holding.",
+          "minuteCue": "Keep moving smoothly and give both lead legs equal time."
+        },
+        {
+          "title": "Yoga Flow B — spine + side body",
+          "type": "work",
+          "slotSec": 300,
+          "details": "Flow through completely different positions: Cat-Cow → Thread the Needle right → Tabletop → Thread the Needle left → Puppy Pose → Child’s Pose side reach right → side reach left → return to Tabletop and repeat.",
+          "setup": "Move slowly between positions. In Thread the Needle rotate through the upper back rather than forcing the shoulder. In Puppy Pose keep hips roughly over knees and reach the chest forward/down only as comfortable.",
+          "feel": "Thoracic rotation, lats, side body, shoulders and spinal movement without loading the legs heavily.",
+          "avoid": "Do not force the shoulder into the floor or collapse into the low back.",
+          "minuteCue": "Keep alternating sides and use the breath to create the movement."
         },
         {
           "title": "World’s Greatest Stretch",
           "type": "work",
-          "slotSec": 420,
-          "details": "From a long lunge, bring the inside elbow toward the floor or inside of the front foot, then rotate the same-side arm upward for thoracic rotation. Return and change sides. Keep it dynamic and alternate rather than sitting in one position for a long time.",
-          "feel": "Hip/groin opening plus thoracic rotation and a broad stretch through the whole body.",
+          "slotSec": 120,
+          "details": "1 minute per side. Long lunge → inside elbow toward the floor/inside of the foot → rotate the same-side arm upward.",
+          "feel": "Hip/groin opening plus thoracic rotation.",
           "avoid": "Do not force the elbow to the floor or twist through pain.",
-          "minuteCue": "Switch the lead side / keep alternating sides."
+          "minuteCue": "Switch sides now."
+        }
+      ],
+      "totalSec": 1800
+    },
+    "thursday": {
+      "label": "Thursday",
+      "focus": "Posture + hip rotation + standing yoga flow",
+      "equipment": [
+        "Exercise mat",
+        "Wall"
+      ],
+      "later": "Evening gym: quads + pull + hamstrings + cardio",
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 240,
+          "details": "About 5 slow 360° breaths, then 5 × 3 s submaximal pelvic-floor lifts with full 6–8 s relaxation after every rep.",
+          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back.",
+          "avoid": "No continuous gripping or prolonged breath holding.",
+          "minuteCue": "Keep the relaxation phase complete."
+        },
+        {
+          "title": "Deep core + control primer",
+          "type": "work",
+          "slotSec": 240,
+          "details": "Dead-bug heel taps 5–8/side, then bear rock-back 6–8 controlled reps. Repeat lightly if time remains.",
+          "avoid": "No abdominal doming/coning or hard breath holding.",
+          "minuteCue": "Stay controlled; the goal is coordination, not fatigue."
+        },
+        {
+          "title": "Light conditioning",
+          "type": "work",
+          "slotSec": 120,
+          "details": "Fast high-knee march or low-impact step-ups. Keep it around RPE 6/10 because gym legs are later.",
+          "minuteCue": "Stay easy; save the legs for the evening."
+        },
+        {
+          "title": "Chin tucks",
+          "type": "work",
+          "slotSec": 120,
+          "details": "2 × 10 controlled reps."
+        },
+        {
+          "title": "Wall slides",
+          "type": "work",
+          "slotSec": 120,
+          "details": "2 × 10 controlled reps with ribs controlled."
+        },
+        {
+          "title": "Reverse snow angels",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 10 slow reps. Focus on shoulder-blade movement rather than range.",
+          "minuteCue": "Continue slowly; do not shrug."
+        },
+        {
+          "title": "90/90 hip switches",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 8/side, smooth and controlled. Keep this because it gives specific hip internal/external rotation that the yoga flow does not fully replace.",
+          "minuteCue": "Keep switching sides smoothly."
+        },
+        {
+          "title": "Standing Yoga Flow — lateral hips + side body",
+          "type": "work",
+          "slotSec": 600,
+          "details": "Flow continuously: Chair Pose → Warrior II → Reverse Warrior → Extended Side Angle → Goddess Squat → Wide-Leg Forward Fold → Star Pose → repeat to the other side. This flow intentionally avoids Monday’s Downward Dog, Plank, Cobra and Low Lunge sequence.",
+          "setup": "Move slowly and use a comfortable stance. In Warrior II keep the front knee tracking with the toes; in Goddess keep knees tracking outward; in the forward fold hinge from the hips rather than forcing the back round.",
+          "feel": "Quads and hips lightly active, adductors opening, side body lengthening and the trunk moving in a different plane from Monday.",
+          "avoid": "Do not force deep knee flexion or any position that creates knee pinch. Keep this mobility-strength flow submaximal because gym legs are later.",
+          "minuteCue": "Keep the sequence flowing and spend equal time leading from each side."
         }
       ],
       "totalSec": 1800
