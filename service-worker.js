@@ -1,5 +1,5 @@
-const CACHE = "workout-app-v8-individual-yoga-photos";
-const SHELL = ["./","./index.html","./style.css","./app.js","./manifest.json","./icon-192.png","./icon-512.png","./program-overrides.json","./gym-overrides.json","./poses/chair_pose.jpg","./poses/warrior_ii.jpg","./poses/reverse_warrior.jpg","./poses/extended_side_angle.jpg","./poses/goddess_squat.jpg","./poses/wide_leg_forward_fold.jpg","./poses/star_pose.jpg"];
+const CACHE = "workout-app-v8-full-yoga-images";
+const SHELL = ["./","./index.html","./style.css","./app.js","./manifest.json","./icon-192.png","./icon-512.png","./program-overrides.json","./gym-overrides.json","./poses/chair_pose.jpg","./poses/warrior_ii.jpg","./poses/reverse_warrior.jpg","./poses/extended_side_angle.jpg","./poses/goddess_squat.jpg","./poses/wide_leg_forward_fold.jpg","./poses/star_pose.jpg","./poses/yoga_pose_sprite_full.webp"];
 self.addEventListener("install", e => {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)));
