@@ -336,56 +336,36 @@ function skipStep(){
   advanceStep();
 }
 
-function poseSvg(key){
-  const common = 'stroke="#111" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none"';
-  const head = (x,y)=>'<circle cx="'+x+'" cy="'+y+'" r="18" fill="#111"/>';
-  const ground = '<line x1="35" y1="330" x2="465" y2="330" stroke="#bbb" stroke-width="3"/>';
-  const wrap = (body)=>'<svg viewBox="0 0 500 360" role="img" aria-label="Yoga pose diagram">'+ground+body+'</svg>';
-  const poses = {
-    chair: ()=>wrap(
-      head(250,68)+
-      '<path '+common+' d="M250 90 L245 175 L205 230 L180 320 M245 175 L300 225 L320 320 M245 115 L195 65 M245 115 L295 65"/>'
-    ),
-    warrior2: ()=>wrap(
-      head(250,70)+
-      '<path '+common+' d="M250 92 L250 190 M250 125 L105 125 M250 125 L395 125 M250 190 L175 250 L120 320 M250 190 L335 230 L420 320"/>'
-    ),
-    reverse: ()=>wrap(
-      head(250,72)+
-      '<path '+common+' d="M250 94 L250 190 M250 190 L175 250 L120 320 M250 190 L335 230 L420 320 M245 120 L180 250 M255 120 Q315 65 365 35"/>'
-    ),
-    sideangle: ()=>wrap(
-      head(220,105)+
-      '<path '+common+' d="M230 120 L275 190 M275 190 L190 245 L125 320 M275 190 L350 235 L425 320 M235 135 L180 245 M255 135 Q335 85 410 55"/>'
-    ),
-    goddess: ()=>wrap(
-      head(250,72)+
-      '<path '+common+' d="M250 94 L250 180 M250 180 L175 225 L125 320 M250 180 L325 225 L375 320 M250 120 L185 100 L165 145 M250 120 L315 100 L335 145"/>'
-    ),
-    fold: ()=>wrap(
-      head(250,235)+
-      '<path '+common+' d="M250 215 Q250 165 250 130 M250 130 L150 320 M250 130 L350 320 M245 205 L185 300 M255 205 L315 300"/>'
-    ),
-    star: ()=>wrap(
-      head(250,72)+
-      '<path '+common+' d="M250 94 L250 195 M250 195 L155 320 M250 195 L345 320 M250 125 L130 50 M250 125 L370 50"/>'
-    )
-  };
-  return (poses[key] || poses.star)();
-}
+const POSE_SPRITE_POS = {
+  chair:"0%",
+  warrior2:"16.6667%",
+  reverse:"33.3333%",
+  sideangle:"50%",
+  goddess:"66.6667%",
+  fold:"83.3333%",
+  star:"100%"
+};
+const MIRRORED_POSES = new Set(["warrior2","reverse","sideangle"]);
+
 function renderPoseGuide(step){
   const box=document.getElementById("poseGuide");
-  if(!box) return;
+  const art=document.getElementById("poseArt");
+  if(!box || !art) return;
   if(step.poseKey && step.type!=="rest"){
-    document.getElementById("poseArt").innerHTML=poseSvg(step.poseKey);
+    art.innerHTML="";
+    art.style.backgroundImage='url("./assets/yoga-pose-sprite.webp")';
+    art.style.backgroundPosition=(POSE_SPRITE_POS[step.poseKey] || "100%") + " center";
+    art.classList.toggle("mirror", step.poseSide==="RIGHT" && MIRRORED_POSES.has(step.poseKey));
+    art.setAttribute("role","img");
+    art.setAttribute("aria-label",(step.poseLabel || step.title) + (step.poseSide ? " " + step.poseSide : ""));
     document.getElementById("poseGuideName").textContent=step.poseLabel || step.title;
     document.getElementById("poseGuideSide").textContent=step.poseSide || "";
     box.classList.remove("hidden");
   }else{
+    art.classList.remove("mirror");
     box.classList.add("hidden");
   }
 }
-
 function renderTimers(){
   $("#stepTimer").textContent=fmt(stepRemaining);
   $("#totalLeft").textContent=fmt(totalRemaining);

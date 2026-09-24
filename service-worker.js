@@ -1,5 +1,5 @@
-const CACHE = "workout-app-v4-guided-yoga";
-const SHELL = ["./","./index.html","./style.css","./app.js","./manifest.json","./icon-192.png","./icon-512.png","./program-overrides.json","./gym-overrides.json"];
+const CACHE = "workout-app-v5-photo-yoga";
+const SHELL = ["./","./index.html","./style.css","./app.js","./manifest.json","./icon-192.png","./icon-512.png","./program-overrides.json","./gym-overrides.json","./assets/yoga-pose-sprite.webp"];
 self.addEventListener("install", e => {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)));

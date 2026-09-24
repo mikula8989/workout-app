@@ -150,23 +150,29 @@ h2{margin:0;font-size:20px}
   overflow:hidden;
 }
 .pose-art{
-  width:100%;
-  min-height:300px;
-  display:grid;
-  place-items:center;
-  padding:10px 14px 4px;
+  width:min(220px,62vw);
+  aspect-ratio:120/210;
+  min-height:0;
+  margin:12px auto 2px;
+  padding:0;
+  background-repeat:no-repeat;
+  background-size:700% 100%;
+  background-position:0% center;
+  background-color:#f7f4ef;
+  border-radius:16px;
 }
-.pose-art svg{width:100%;max-width:470px;height:auto;display:block}
+.pose-art.mirror{transform:scaleX(-1)}
 .pose-guide-caption{
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:12px;
-  padding:10px 16px 14px;
+  padding:8px 16px 13px;
   font-size:16px;
 }
-.pose-guide-caption .muted{color:#666}
+.pose-guide-caption .muted{color:#666;font-weight:900;letter-spacing:.1em}
 @media(max-width:520px){
-  .pose-art{min-height:250px;padding:8px 10px 2px}
-  .pose-guide-caption{font-size:15px;padding:8px 12px 12px}
+  .pose-art{width:min(185px,56vw);margin-top:8px}
+  .pose-guide-caption{font-size:15px;padding:7px 12px 10px}
 }
+
