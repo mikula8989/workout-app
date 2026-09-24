@@ -272,3 +272,42 @@ h2{margin:0;font-size:20px}
     padding:0 !important;
   }
 }
+
+/* v8: individual yoga photos — bypass legacy sprite/background rules */
+.pose-guide .pose-art{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  aspect-ratio:auto !important;
+  margin:8px auto 0 !important;
+  padding:0 !important;
+  background:none !important;
+  overflow:visible !important;
+}
+.pose-guide .pose-photo{
+  display:block;
+  width:auto;
+  max-width:min(100%,320px);
+  height:auto;
+  max-height:34svh;
+  object-fit:contain;
+  margin:0 auto;
+  border-radius:14px;
+  background:#f7f4ef;
+}
+.pose-guide .pose-photo.mirror{
+  transform:scaleX(-1);
+}
+@media(max-width:520px){
+  .pose-guide .pose-photo{
+    max-width:min(100%,300px);
+    max-height:32svh;
+  }
+  .phase-card:has(.pose-guide:not(.hidden)) .step-timer{
+    font-size:58px;
+    margin:8px 0 10px;
+  }
+}
