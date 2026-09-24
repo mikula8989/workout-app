@@ -140,3 +140,33 @@ h2{margin:0;font-size:20px}
   .set-inputs{gap:6px}
   .set-entry input{min-height:50px;font-size:20px}
 }
+
+.pose-guide{
+  margin:14px 0 0;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:#f4f1eb;
+  color:#161616;
+  overflow:hidden;
+}
+.pose-art{
+  width:100%;
+  min-height:300px;
+  display:grid;
+  place-items:center;
+  padding:10px 14px 4px;
+}
+.pose-art svg{width:100%;max-width:470px;height:auto;display:block}
+.pose-guide-caption{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding:10px 16px 14px;
+  font-size:16px;
+}
+.pose-guide-caption .muted{color:#666}
+@media(max-width:520px){
+  .pose-art{min-height:250px;padding:8px 10px 2px}
+  .pose-guide-caption{font-size:15px;padding:8px 12px 12px}
+}
