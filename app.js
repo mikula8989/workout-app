@@ -336,14 +336,14 @@ function skipStep(){
   advanceStep();
 }
 
-const POSE_IMAGES = {
-  chair:"./poses/chair_pose.jpg",
-  warrior2:"./poses/warrior_ii.jpg",
-  reverse:"./poses/reverse_warrior.jpg",
-  sideangle:"./poses/extended_side_angle.jpg",
-  goddess:"./poses/goddess_squat.jpg",
-  fold:"./poses/wide_leg_forward_fold.jpg",
-  star:"./poses/star_pose.jpg"
+const POSE_SPRITE_POS = {
+  chair:"0%",
+  warrior2:"16.6667%",
+  reverse:"33.3333%",
+  sideangle:"50%",
+  goddess:"66.6667%",
+  fold:"83.3333%",
+  star:"100%"
 };
 const MIRRORED_POSES = new Set(["warrior2","reverse","sideangle"]);
 
@@ -352,18 +352,21 @@ function renderPoseGuide(step){
   const art=document.getElementById("poseArt");
   if(!box || !art) return;
   if(step.poseKey && step.type!=="rest"){
-    const src=POSE_IMAGES[step.poseKey];
-    const mirror=step.poseSide==="RIGHT" && MIRRORED_POSES.has(step.poseKey);
-    const alt=(step.poseLabel || step.title) + (step.poseSide ? " " + step.poseSide : "");
-    art.style.backgroundImage="none";
-    art.innerHTML=`<img class="pose-photo${mirror ? " mirror" : ""}" src="${src}" alt="${alt}">`;
-    art.removeAttribute("role");
-    art.removeAttribute("aria-label");
+    art.innerHTML="";
+    art.style.backgroundImage='url("./poses/yoga_pose_sprite_clean.webp")';
+    art.style.backgroundSize="700% 100%";
+    art.style.backgroundRepeat="no-repeat";
+    art.style.backgroundPosition=(POSE_SPRITE_POS[step.poseKey] || "100%") + " center";
+    art.classList.toggle("mirror", step.poseSide==="RIGHT" && MIRRORED_POSES.has(step.poseKey));
+    art.setAttribute("role","img");
+    art.setAttribute("aria-label",(step.poseLabel || step.title) + (step.poseSide ? " " + step.poseSide : ""));
     document.getElementById("poseGuideName").textContent=step.poseLabel || step.title;
     document.getElementById("poseGuideSide").textContent=step.poseSide || "";
     box.classList.remove("hidden");
   }else{
     art.innerHTML="";
+    art.style.backgroundImage="none";
+    art.classList.remove("mirror");
     box.classList.add("hidden");
   }
 }
