@@ -1,4 +1,4 @@
-const CACHE = "workout-app-v6-real-yoga-photos";
+const CACHE = "workout-app-v7-yoga-sprite-hotfix";
 const SHELL = ["./","./index.html","./style.css","./app.js","./manifest.json","./icon-192.png","./icon-512.png","./program-overrides.json","./gym-overrides.json","./poses/yoga_pose_sprite.jpg"];
 self.addEventListener("install", e => {
   self.skipWaiting();
