@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-01-v2.2",
+  "version": "2026-09-24-v2.3-guided-yoga",
   "days": {
     "monday": {
       "label": "Monday",
@@ -95,10 +95,11 @@
     },
     "thursday": {
       "label": "Thursday",
-      "focus": "Posture + hip rotation + standing yoga flow",
+      "focus": "Posture + hip rotation + guided standing yoga flow",
       "equipment": [
         "Exercise mat",
-        "Wall"
+        "Wall",
+        "Phone in view for guided pose diagrams"
       ],
       "later": "Evening gym: quads + pull + hamstrings + cardio",
       "steps": [
@@ -153,14 +154,136 @@
           "minuteCue": "Keep switching sides smoothly."
         },
         {
-          "title": "Standing Yoga Flow — lateral hips + side body",
+          "title": "Chair Pose",
           "type": "work",
-          "slotSec": 600,
-          "details": "Flow continuously: Chair Pose → Warrior II → Reverse Warrior → Extended Side Angle → Goddess Squat → Wide-Leg Forward Fold → Star Pose → repeat to the other side. This flow intentionally avoids Monday’s Downward Dog, Plank, Cobra and Low Lunge sequence.",
-          "setup": "Move slowly and use a comfortable stance. In Warrior II keep the front knee tracking with the toes; in Goddess keep knees tracking outward; in the forward fold hinge from the hips rather than forcing the back round.",
-          "feel": "Quads and hips lightly active, adductors opening, side body lengthening and the trunk moving in a different plane from Monday.",
-          "avoid": "Do not force deep knee flexion or any position that creates knee pinch. Keep this mobility-strength flow submaximal because gym legs are later.",
-          "minuteCue": "Keep the sequence flowing and spend equal time leading from each side."
+          "slotSec": 35,
+          "poseKey": "chair",
+          "poseLabel": "Chair Pose",
+          "details": "Feet about hip-width. Sit back like into a chair and reach both arms overhead. Keep the whole foot grounded.",
+          "avoid": "Reduce depth if the knee pinch appears."
+        },
+        {
+          "title": "Warrior II — LEFT",
+          "type": "work",
+          "slotSec": 45,
+          "poseKey": "warrior2",
+          "poseLabel": "Warrior II",
+          "poseSide": "LEFT",
+          "details": "Left knee bends over the left foot; back leg stays long. Arms reach in opposite directions.",
+          "avoid": "Do not let the front knee collapse inward."
+        },
+        {
+          "title": "Reverse Warrior — LEFT",
+          "type": "work",
+          "slotSec": 35,
+          "poseKey": "reverse",
+          "poseLabel": "Reverse Warrior",
+          "poseSide": "LEFT",
+          "details": "Keep the left knee bent. Left arm reaches up/back; rear hand rests lightly on the back leg.",
+          "avoid": "Lengthen the side body instead of crunching the low back."
+        },
+        {
+          "title": "Extended Side Angle — LEFT",
+          "type": "work",
+          "slotSec": 35,
+          "poseKey": "sideangle",
+          "poseLabel": "Extended Side Angle",
+          "poseSide": "LEFT",
+          "details": "Stay in the left lunge. Left forearm may rest lightly on thigh while the right arm reaches long overhead.",
+          "avoid": "Do not dump bodyweight into the lower arm."
+        },
+        {
+          "title": "Goddess Squat",
+          "type": "work",
+          "slotSec": 50,
+          "poseKey": "goddess",
+          "poseLabel": "Goddess Squat",
+          "details": "Wide stance, toes turned out, knees track outward. Keep chest tall and arms in cactus position.",
+          "avoid": "Stay above any depth that creates knee pinch."
+        },
+        {
+          "title": "Wide-Leg Forward Fold",
+          "type": "work",
+          "slotSec": 55,
+          "poseKey": "fold",
+          "poseLabel": "Wide-Leg Forward Fold",
+          "details": "Keep the stance wide and hinge forward from the hips. Hands can reach toward the floor.",
+          "avoid": "Do not force range by aggressively rounding the low back."
+        },
+        {
+          "title": "Star Pose",
+          "type": "work",
+          "slotSec": 45,
+          "poseKey": "star",
+          "poseLabel": "Star Pose",
+          "details": "Stand tall in a wide stance with arms reaching up and out. Breathe and reset.",
+          "avoid": "Keep shoulders relaxed away from ears."
+        },
+        {
+          "title": "Chair Pose",
+          "type": "work",
+          "slotSec": 35,
+          "poseKey": "chair",
+          "poseLabel": "Chair Pose",
+          "details": "Second round. Sit back and reach overhead.",
+          "avoid": "Reduce depth if the knee pinch appears."
+        },
+        {
+          "title": "Warrior II — RIGHT",
+          "type": "work",
+          "slotSec": 45,
+          "poseKey": "warrior2",
+          "poseLabel": "Warrior II",
+          "poseSide": "RIGHT",
+          "details": "Right knee bends over the right foot; back leg stays long. Arms reach in opposite directions.",
+          "avoid": "Do not let the front knee collapse inward."
+        },
+        {
+          "title": "Reverse Warrior — RIGHT",
+          "type": "work",
+          "slotSec": 35,
+          "poseKey": "reverse",
+          "poseLabel": "Reverse Warrior",
+          "poseSide": "RIGHT",
+          "details": "Keep the right knee bent. Right arm reaches up/back; rear hand rests lightly on the back leg.",
+          "avoid": "Lengthen the side body instead of crunching the low back."
+        },
+        {
+          "title": "Extended Side Angle — RIGHT",
+          "type": "work",
+          "slotSec": 35,
+          "poseKey": "sideangle",
+          "poseLabel": "Extended Side Angle",
+          "poseSide": "RIGHT",
+          "details": "Stay in the right lunge. Right forearm may rest lightly on thigh while the left arm reaches long overhead.",
+          "avoid": "Do not dump bodyweight into the lower arm."
+        },
+        {
+          "title": "Goddess Squat",
+          "type": "work",
+          "slotSec": 50,
+          "poseKey": "goddess",
+          "poseLabel": "Goddess Squat",
+          "details": "Wide stance, toes turned out, knees track outward. Keep chest tall.",
+          "avoid": "Stay above any depth that creates knee pinch."
+        },
+        {
+          "title": "Wide-Leg Forward Fold",
+          "type": "work",
+          "slotSec": 55,
+          "poseKey": "fold",
+          "poseLabel": "Wide-Leg Forward Fold",
+          "details": "Hinge forward from the hips and let the neck relax.",
+          "avoid": "Do not force range."
+        },
+        {
+          "title": "Star Pose",
+          "type": "work",
+          "slotSec": 45,
+          "poseKey": "star",
+          "poseLabel": "Star Pose",
+          "details": "Stand tall, arms up and out, breathe normally.",
+          "avoid": "Keep shoulders relaxed."
         }
       ],
       "totalSec": 1800
