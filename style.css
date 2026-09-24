@@ -311,3 +311,40 @@ h2{margin:0;font-size:20px}
     margin:8px 0 10px;
   }
 }
+
+/* Full-frame yoga pose cards */
+.pose-guide{
+  width:100% !important;
+  max-width:none !important;
+  margin:10px 0 14px !important;
+}
+.pose-guide .pose-art{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  aspect-ratio:720 / 500 !important;
+  min-height:0 !important;
+  margin:0 !important;
+  padding:0 !important;
+  background-size:700% 100% !important;
+  background-repeat:no-repeat !important;
+  background-position-y:center !important;
+  background-color:#f8f6f1 !important;
+  border-radius:18px 18px 0 0 !important;
+}
+.pose-guide .pose-guide-caption{
+  padding:9px 12px 11px !important;
+}
+@media(max-width:520px){
+  .pose-guide .pose-art{
+    width:100% !important;
+    aspect-ratio:720 / 500 !important;
+  }
+  .phase-card:has(.pose-guide:not(.hidden)){
+    padding:18px 14px !important;
+  }
+  .phase-card:has(.pose-guide:not(.hidden)) .step-timer{
+    font-size:58px !important;
+    margin:10px 0 12px !important;
+  }
+}
