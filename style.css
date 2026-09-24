@@ -250,3 +250,25 @@ h2{margin:0;font-size:20px}
   .phase-card:has(.pose-guide:not(.hidden)) .step-timer{font-size:58px;margin:8px 0 10px}
   .phase-card:has(.pose-guide:not(.hidden)){justify-content:flex-start;padding-top:18px}
 }
+
+/* Yoga sprite hotfix: override legacy .pose-art SVG layout */
+.pose-guide .pose-art{
+  display:block !important;
+  width:min(44vw,180px) !important;
+  height:auto !important;
+  aspect-ratio:2 / 5 !important;
+  min-height:0 !important;
+  margin:8px auto 0 !important;
+  padding:0 !important;
+  background-size:700% 100% !important;
+  background-repeat:no-repeat !important;
+  background-color:#f7f4ef;
+  border-radius:16px;
+}
+@media(max-width:520px){
+  .pose-guide .pose-art{
+    width:min(44vw,175px) !important;
+    height:auto !important;
+    padding:0 !important;
+  }
+}
