@@ -1,4 +1,4 @@
-const CACHE = "workout-app-v3-progression";
+const CACHE = "workout-app-v4-guided-yoga";
 const SHELL = ["./","./index.html","./style.css","./app.js","./manifest.json","./icon-192.png","./icon-512.png","./program-overrides.json","./gym-overrides.json"];
 self.addEventListener("install", e => {
   self.skipWaiting();
