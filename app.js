@@ -354,6 +354,8 @@ function renderPoseGuide(step){
   if(step.poseKey && step.type!=="rest"){
     art.innerHTML="";
     art.style.backgroundImage='url("./poses/yoga_pose_sprite.jpg")';
+    art.style.backgroundSize="700% 100%";
+    art.style.backgroundRepeat="no-repeat";
     art.style.backgroundPosition=(POSE_SPRITE_POS[step.poseKey] || "100%") + " center";
     art.classList.toggle("mirror", step.poseSide==="RIGHT" && MIRRORED_POSES.has(step.poseKey));
     art.setAttribute("role","img");
