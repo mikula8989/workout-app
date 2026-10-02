@@ -37,6 +37,25 @@
         <p id="laterText" class="later muted"></p>
       </section>
 
+      <section id="adaptiveCard" class="card adaptive-card hidden">
+        <div class="section-heading">
+          <h2>Adapted today</h2>
+          <span class="status-pill">WEEKLY BALANCE</span>
+        </div>
+        <p id="adaptiveReason" class="muted"></p>
+        <div id="adaptiveChanges" class="adaptive-changes"></div>
+        <button id="normalWorkoutBtn" class="ghost compact-btn">Use normal workout</button>
+      </section>
+
+      <section id="weeklyBalanceCard" class="card">
+        <div class="section-heading">
+          <h2>Weekly balance</h2>
+          <span class="muted">auto</span>
+        </div>
+        <p class="tiny muted">Priority: Quads · Biceps · Triceps · Hips · Posture</p>
+        <div id="weeklyBalanceList" class="weekly-balance-list"></div>
+      </section>
+
       <section class="card">
         <div class="section-heading">
           <h2>Prepare before Start</h2>
@@ -121,10 +140,23 @@
 
     <section id="doneView" class="view hidden done-view">
       <div class="done-icon">✓</div>
-      <h1>Session complete</h1>
-      <p class="muted">30 minutes done.</p>
-      <button id="doneBtn" class="primary">Back to day</button>
+      <h1>Session finished</h1>
+      <p class="muted">Check what you actually completed. The app will use this to adapt the rest of the week.</p>
+      <div id="sessionReviewList" class="session-review-list"></div>
+      <button id="doneBtn" class="primary start-btn">SAVE WORKOUT</button>
     </section>
+
+    <div id="gymPrompt" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="gymPromptTitle">
+      <div class="modal-card">
+        <div class="eyebrow">YESTERDAY EVENING</div>
+        <h2 id="gymPromptTitle">Did you go to the gym?</h2>
+        <p id="gymPromptText" class="muted"></p>
+        <div class="modal-actions">
+          <button id="gymNoBtn" class="ghost wide">No</button>
+          <button id="gymYesBtn" class="primary wide">Yes</button>
+        </div>
+      </div>
+    </div>
   </main>
 
   <script src="./app.js"></script>
