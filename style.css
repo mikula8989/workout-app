@@ -395,3 +395,32 @@ h2{margin:0;font-size:20px}
     margin:10px 0 12px !important;
   }
 }
+
+/* Adaptive weekly training */
+.adaptive-card{border:1px solid #777;background:#18181b}
+.adaptive-changes{display:grid;gap:10px;margin:12px 0;font-size:13px;line-height:1.45}
+.adaptive-changes>div{padding:10px 12px;background:var(--card2);border-radius:12px}
+.adaptive-badge{display:inline-block;margin-left:6px;padding:3px 6px;border-radius:999px;border:1px solid #737373;font-size:9px;letter-spacing:.08em;vertical-align:2px}
+.compact-btn{padding:9px 12px}
+.weekly-balance-list{display:grid;gap:8px;margin-top:12px}
+.balance-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.balance-row:last-child{border-bottom:0}
+.balance-state{font-size:11px;font-weight:850;padding:5px 8px;border-radius:999px;border:1px solid var(--line)}
+.balance-state.ok{opacity:.65}
+.balance-state.attention{border-color:#8b7d52}
+.balance-state.missing{border-color:#a85c5c}
+.session-review-list{width:min(640px,100%);display:grid;gap:10px;margin:18px 0;text-align:left}
+.review-row{padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.review-copy{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
+.review-status{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.review-choice{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:11px;padding:9px 6px;font-weight:800;font-size:12px}
+.review-choice.active{background:var(--text);color:#111;border-color:var(--text)}
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:18px}
+.modal-overlay.hidden{display:none}
+.modal-card{width:min(430px,100%);background:#171719;border:1px solid var(--line);border-radius:24px;padding:22px}
+.modal-card h2{font-size:28px;margin:8px 0}
+.modal-actions{display:flex;gap:10px;margin-top:18px}
+@media(max-width:520px){
+  .review-copy{align-items:flex-start;flex-direction:column;gap:3px}
+  .review-choice{font-size:11px;padding:9px 3px}
+}
