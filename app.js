@@ -971,7 +971,18 @@ $("#soundBtn").onclick=()=>{
 };
 
 if("serviceWorker" in navigator){
-  window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(()=>{}));
+  let swReloaded=false;
+  navigator.serviceWorker.addEventListener("controllerchange",()=>{
+    if(swReloaded) return;
+    swReloaded=true;
+    window.location.reload();
+  });
+  window.addEventListener("load",async ()=>{
+    try{
+      const reg=await navigator.serviceWorker.register("./service-worker.js");
+      await reg.update();
+    }catch(_){}
+  });
 }
 loadProgram().catch(err=>{
   document.body.innerHTML=`<main class="app-shell"><h1>Could not load workout data</h1><p>${err}</p></main>`;
