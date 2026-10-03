@@ -361,8 +361,17 @@ function renderPoseGuide(step){
   const box=document.getElementById("poseGuide");
   const art=document.getElementById("poseArt");
   if(!box || !art) return;
+
+  art.innerHTML="";
+  art.classList.remove("mirror","exercise-demo-art");
+  art.style.backgroundImage="none";
+  art.style.backgroundSize="";
+  art.style.backgroundRepeat="";
+  art.style.backgroundPosition="";
+  art.removeAttribute("role");
+  art.removeAttribute("aria-label");
+
   if(step.poseKey && step.type!=="rest"){
-    art.innerHTML="";
     art.style.backgroundImage='url("./poses/yoga_pose_sprite_clean.webp")';
     art.style.backgroundSize="700% 100%";
     art.style.backgroundRepeat="no-repeat";
@@ -373,12 +382,38 @@ function renderPoseGuide(step){
     document.getElementById("poseGuideName").textContent=step.poseLabel || step.title;
     document.getElementById("poseGuideSide").textContent=step.poseSide || "";
     box.classList.remove("hidden");
-  }else{
-    art.innerHTML="";
-    art.style.backgroundImage="none";
-    art.classList.remove("mirror");
-    box.classList.add("hidden");
+    return;
   }
+
+  if(step.demoImage && step.type!=="rest"){
+    art.classList.add("exercise-demo-art");
+    const img=document.createElement("img");
+    img.className="exercise-demo-img";
+    img.src=step.demoImage;
+    img.alt=step.title + " technique demonstration";
+    img.loading="eager";
+    img.referrerPolicy="no-referrer";
+
+    if(step.demoUrl){
+      const link=document.createElement("a");
+      link.className="exercise-demo-link";
+      link.href=step.demoUrl;
+      link.target="_blank";
+      link.rel="noopener noreferrer";
+      link.setAttribute("aria-label","Open "+step.title+" demonstration");
+      link.appendChild(img);
+      art.appendChild(link);
+    }else{
+      art.appendChild(img);
+    }
+
+    document.getElementById("poseGuideName").textContent=step.title;
+    document.getElementById("poseGuideSide").textContent=step.demoSource ? step.demoSource + " · tap image" : "Technique demo";
+    box.classList.remove("hidden");
+    return;
+  }
+
+  box.classList.add("hidden");
 }
 
 function renderTimers(){
