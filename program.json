@@ -512,7 +512,7 @@
     },
     "saturday": {
       "label": "Saturday",
-      "focus": "L-sit + shoulders + biceps + conditioning",
+      "focus": "Functional full-body + L-sit + biceps hypertrophy",
       "equipment": [
         "Exercise mat",
         "Dumbbells",
@@ -524,85 +524,100 @@
           "title": "360° breathing + pelvic floor",
           "type": "work",
           "slotSec": 240,
-          "details": "5 slow breaths → 5 × 3 s submax lifts + full relaxation → 1 easy deep-core control set."
+          "details": "5 slow 360° breaths → 5 × 3 s submax pelvic-floor lifts with full 6–8 s relaxation → 1 easy deep-core control set.",
+          "demoImage": "https://i.ytimg.com/vi/4DpO-HpvxTk/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=4DpO-HpvxTk",
+          "demoSource": "360° breathing demo"
         },
         {
           "title": "REST / grab dumbbells",
           "type": "rest",
           "slotSec": 20,
-          "details": "Prepare squat-to-press."
+          "details": "Prepare for thrusters."
         },
         {
           "title": "DB squat-to-press / thruster",
           "type": "work",
           "slotSec": 150,
-          "details": "3 × 8–10 at a controlled pace. Conditioning, not failure."
+          "details": "3 × 8–10. Squat and flow directly into the overhead press. Controlled conditioning, not failure; keep about 2–3 RIR.",
+          "demoImage": "https://i.ytimg.com/vi/u3wKkZjE8QM/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=u3wKkZjE8QM",
+          "demoSource": "CrossFit demo"
         },
         {
           "title": "REST / set yoga blocks",
           "type": "rest",
-          "slotSec": 25,
+          "slotSec": 20,
           "details": "Place blocks securely."
         },
         {
           "title": "Tuck L-sit on yoga blocks",
           "type": "work",
-          "slotSec": 240,
-          "details": "3 clean holds, 10–20 s target. Progress leverage only when holds are clean."
+          "slotSec": 210,
+          "details": "3 clean holds, 10–20 s target. Straight arms, push the blocks down, lift the knees high. Progress leverage only when holds stay clean.",
+          "demoImage": "https://i.ytimg.com/vi/lGps-O2k3dE/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=lGps-O2k3dE",
+          "demoSource": "Tuck L-sit demo"
         },
         {
           "title": "REST",
           "type": "rest",
-          "slotSec": 25,
-          "details": "Prepare shoulder press."
+          "slotSec": 20,
+          "details": "Set up half-kneeling press."
         },
         {
-          "title": "DB shoulder press",
+          "title": "Half-Kneeling 1-Arm DB Shoulder Press",
           "type": "work",
-          "slotSec": 250,
-          "details": "3 × 8–12. 1–2 reps in reserve."
+          "slotSec": 210,
+          "details": "3 × 8–12 / arm. One knee down, opposite foot forward. Keep ribs stacked over pelvis and resist rotation while pressing.",
+          "demoImage": "https://i.ytimg.com/vi/2WoOrh3dqss/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=2WoOrh3dqss",
+          "demoSource": "OPEX demo"
         },
         {
           "title": "REST",
           "type": "rest",
-          "slotSec": 25,
-          "details": "Switch to curls."
+          "slotSec": 20,
+          "details": "Stand up and prepare curls."
         },
         {
-          "title": "Alternating DB curl",
+          "title": "Strict Alternating / Supinating DB Curl",
           "type": "work",
-          "slotSec": 250,
-          "details": "4 × 8–12. Supinate strongly, no torso swing."
+          "slotSec": 420,
+          "details": "4 × 8–12. Main biceps hypertrophy block. Full elbow extension, strong supination, no torso swing. Rest enough to keep quality; finish around 1–2 RIR.",
+          "demoImage": "https://i.ytimg.com/vi/8d2we4UqOSs/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=8d2we4UqOSs",
+          "demoSource": "Alternating curl demo"
         },
         {
           "title": "REST",
           "type": "rest",
-          "slotSec": 25,
-          "details": "Use lighter dumbbells for lateral raises."
+          "slotSec": 20,
+          "details": "Switch to neutral grip and clear space for lunges."
         },
         {
-          "title": "DB lateral raise",
+          "title": "Reverse Lunge + Hammer Curl",
           "type": "work",
-          "slotSec": 220,
-          "details": "3 × 12–20. Controlled lowering."
+          "slotSec": 300,
+          "details": "3 × 8–10 / side. Step back into a controlled reverse lunge and add a neutral-grip hammer curl. Treat it as integrated movement, not a max-load leg exercise.",
+          "demoImage": "https://i.ytimg.com/vi/SFTsnsBJ2QQ/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=SFTsnsBJ2QQ",
+          "demoSource": "Reverse lunge + hammer curl demo"
         },
         {
           "title": "REST",
           "type": "rest",
-          "slotSec": 25,
-          "details": "Switch grip for hammer curls."
+          "slotSec": 20,
+          "details": "Take one lighter dumbbell."
         },
         {
-          "title": "Hammer curl",
+          "title": "DB Halo + Shoulder Mobility",
           "type": "work",
-          "slotSec": 230,
-          "details": "4 × 10–15. Keep elbows close to torso."
-        },
-        {
-          "title": "Quick shoulder / hamstring mobility",
-          "type": "work",
-          "slotSec": 75,
-          "details": "Use the remaining time for relaxed mobility."
+          "slotSec": 150,
+          "details": "Slow controlled halos in both directions, then use any remaining time for relaxed shoulder mobility. Keep ribs and pelvis steady; the weight circles the head, not the torso.",
+          "demoImage": "https://i.ytimg.com/vi/UNkaHC8g8a4/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=UNkaHC8g8a4",
+          "demoSource": "Dumbbell halo demo"
         }
       ],
       "totalSec": 1800
