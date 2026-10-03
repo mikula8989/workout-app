@@ -424,3 +424,34 @@ h2{margin:0;font-size:20px}
   .review-copy{align-items:flex-start;flex-direction:column;gap:3px}
   .review-choice{font-size:11px;padding:9px 3px}
 }
+
+/* Generic exercise demo images */
+.pose-guide .pose-art.exercise-demo-art{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  aspect-ratio:16 / 9 !important;
+  margin:0 !important;
+  padding:0 !important;
+  background:none !important;
+  overflow:hidden !important;
+}
+.exercise-demo-link{
+  display:block;
+  width:100%;
+  height:100%;
+}
+.exercise-demo-img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center !important;
+}
+.pose-guide:has(.exercise-demo-art) .pose-guide-caption{
+  justify-content:space-between !important;
+}
+.pose-guide:has(.exercise-demo-art) .pose-guide-caption .muted{
+  font-size:11px;
+  text-align:right;
+}
