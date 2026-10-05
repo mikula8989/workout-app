@@ -3,10 +3,11 @@
   "days": {
     "monday": {
       "label": "Monday",
-      "focus": "Posture + deep core + two-part yoga mobility",
+      "focus": "Posture + deep core + functional movement + yoga mobility",
       "equipment": [
         "Exercise mat",
-        "Wall"
+        "Wall",
+        "Optional light dumbbell"
       ],
       "later": "Evening gym: quads + pull + Zone 2",
       "steps": [
@@ -31,11 +32,14 @@
           "minuteCue": "Quality over speed; reset the breath if the trunk starts to compensate."
         },
         {
-          "title": "Light conditioning",
+          "title": "Turkish Get-Up",
           "type": "work",
-          "slotSec": 120,
-          "details": "Fast march or easy jumping jacks. Keep it light, around RPE 6/10 — wake up without fatiguing the legs before evening gym.",
-          "minuteCue": "Stay easy and smooth; this is not HIIT."
+          "slotSec": 240,
+          "details": "Alternate sides for controlled singles. Start bodyweight or with a very light dumbbell and treat this as movement-quality practice, not a strength test.",
+          "setup": "Keep the working arm stacked and stable as you roll, post, bridge/sweep, kneel and stand. Reverse the same sequence under control.",
+          "feel": "Whole-body coordination: shoulder/scapular stability, trunk control, hips and legs working together.",
+          "avoid": "No rushing, grinding or breath holding. Do not force through right-shoulder pinching, instability or painful overhead range; reduce load/range if needed.",
+          "minuteCue": "Switch sides regularly and keep every position deliberate."
         },
         {
           "title": "Chin tucks",
@@ -74,21 +78,22 @@
         {
           "title": "Yoga Flow B — spine + side body",
           "type": "work",
-          "slotSec": 300,
-          "details": "Flow through completely different positions: Cat-Cow → Thread the Needle right → Tabletop → Thread the Needle left → Puppy Pose → Child’s Pose side reach right → side reach left → return to Tabletop and repeat.",
+          "slotSec": 180,
+          "details": "Shortened flow: Cat-Cow → Thread the Needle right → Tabletop → Thread the Needle left → Puppy Pose → Child’s Pose side reach right/left. Keep it continuous and relaxed.",
           "setup": "Move slowly between positions. In Thread the Needle rotate through the upper back rather than forcing the shoulder. In Puppy Pose keep hips roughly over knees and reach the chest forward/down only as comfortable.",
           "feel": "Thoracic rotation, lats, side body, shoulders and spinal movement without loading the legs heavily.",
           "avoid": "Do not force the shoulder into the floor or collapse into the low back.",
-          "minuteCue": "Keep alternating sides and use the breath to create the movement."
+          "minuteCue": "Move smoothly; prioritize thoracic rotation and shoulder comfort rather than forcing range."
         },
         {
-          "title": "World’s Greatest Stretch",
+          "title": "Deep Squat + Overhead Reach",
           "type": "work",
           "slotSec": 120,
-          "details": "1 minute per side. Long lunge → inside elbow toward the floor/inside of the foot → rotate the same-side arm upward.",
-          "feel": "Hip/groin opening plus thoracic rotation.",
-          "avoid": "Do not force the elbow to the floor or twist through pain.",
-          "minuteCue": "Switch sides now."
+          "details": "Move into a comfortable deep squat, keep the heels grounded if possible, reach overhead while staying tall, then stand/reset and repeat slowly.",
+          "setup": "Use a stance that lets you sit deep without pain. Let the knees track naturally over the toes and keep the whole foot connected to the floor.",
+          "feel": "Ankles, hips, adductors, upper back and shoulders opening together.",
+          "avoid": "Do not force squat depth or overhead range. Keep the movement pain-free and avoid collapsing the chest.",
+          "minuteCue": "Keep the reps slow and use each reach to grow taller through the upper back."
         }
       ],
       "totalSec": 1800
