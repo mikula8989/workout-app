@@ -100,7 +100,7 @@
     },
     "thursday": {
       "label": "Thursday",
-      "focus": "Posture + hip rotation + guided standing yoga flow",
+      "focus": "Posture + hip rotation + windmill + guided standing yoga flow",
       "equipment": [
         "Exercise mat",
         "Wall",
@@ -126,11 +126,14 @@
           "minuteCue": "Stay controlled; the goal is coordination, not fatigue."
         },
         {
-          "title": "Light conditioning",
+          "title": "DB Windmill",
           "type": "work",
           "slotSec": 120,
-          "details": "Fast high-knee march or low-impact step-ups. Keep it around RPE 6/10 because gym legs are later.",
-          "minuteCue": "Stay easy; save the legs for the evening."
+          "details": "Alternate sides with a very light dumbbell or bodyweight. Keep the top arm stacked, hinge through the hips and rotate through the upper back with control.",
+          "setup": "Use a comfortable wider stance. Turn the feet slightly, keep the loaded arm vertical, push the hips back and slide the free hand down the inside of the leg.",
+          "feel": "Obliques, hips, hamstrings, upper-back rotation and shoulder/scapular stability working together.",
+          "avoid": "Do not chase depth or load. Stop or reduce range if the right shoulder pinches, feels unstable, or the low back takes over.",
+          "minuteCue": "Switch sides and keep the overhead arm stacked rather than drifting forward."
         },
         {
           "title": "Chin tucks",
