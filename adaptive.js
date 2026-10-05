@@ -38,19 +38,19 @@ function adaptStepMeta(step){
   let protectedStep=false;
   if(t.includes("360° breathing") || t.includes("pelvic floor")){ tags.push("core"); protectedStep=true; }
   if(t.includes("deep core + control primer")){ tags.push("core"); protectedStep=true; }
-  if(t.includes("chin tuck") || t.includes("wall slide") || t.includes("y–t–w") || t.includes("y-t-w") || t.includes("reverse snow angel") || t.includes("face pull")) tags.push("posture");
-  if(t.includes("90/90") || t.includes("hip airplane") || t.includes("copenhagen") || t.includes("side plank leg raise") || t.includes("reverse lunge") || t.includes("half-kneeling")) tags.push("hips");
+  if(t.includes("chin tuck") || t.includes("wall slide") || t.includes("y–t–w") || t.includes("y-t-w") || t.includes("reverse snow angel") || t.includes("face pull") || t.includes("deep squat + overhead reach")) tags.push("posture");
+  if(t.includes("90/90") || t.includes("hip airplane") || t.includes("copenhagen") || t.includes("side plank leg raise") || t.includes("reverse lunge") || t.includes("half-kneeling") || t.includes("turkish get-up") || t.includes("deep squat + overhead reach")) tags.push("hips");
   if(t.includes("curl")) tags.push("biceps");
   if(t.includes("triceps") || t.includes("close-grip")) tags.push("triceps");
   if(t.includes("goblet squat") || t.includes("split squat") || t.includes("step-up") || t.includes("hack squat") || t.includes("leg press") || t.includes("leg extension") || t.includes("cyclist squat") || t.includes("reverse lunge") || t.includes("thruster")) tags.push("quads");
   if(t.includes("split squat") || t.includes("step-up") || t.includes("deadlift") || t.includes("back extension") || t.includes("reverse lunge") || t.includes("thruster")) tags.push("glutes");
   if(t.includes("hamstring curl") || t.includes("romanian deadlift") || t.includes("deadlift") || t.includes("back extension")) tags.push("hamstrings");
   if(t.includes("pull-up") || t.includes("pull up") || t.includes("row") || t.includes("pulldown")) tags.push("back");
-  if(t.includes("lateral raise") || t.includes("shoulder press") || t.includes("pike push") || t.includes("handstand") || t.includes("rear-delt") || t.includes("halo") || t.includes("thruster")) tags.push("shoulders");
-  if(t.includes("dead bug") || t.includes("dead-bug") || t.includes("hollow") || t.includes("reverse crunch") || t.includes("l-sit") || t.includes("ab wheel")) tags.push("core");
+  if(t.includes("lateral raise") || t.includes("shoulder press") || t.includes("pike push") || t.includes("handstand") || t.includes("rear-delt") || t.includes("halo") || t.includes("thruster") || t.includes("turkish get-up") || t.includes("deep squat + overhead reach")) tags.push("shoulders");
+  if(t.includes("dead bug") || t.includes("dead-bug") || t.includes("hollow") || t.includes("reverse crunch") || t.includes("l-sit") || t.includes("ab wheel") || t.includes("turkish get-up")) tags.push("core");
   if(t.includes("handstand") || t.includes("l-sit")) tags.push("skill");
   if(t.includes("burpee") || t.includes("conditioning") || t.includes("mountain climber") || t.includes("thruster")) tags.push("conditioning");
-  if(t.includes("stretch") || t.includes("forward fold") || t.includes("hamstring sweep") || t.includes("ankle rock") || t.includes("open book") || t.includes("yoga") || t.includes("chair pose") || t.includes("warrior") || t.includes("goddess") || t.includes("star pose") || t.includes("halo")) tags.push("mobility");
+  if(t.includes("stretch") || t.includes("forward fold") || t.includes("hamstring sweep") || t.includes("ankle rock") || t.includes("open book") || t.includes("yoga") || t.includes("chair pose") || t.includes("warrior") || t.includes("goddess") || t.includes("star pose") || t.includes("halo") || t.includes("deep squat + overhead reach")) tags.push("mobility");
   const unique=[...new Set(tags)];
   const priority=unique.length ? Math.min(...unique.map(x=>ADAPT_PRIORITY_RANK[x]===undefined?3:ADAPT_PRIORITY_RANK[x])) : 3;
   return {tags:unique,priority:priority,protected:protectedStep};
