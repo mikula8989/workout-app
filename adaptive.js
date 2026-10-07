@@ -52,6 +52,9 @@ function adaptStepMeta(step){
   if(t.includes("burpee") || t.includes("conditioning") || t.includes("mountain climber") || t.includes("thruster")) tags.push("conditioning");
   if(t.includes("stretch") || t.includes("forward fold") || t.includes("hamstring sweep") || t.includes("ankle rock") || t.includes("open book") || t.includes("yoga") || t.includes("chair pose") || t.includes("warrior") || t.includes("goddess") || t.includes("star pose") || t.includes("halo") || t.includes("deep squat + overhead reach")) tags.push("mobility");
   if(t.includes("windmill")) tags.push("hips","hamstrings","shoulders","core","mobility");
+  if(t.includes("clean → front-rack reverse lunge") || t.includes("clean -> front-rack reverse lunge")) tags.push("core","conditioning");
+  if(t.includes("bear-plank db drag")) tags.push("hips","shoulders","core","conditioning");
+  if(t.includes("suitcase march")) tags.push("hips","core","conditioning");
   const unique=[...new Set(tags)];
   const priority=unique.length ? Math.min(...unique.map(x=>ADAPT_PRIORITY_RANK[x]===undefined?3:ADAPT_PRIORITY_RANK[x])) : 3;
   return {tags:unique,priority:priority,protected:protectedStep};
