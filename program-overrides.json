@@ -22,14 +22,24 @@
           "minuteCue": "Keep the breathing calm and make the relaxation phase as deliberate as the lift."
         },
         {
-          "title": "Deep core + control primer",
+          "title": "Kneeling Ab Wheel",
           "type": "work",
-          "slotSec": 300,
-          "details": "Dead-bug heel taps 5–8/side, then bird dog 5–8/side. Repeat calmly if time remains.",
-          "setup": "For dead bug keep ribs controlled and move only as far as the abdomen stays flat. For bird dog reach opposite arm and leg long without twisting the pelvis.",
-          "feel": "Deep abdominal control and trunk stability without maximal bracing.",
-          "avoid": "No abdominal doming/coning, breath holding or lumbar pinching.",
-          "minuteCue": "Quality over speed; reset the breath if the trunk starts to compensate."
+          "slotSec": 180,
+          "details": "2 × 5–8 controlled reps. Roll only as far as you can keep the ribs, pelvis and abdomen controlled, then pull back without jerking.",
+          "setup": "Kneel on the mat with the wheel under the shoulders. Lightly brace, keep breathing and move from the shoulders/hips as one controlled unit.",
+          "feel": "Strong front-abdominal-wall and deep-core tension while the spine stays controlled.",
+          "avoid": "Stop or shorten range if the abdomen domes/cones, the low back pinches, pelvic/perineal symptoms increase, or you need a hard prolonged breath-hold.",
+          "minuteCue": "Reset the breath between reps; range quality matters more than distance."
+        },
+        {
+          "title": "Bird Dog Control",
+          "type": "work",
+          "slotSec": 120,
+          "details": "5–8 slow reps / side. Reach opposite arm and leg long without rotating the pelvis.",
+          "setup": "Hands under shoulders, knees under hips. Keep the trunk quiet as the limbs move.",
+          "feel": "Trunk and hip stability with normal breathing.",
+          "avoid": "Do not arch the low back or rotate the pelvis.",
+          "minuteCue": "Move slower and make each side look identical."
         },
         {
           "title": "Turkish Get-Up",
@@ -118,12 +128,24 @@
           "minuteCue": "Keep the relaxation phase complete."
         },
         {
-          "title": "Deep core + control primer",
+          "title": "Kneeling Ab Wheel",
           "type": "work",
-          "slotSec": 240,
-          "details": "Dead-bug heel taps 5–8/side, then bear rock-back 6–8 controlled reps. Repeat lightly if time remains.",
-          "avoid": "No abdominal doming/coning or hard breath holding.",
-          "minuteCue": "Stay controlled; the goal is coordination, not fatigue."
+          "slotSec": 180,
+          "details": "2 × 5–8 controlled reps. Use a slightly conservative range and keep breathing throughout.",
+          "setup": "Kneel on the mat with the wheel under the shoulders. Keep ribs and pelvis controlled as you roll forward and return.",
+          "feel": "Front abs and deep core resisting spinal extension.",
+          "avoid": "No doming/coning, pelvic/perineal symptom increase, low-back pain or prolonged breath-holding. Shorten the range before removing the exercise.",
+          "minuteCue": "Keep the return smooth; do not yank the wheel back."
+        },
+        {
+          "title": "Bear Rock-Back Control",
+          "type": "work",
+          "slotSec": 60,
+          "details": "6–8 slow rock-backs with a quiet trunk and easy breathing.",
+          "setup": "Hands under shoulders, knees under hips. Hovering is optional; keep it easy after ab wheel.",
+          "feel": "Deep-core control and coordinated hip movement.",
+          "avoid": "No hard bracing, doming or breath holding.",
+          "minuteCue": "Stay smooth and finish fresh."
         },
         {
           "title": "DB Windmill",
