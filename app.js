@@ -20,9 +20,9 @@ const PROGRESS_HISTORY_KEY = "workoutProgressHistoryV1";
 const PROGRESS_DRAFT_KEY = "workoutProgressDraftV1";
 const SESSION_LOG_KEY = "workoutSessionLogV2";
 const GYM_LOG_KEY = "workoutGymLogV1";
-const TOP_PRIORITIES = ["quads","biceps","triceps","hips","posture"];
-const BALANCE_TAGS = ["quads","biceps","triceps","hips","posture","hamstrings","glutes","back","shoulders","core"];
-const PRIORITY_RANK = {quads:0,biceps:0,triceps:0,hips:0,posture:0,hamstrings:1,glutes:1,back:1,shoulders:1,core:2,skill:2,conditioning:3,mobility:3};
+const TOP_PRIORITIES = ["quads","biceps","triceps","hips","hip_flexion","lateral_core","adductors","posture"];
+const BALANCE_TAGS = ["quads","biceps","triceps","hips","hip_flexion","lateral_core","adductors","posture","hamstrings","glutes","back","shoulders","core"];
+const PRIORITY_RANK = {quads:0,biceps:0,triceps:0,hips:0,hip_flexion:0,lateral_core:0,adductors:0,posture:0,hamstrings:1,glutes:1,back:1,shoulders:1,core:2,skill:2,conditioning:3,mobility:3};
 let sessionActualSec = [];
 let sessionTotalSec = 1800;
 let pendingReview = null;
@@ -60,6 +60,22 @@ function draftKey(dayKey, title){
 function nonRestSteps(day){
   return day.steps.filter(s => s.type !== "rest");
 }
+
+function renderGymPlan(day){
+  const card=document.getElementById("gymPlanCard");
+  const title=document.getElementById("gymPlanTitle");
+  const list=document.getElementById("gymPlanList");
+  if(!card || !title || !list) return;
+  const plan=day && day.gymPlan;
+  if(!plan || !Array.isArray(plan.steps) || !plan.steps.length){
+    card.classList.add("hidden");
+    return;
+  }
+  card.classList.remove("hidden");
+  title.textContent=plan.title+" · "+fmt(plan.totalSec || plan.steps.reduce((a,s)=>a+(s.slotSec||0),0));
+  list.innerHTML=plan.steps.map(s=>'<li><strong>'+s.title+'</strong> <span class="muted">· '+fmt(s.slotSec||0)+'</span><br><span class="muted tiny">'+(s.details||"")+'</span></li>').join("");
+}
+
 function renderDayTabs(){
   const wrap = $("#dayTabs"); wrap.innerHTML = "";
   WEEK.forEach((d,i)=>{
@@ -83,6 +99,8 @@ function renderHome(){
     if(s.type === "rest") return `<li class="rest-preview">${s.title} · ${fmt(s.slotSec)}</li>`;
     return `<li><strong>${s.title}</strong> <span class="muted">· ${fmt(s.slotSec)}</span><br><span class="muted tiny">${s.details}</span></li>`;
   }).join("");
+  renderGymPlan(day);
+  $("#startBtn").textContent="START "+fmt(day.totalSec || day.steps.reduce((sum,s)=>sum+(s.slotSec||0),0));
   renderDayTabs();
 }
 
@@ -518,6 +536,10 @@ function stepMeta(step){
   if(t.includes("handstand") || t.includes("l-sit")) tags.push("skill");
   if(t.includes("burpee") || t.includes("conditioning") || t.includes("mountain climber") || t.includes("thruster")) tags.push("conditioning");
   if(t.includes("stretch") || t.includes("forward fold") || t.includes("hamstring sweep") || t.includes("ankle rock") || t.includes("open book") || t.includes("yoga") || t.includes("chair pose") || t.includes("warrior") || t.includes("goddess") || t.includes("star pose")) tags.push("mobility");
+  if(t.includes("band-resisted standing march") || t.includes("seated bent-knee hip lifts") || t.includes("seated straight-leg lift") || t.includes("l-sit")) tags.push("hip_flexion");
+  if(t.includes("side plank") || t.includes("bear-plank db drag") || t.includes("windmill")) tags.push("lateral_core");
+  if(t.includes("copenhagen") || t.includes("adductor") || t.includes("cossack")) tags.push("adductors");
+  if(t.includes("ab wheel")) protectedStep=true;
   const unique=[...new Set(tags)];
   const priority=unique.length ? Math.min(...unique.map(x=>PRIORITY_RANK[x] ?? 3)) : 3;
   return {tags:unique,priority,protected:protectedStep};
@@ -537,7 +559,7 @@ function gymPlanForDay(dayKey){
   if(/hamstring curl|rdl|romanian|back extension/.test(tx)){ coverage.hamstrings=1.5; coverage.glutes=1; }
   if(/pull-up|pull up|row|face pull/.test(tx)) coverage.back=2;
   if(/face pull|rear-delt/.test(tx)) coverage.posture=.5;
-  if(/curl/.test(tx)) coverage.biceps=1;
+  if(/\b(?:db|biceps|hammer|supinating|strict) curl\b/.test(tx)) coverage.biceps=1;
   if(/triceps|dip/.test(tx)) coverage.triceps=1;
   return {label:later.replace(/^Evening gym:\s*/i,""),coverage};
 }
@@ -591,7 +613,7 @@ function renderWeeklyBalance(){
   const debt=calculateDebt();
   wrap.innerHTML=BALANCE_TAGS.map(tag=>{
     const state=balanceLabel(debt[tag]||0);
-    const name=tag.charAt(0).toUpperCase()+tag.slice(1);
+    const name=tag.split("_").map(x=>x.charAt(0).toUpperCase()+x.slice(1)).join(" ");
     return '<div class="balance-row"><strong>'+name+'</strong><span class="balance-state '+state[1]+'">'+state[0]+'</span></div>';
   }).join("");
 }
@@ -613,9 +635,9 @@ function hasPlannedTag(dayKey,tag,includeGym=true){
 function replacementLibrary(){
   return {
     quads:[
-      {title:"Short-Stance DB Split Squat",type:"work",slotSec:360,details:"3 × 8–12 / leg. Short stance, upright torso, let the front knee travel forward comfortably. Keep 2–3 RIR and avoid grinding.",adaptiveFor:["quads"],equipment:["2 dumbbells"]},
+      {title:"Short-Stance DB Split Squat",type:"work",slotSec:300,details:"2 × 8–10 / leg. Short stance, upright torso, let the front knee travel forward comfortably. Keep 2–3 RIR and avoid grinding.",adaptiveFor:["quads"],equipment:["2 dumbbells"]},
       {title:"Goblet Squat",type:"work",slotSec:300,details:"3 × 10–15. Hold one dumbbell at the chest. Use comfortable depth, controlled lowering and 2–3 RIR.",adaptiveFor:["quads"],equipment:["1 dumbbell"]},
-      {title:"Stable Step-Ups",type:"work",slotSec:300,details:"3 × 10–15 / leg. Use a genuinely stable low step/platform, not an unstable chair. Drive through the working leg and minimise push-off from the floor.",adaptiveFor:["quads"],equipment:["2 dumbbells","Stable step/platform"]}
+      {title:"Stable Step-Ups",type:"work",slotSec:300,details:"2 × 8–10 / leg. Use a genuinely stable low step/platform, not an unstable chair. Drive through the working leg and minimise push-off from the floor.",adaptiveFor:["quads"],equipment:["2 dumbbells","Stable step/platform"]}
     ],
     biceps:[
       {title:"Hammer Curl",type:"work",slotSec:240,details:"3 × 10–15. Clean reps, elbows quiet, about 1–2 RIR.",adaptiveFor:["biceps"],equipment:["2 dumbbells"]},
@@ -627,7 +649,16 @@ function replacementLibrary(){
     ],
     hips:[
       {title:"Supported Hip Airplanes",type:"work",slotSec:180,details:"2 × 5–6 controlled reps / side. Light hand support, slow pelvis open/close, standing knee controlled.",adaptiveFor:["hips"],equipment:["Stable support"]},
-      {title:"Knee-Supported Copenhagen Plank",type:"work",slotSec:180,details:"2 × 20–30 s / side. Use the short-lever knee-supported version and keep the pelvis controlled.",adaptiveFor:["hips"],equipment:["Stable bench/table"]}
+      {title:"Knee-Supported Copenhagen Plank",type:"work",slotSec:180,details:"Two sets of 10–15 s / side. Use the short-lever knee-supported version and keep the pelvis controlled.",adaptiveFor:["hips"],equipment:["Stable bench/table"]}
+    ],
+    hip_flexion:[
+      {title:"Band-Resisted Standing March",type:"work",slotSec:180,details:"2 × 8–10/side with a light band; pause 2 sec; stop before cramp-like fatigue.",adaptiveFor:["hip_flexion"],equipment:["Resistance band"]}
+    ],
+    lateral_core:[
+      {title:"Knee-Supported Side Plank Hold",type:"work",slotSec:180,details:"Two gentle 15–20-sec holds/side; steady pelvis, no spinal rotation.",adaptiveFor:["lateral_core"],equipment:["Exercise mat"]}
+    ],
+    adductors:[
+      {title:"Side-Lying Adductor Raise",type:"work",slotSec:180,details:"2 × 8–12/side with a slow lowering phase; comfortable range only.",adaptiveFor:["adductors"],equipment:["Exercise mat"]}
     ],
     posture:[
       {title:"Prone Y–T–W",type:"work",slotSec:180,details:"2 controlled rounds. Move from the shoulder blades; do not chase height.",adaptiveFor:["posture"],equipment:["Exercise mat"]},
@@ -729,7 +760,8 @@ function buildAdaptiveDay(dayKey){
   let insertAt=1;
   const newSteps=[...kept.slice(0,insertAt),...candidates,...kept.slice(insertAt)];
   const total=newSteps.reduce((a,s)=>a+Number(s.slotSec||0),0);
-  if(total!==1800) candidates[candidates.length-1].slotSec+=1800-total;
+  const target=base.totalSec || (base.steps||[]).reduce((a,s)=>a+Number(s.slotSec||0),0);
+  if(total!==target) candidates[candidates.length-1].slotSec+=target-total;
 
   const equipment=[...(base.equipment||[])];
   candidates.flatMap(c=>c.equipment||[]).forEach(x=>{ if(!equipment.includes(x)) equipment.push(x); });
@@ -740,7 +772,7 @@ function buildAdaptiveDay(dayKey){
     removed:removed.map(g=>g.title),
     reason:"Recovering missed work: "+tags.map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(" · ")
   };
-  return {...base,focus:"Adapted · "+base.focus,equipment,steps:newSteps,totalSec:1800};
+  return {...base,focus:"Adapted · "+base.focus,equipment,steps:newSteps,totalSec:target};
 }
 function getDisplayDay(){
   return buildAdaptiveDay(currentDayKey);
