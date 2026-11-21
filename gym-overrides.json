@@ -1,137 +1,103 @@
 {
-  "version": "2026-09-02-training-v2",
+  "version": "2026-11-21-v3-gym-50min",
   "days": {
     "monday": {
-      "later": "Evening gym: Hack Squat 4×10–15 · Negative Pull-ups 3×3–5 · Leg Press 3×10–15 · Chest-Supported Row 3×8–12 · Leg Extension 3×12–15 · Face Pull 2×15–20 · 45° Back Extension 3×10–15 · Zone 2 20–25 min. Back extensions go after strength work and before cardio."
-    },
-    "wednesday": {
-      "label": "Wednesday",
-      "focus": "Integrated anti-rotation + pelvic/hip stability + core + assisted L-sit progression",
-      "equipment": [
-        "Exercise mat",
-        "Dumbbell",
-        "2 yoga blocks",
-        "Stable bench/table for Copenhagen support"
-      ],
-      "later": null,
-      "steps": [
-        {
-          "title": "360° breathing + pelvic floor",
-          "type": "work",
-          "slotSec": 240,
-          "details": "About 5 slow 360° breaths, then 5 × 3 s submaximal pelvic-floor lifts. After every lift, spend 6–8 s genuinely releasing before the next rep.",
-          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back. Inhale into lower ribs, belly and back rather than only the upper chest.",
-          "feel": "For the lift: a gentle inward-and-upward pelvic-floor action. For the release: stop lifting, inhale calmly and let the area soften/widen. The release should feel different from continuing to hold.",
-          "avoid": "Do not squeeze the glutes, brace the whole abdomen hard, keep the pelvic floor clenched between reps, or actively push/bear down to relax.",
-          "minuteCue": "Check the contrast: lift → completely stop lifting → inhale and soften."
-        },
-        {
-          "title": "REST / prepare floor",
-          "type": "rest",
-          "slotSec": 20,
-          "details": "Set up the mat."
-        },
-        {
-          "title": "Bear-Plank DB Drag",
-          "type": "work",
-          "slotSec": 180,
-          "details": "Bear-plank with knees hovering just off the floor. Drag one dumbbell underneath the body with the opposite hand, alternating sides slowly.",
-          "setup": "Hands under shoulders, knees under hips, toes planted. Keep the pelvis square while the free hand drags the dumbbell across.",
-          "feel": "Deep core, obliques, shoulders and hips stabilising together.",
-          "avoid": "Do not let the hips twist, low back sag or abdomen dome/cone. Put the knees down if control is lost.",
-          "minuteCue": "Move slowly; the goal is anti-rotation, not speed."
-        },
-        {
-          "title": "REST / set Copenhagen support",
-          "type": "rest",
-          "slotSec": 25,
-          "details": "Use a stable bench/table at a comfortable height."
-        },
-        {
-          "title": "Knee-supported Copenhagen plank",
-          "type": "work",
-          "slotSec": 240,
-          "details": "2–3 × 20–30 s/side. Support the TOP leg at the knee on the bench/table. Keep both knees bent if that is the strongest clean version for now. This short-lever version is the current working level.",
-          "setup": "Forearm under shoulder. Top knee supported on the bench/table; lower leg can stay bent underneath. Lift the pelvis so shoulder, hip and supported knee form a strong line.",
-          "feel": "Strong inner-thigh/adductor work on the supported leg plus side-core tension.",
-          "avoid": "Do not let the pelvis sag or rotate. Do not rush to the foot-supported version. When 3 × 30 s is clean, gradually move the support farther down the shin before progressing toward the ankle/foot.",
-          "minuteCue": "Switch side or reset for the next quality hold."
-        },
-        {
-          "title": "REST",
-          "type": "rest",
-          "slotSec": 25,
-          "details": "Stay on the mat for side plank."
-        },
-        {
-          "title": "Knee-supported side plank leg raise",
-          "type": "work",
-          "slotSec": 220,
-          "details": "3 sets/side. Keep the BOTTOM knee on the floor. Sets 1–2: raise the top leg with the knee bent if needed. Set 3: try 6–10 controlled reps with the top leg straight.",
-          "setup": "Bottom forearm under shoulder, bottom knee bent on the floor. Keep hips stacked. The upper leg moves from the hip without rolling the pelvis backward.",
-          "feel": "Side core and outer hip/glute medius working hard while the trunk stays still.",
-          "avoid": "Do not chase the full side-plank-from-feet version yet. Stop the set when the pelvis starts dropping or rotating.",
-          "minuteCue": "Reset your stacked pelvis; use the straight-leg version only while form stays clean."
-        },
-        {
-          "title": "REST / grab dumbbell",
-          "type": "rest",
-          "slotSec": 25,
-          "details": "Prepare for the single-leg deadlift."
-        },
-        {
-          "title": "Single-leg DB deadlift — opposite hand",
-          "type": "work",
-          "slotSec": 250,
-          "details": "3 × 8–10/side. Hold the dumbbell in the OPPOSITE hand from the standing leg: right leg down → dumbbell in left hand, and vice versa.",
-          "setup": "Keep a soft bend in the standing knee. Push the hips backward while the free leg reaches long behind you. Keep the pelvis square to the floor. It is fine to lightly touch a wall/table with the free hand for balance.",
-          "feel": "Main stretch/load in the hamstring and glute of the standing leg.",
-          "avoid": "Do not open the pelvis to the side or reach for the floor at the expense of a neutral spine. Range ends when hamstring tension or balance limits clean form.",
-          "minuteCue": "Think hips back, square pelvis, long spine — balance is secondary to loading the standing hamstring."
-        },
-        {
-          "title": "REST",
-          "type": "rest",
-          "slotSec": 25,
-          "details": "Move to the mat for dead bug."
-        },
-        {
-          "title": "DB pullover dead bug",
-          "type": "work",
-          "slotSec": 200,
-          "details": "2–3 × 6–8/side. Start with the dumbbell held in both hands directly ABOVE THE CHEST. As one leg extends/lowers, slowly move the dumbbell behind the head only as far as you can keep the ribs and abdomen controlled. Return both toward the start and alternate legs.",
-          "setup": "Lie on your back, hips and knees around 90°. Arms start straight above the chest. Use a modest dumbbell.",
-          "feel": "Front abs/deep core resisting extension while the arm and opposite-leg levers lengthen.",
-          "avoid": "For now, do not hold the dumbbell permanently far behind the head while lowering both legs together like a weighted hollow-body leg lower. That is a later progression. Stop/regress if the abdomen domes/cones or the low back takes over.",
-          "minuteCue": "One leg at a time; dumbbell travels chest → controlled behind-head range → chest."
-        },
-        {
-          "title": "REST / set yoga blocks",
-          "type": "rest",
-          "slotSec": 25,
-          "details": "Place the blocks securely beside the hips."
-        },
-        {
-          "title": "Assisted L-sit progression on yoga blocks",
-          "type": "work",
-          "slotSec": 210,
-          "details": "Current level: support hold + one-leg tuck. First press hard into the blocks and practise lifting the hips with both feet still available for support. Then keep one foot lightly on the floor while lifting the other knee into a tuck for 5–10 s; alternate sides. If that becomes solid, progress to both toes barely assisting, then brief full-tuck attempts.",
-          "setup": "Blocks beside the hips, shoulders pushed down away from ears, elbows straight. Lean slightly forward as needed to get the hips light.",
-          "feel": "Triceps, shoulders, abs and hip flexors working together. The current assisted version should already feel challenging.",
-          "avoid": "Do not force both feet off the floor just because the exercise is called an L-sit. Do not hold your breath or let the shoulders collapse upward.",
-          "minuteCue": "Quality progression: support hold → one-leg tuck → toe-assisted tuck → only later full tuck."
-        },
-        {
-          "title": "Downshift breathing",
-          "type": "work",
-          "slotSec": 115,
-          "details": "Finish with calm breathing and deliberately let the pelvic floor and abdominal wall stop gripping."
-        }
-      ],
-      "totalSec": 1800
+      "later": "Evening gym: Hack Squat · Negative Pull-ups · Leg Extension · Chest-Supported Row · 45° Back Extension · Zone 2 (50 min)",
+      "gymPlan": {
+        "title": "Gym A — Quads + Back",
+        "totalSec": 3000,
+        "steps": [
+          {
+            "title": "Bike + hack-squat warm-up",
+            "slotSec": 300,
+            "details": "Easy bike ~3 min plus 2 progressively heavier ramp sets; do not rush into working load."
+          },
+          {
+            "title": "Hack Squat",
+            "slotSec": 600,
+            "details": "3 × 8–12 · 2–3 RIR · lower 2–3 sec · rest ~90–120 sec · comfortable pain-free knee/hip depth."
+          },
+          {
+            "title": "Negative Pull-Ups",
+            "slotSec": 360,
+            "details": "3 × 3–5 controlled lowers, each 4–6 sec. Keep shoulders comfortable."
+          },
+          {
+            "title": "Leg Extension",
+            "slotSec": 420,
+            "details": "3 × 10–15 · 1–2 RIR · controlled eccentric · ~60–75 sec rests."
+          },
+          {
+            "title": "Chest-Supported Row",
+            "slotSec": 300,
+            "details": "2 × 8–12 · 2–3 RIR · no torso momentum."
+          },
+          {
+            "title": "45° Back Extension",
+            "slotSec": 240,
+            "details": "2 × 10–15 · hip-hinge emphasis, controlled comfortable low-back position."
+          },
+          {
+            "title": "Zone 2 cardio",
+            "slotSec": 600,
+            "details": "Bike or StairMaster; steady conversational intensity."
+          },
+          {
+            "title": "Equipment transitions",
+            "slotSec": 180,
+            "details": "Move calmly between stations; breathe and set up the next station."
+          }
+        ]
+      }
     },
     "thursday": {
-      "later": "Evening gym: Pull-ups/Assisted 4×4–8 · DB/Cable Row 3×10–12 · Rear-Delts 2×15–20 · DB Cyclist Squat 3×8–12 · Bulgarian Split Squat 3×8–10/side · Leg Extension 2–3×12–15 · Seated Hamstring Curl 3×10–15 · 45° Back Extension 3×10–15 · Intervals 8–10 min + Zone 2 10–15 min. Back extensions go after strength work and before cardio."
+      "later": "Evening gym: Pull-ups · Leg Press · Supported Short-Stance Split Squat · Leg Extension · Seated Hamstring Curl · cardio (50 min)",
+      "gymPlan": {
+        "title": "Gym B — Pull-Ups + Unilateral Quads",
+        "totalSec": 3000,
+        "steps": [
+          {
+            "title": "Bike + leg-press ramp sets",
+            "slotSec": 300,
+            "details": "Easy bike and gradual leg-press warm-up; no fatiguing mobility circuit."
+          },
+          {
+            "title": "Pull-Ups / Assisted Pull-Ups",
+            "slotSec": 420,
+            "details": "3 × 4–8 clean reps · ~2–3 RIR · full controlled range."
+          },
+          {
+            "title": "Leg Press",
+            "slotSec": 540,
+            "details": "3 × 10–15 · knee-friendly depth, comfortable feet placement, full-foot pressure, 2–3 RIR."
+          },
+          {
+            "title": "Supported Short-Stance Split Squat",
+            "slotSec": 540,
+            "details": "2 × 8–10 per leg · start left, match reps right · front knee travels forward comfortably · 2–3 sec lower."
+          },
+          {
+            "title": "Leg Extension",
+            "slotSec": 300,
+            "details": "2 × 12–15 · controlled descent, 1–2 RIR."
+          },
+          {
+            "title": "Seated Hamstring Curl",
+            "slotSec": 300,
+            "details": "2 × 10–15 · smooth full pain-free range; avoid back movement."
+          },
+          {
+            "title": "Cardio",
+            "slotSec": 480,
+            "details": "Easy/moderate bike; if time permits elsewhere, supplement with Sunday swim or walking."
+          },
+          {
+            "title": "Equipment transitions",
+            "slotSec": 120,
+            "details": "Switch machines and set equipment safely."
+          }
+        ]
+      }
     }
   }
 }
