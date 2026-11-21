@@ -4,9 +4,9 @@
 
 const ADAPT_SESSION_LOG_KEY = "workoutSessionLogV2";
 const ADAPT_GYM_LOG_KEY = "workoutGymLogV1";
-const ADAPT_TOP_PRIORITIES = ["quads","biceps","triceps","hips","posture"];
-const ADAPT_BALANCE_TAGS = ["quads","biceps","triceps","hips","posture","hamstrings","glutes","back","shoulders","core"];
-const ADAPT_PRIORITY_RANK = {quads:0,biceps:0,triceps:0,hips:0,posture:0,hamstrings:1,glutes:1,back:1,shoulders:1,core:2,skill:2,conditioning:3,mobility:3};
+const ADAPT_TOP_PRIORITIES = ["quads","biceps","triceps","hips","hip_flexion","lateral_core","adductors","posture"];
+const ADAPT_BALANCE_TAGS = ["quads","biceps","triceps","hips","hip_flexion","lateral_core","adductors","posture","hamstrings","glutes","back","shoulders","core"];
+const ADAPT_PRIORITY_RANK = {quads:0,biceps:0,triceps:0,hips:0,hip_flexion:0,lateral_core:0,adductors:0,posture:0,hamstrings:1,glutes:1,back:1,shoulders:1,core:2,skill:2,conditioning:3,mobility:3};
 
 let adaptSessionActualSec = [];
 let adaptSessionTotalSec = 1800;
@@ -55,6 +55,10 @@ function adaptStepMeta(step){
   if(t.includes("clean → front-rack reverse lunge") || t.includes("clean -> front-rack reverse lunge")) tags.push("core","conditioning");
   if(t.includes("bear-plank db drag")) tags.push("hips","shoulders","core","conditioning");
   if(t.includes("suitcase march")) tags.push("hips","core","conditioning");
+  if(t.includes("band-resisted standing march") || t.includes("seated bent-knee hip lifts") || t.includes("seated straight-leg lift") || t.includes("l-sit")) tags.push("hip_flexion");
+  if(t.includes("side plank") || t.includes("bear-plank db drag") || t.includes("windmill")) tags.push("lateral_core");
+  if(t.includes("copenhagen") || t.includes("adductor") || t.includes("cossack")) tags.push("adductors");
+  if(t.includes("ab wheel")) protectedStep=true;
   const unique=[...new Set(tags)];
   const priority=unique.length ? Math.min(...unique.map(x=>ADAPT_PRIORITY_RANK[x]===undefined?3:ADAPT_PRIORITY_RANK[x])) : 3;
   return {tags:unique,priority:priority,protected:protectedStep};
@@ -74,7 +78,7 @@ function adaptGymPlanForDay(dayKey){
   if(/hamstring curl|rdl|romanian|back extension/.test(tx)){ coverage.hamstrings=1.5; coverage.glutes=1; }
   if(/pull-up|pull up|row|face pull/.test(tx)) coverage.back=2;
   if(/face pull|rear-delt/.test(tx)) coverage.posture=.5;
-  if(/curl/.test(tx)) coverage.biceps=1;
+  if(/\b(?:db|biceps|hammer|supinating|strict) curl\b/.test(tx)) coverage.biceps=1;
   if(/triceps|dip/.test(tx)) coverage.triceps=1;
   return {label:later.replace(/^Evening gym:\s*/i,""),coverage:coverage};
 }
@@ -129,7 +133,7 @@ function adaptRenderWeeklyBalance(){
   const debt=adaptCalculateDebt();
   wrap.innerHTML=ADAPT_BALANCE_TAGS.map(tag=>{
     const state=adaptBalanceLabel(debt[tag]||0);
-    const name=tag.charAt(0).toUpperCase()+tag.slice(1);
+    const name=tag.split("_").map(x=>x.charAt(0).toUpperCase()+x.slice(1)).join(" ");
     return '<div class="balance-row"><strong>'+name+'</strong><span class="balance-state '+state[1]+'">'+state[0]+'</span></div>';
   }).join("");
 }
@@ -151,9 +155,9 @@ function adaptHasPlannedTag(dayKey,tag,includeGym){
 function adaptReplacementLibrary(){
   return {
     quads:[
-      {title:"Short-Stance DB Split Squat",type:"work",slotSec:360,details:"3 × 8–12 / leg. Short stance, upright torso, let the front knee travel forward comfortably. Keep 2–3 RIR and avoid grinding.",adaptiveFor:["quads"],equipment:["2 dumbbells"]},
+      {title:"Short-Stance DB Split Squat",type:"work",slotSec:300,details:"2 × 8–10 / leg. Short stance, upright torso, let the front knee travel forward comfortably. Keep 2–3 RIR and avoid grinding.",adaptiveFor:["quads"],equipment:["2 dumbbells"]},
       {title:"Goblet Squat",type:"work",slotSec:300,details:"3 × 10–15. Hold one dumbbell at the chest. Use comfortable depth, controlled lowering and 2–3 RIR.",adaptiveFor:["quads"],equipment:["1 dumbbell"]},
-      {title:"Stable Step-Ups",type:"work",slotSec:300,details:"3 × 10–15 / leg. Use a genuinely stable low step/platform, not an unstable chair. Drive through the working leg and minimise push-off from the floor.",adaptiveFor:["quads"],equipment:["2 dumbbells","Stable step/platform"]}
+      {title:"Stable Step-Ups",type:"work",slotSec:300,details:"2 × 8–10 / leg. Use a genuinely stable low step/platform, not an unstable chair. Drive through the working leg and minimise push-off from the floor.",adaptiveFor:["quads"],equipment:["2 dumbbells","Stable step/platform"]}
     ],
     biceps:[
       {title:"Hammer Curl",type:"work",slotSec:240,details:"3 × 10–15. Clean reps, elbows quiet, about 1–2 RIR.",adaptiveFor:["biceps"],equipment:["2 dumbbells"]},
@@ -165,7 +169,16 @@ function adaptReplacementLibrary(){
     ],
     hips:[
       {title:"Supported Hip Airplanes",type:"work",slotSec:180,details:"2 × 5–6 controlled reps / side. Light hand support, slow pelvis open/close, standing knee controlled.",adaptiveFor:["hips"],equipment:["Stable support"]},
-      {title:"Knee-Supported Copenhagen Plank",type:"work",slotSec:180,details:"2 × 20–30 s / side. Use the short-lever knee-supported version and keep the pelvis controlled.",adaptiveFor:["hips"],equipment:["Stable bench/table"]}
+      {title:"Knee-Supported Copenhagen Plank",type:"work",slotSec:180,details:"Two sets of 10–15 s / side. Use the short-lever knee-supported version and keep the pelvis controlled.",adaptiveFor:["hips"],equipment:["Stable bench/table"]}
+    ],
+    hip_flexion:[
+      {title:"Band-Resisted Standing March",type:"work",slotSec:180,details:"2 × 8–10/side with a light band; pause 2 sec; stop before cramp-like fatigue.",adaptiveFor:["hip_flexion"],equipment:["Resistance band"]}
+    ],
+    lateral_core:[
+      {title:"Knee-Supported Side Plank Hold",type:"work",slotSec:180,details:"Two gentle 15–20-sec holds/side; steady pelvis, no spinal rotation.",adaptiveFor:["lateral_core"],equipment:["Exercise mat"]}
+    ],
+    adductors:[
+      {title:"Side-Lying Adductor Raise",type:"work",slotSec:180,details:"2 × 8–12/side with a slow lowering phase; comfortable range only.",adaptiveFor:["adductors"],equipment:["Exercise mat"]}
     ],
     posture:[
       {title:"Prone Y–T–W",type:"work",slotSec:180,details:"2 controlled rounds. Move from the shoulder blades; do not chase height.",adaptiveFor:["posture"],equipment:["Exercise mat"]},
@@ -195,6 +208,7 @@ function adaptPickCandidate(tag,usedTitles,yesterdayTitles){
 function adaptBuildDay(dayKey){
   const base=PROGRAM.days[dayKey];
   if(!base) return base;
+  if(["monday","thursday","sunday"].includes(dayKey)){ adaptInfo=null; return base; }
   if(dayKey!==dayKeyFromToday()){ adaptInfo=null; return base; }
   if(adaptUseNormalToday) return base;
   adaptInfo=null;
@@ -216,6 +230,7 @@ function adaptBuildDay(dayKey){
   });
 
   ordered.forEach(tag=>{
+    if(tag==="quads" && dayKey!=="saturday") return; // Avoid moving missed gym-leg volume onto recovery or pre-gym mornings.
     if(budget<150) return;
     if(adaptHasPlannedTag(dayKey,tag,true)) return;
     if((ADAPT_PRIORITY_RANK[tag]===undefined?9:ADAPT_PRIORITY_RANK[tag])>0 && adaptHasPlannedTag(tomorrow,tag,true)) return;
@@ -267,7 +282,8 @@ function adaptBuildDay(dayKey){
   }
   const newSteps=kept.slice(0,1).concat(candidates,kept.slice(1));
   const total=newSteps.reduce((a,s)=>a+Number(s.slotSec||0),0);
-  if(total!==1800) candidates[candidates.length-1].slotSec+=1800-total;
+  const target=base.totalSec || (base.steps||[]).reduce((a,s)=>a+Number(s.slotSec||0),0);
+  if(total!==target) candidates[candidates.length-1].slotSec+=target-total;
 
   const equipment=(base.equipment||[]).slice();
   candidates.flatMap(c=>c.equipment||[]).forEach(x=>{ if(!equipment.includes(x)) equipment.push(x); });
@@ -278,7 +294,7 @@ function adaptBuildDay(dayKey){
     removed:removed.map(g=>g.title),
     reason:"Recovering missed work: "+tags.map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(" · ")
   };
-  return Object.assign({},base,{focus:"Adapted · "+base.focus,equipment:equipment,steps:newSteps,totalSec:1800});
+  return Object.assign({},base,{focus:"Adapted · "+base.focus,equipment:equipment,steps:newSteps,totalSec:target});
 }
 function adaptGetDisplayDay(){
   return adaptBuildDay(currentDayKey);
@@ -310,6 +326,8 @@ renderHome = function(){
     const badge=s.adaptive ? ' <span class="adaptive-badge">ADDED</span>' : "";
     return '<li><strong>'+s.title+'</strong>'+badge+' <span class="muted">· '+fmt(s.slotSec)+'</span><br><span class="muted tiny">'+(s.details||"")+'</span></li>';
   }).join("");
+  renderGymPlan(day);
+  $("#startBtn").textContent="START "+fmt(day.totalSec || day.steps.reduce((sum,s)=>sum+(s.slotSec||0),0));
   adaptRenderCard();
   adaptRenderWeeklyBalance();
   renderDayTabs();
