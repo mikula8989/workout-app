@@ -1,21 +1,24 @@
 {
-  "version": "2026-09-24-v2.3-guided-yoga",
+  "version": "2026-11-21-v3-active-strength",
+  "defaultSessionMinutes": 25,
   "days": {
     "monday": {
       "label": "Monday",
-      "focus": "Posture + deep core + functional movement + yoga mobility",
+      "focus": "Core + Turkish get-up + posture + active mobility (gym legs later)",
       "equipment": [
         "Exercise mat",
         "Wall",
+        "Ab wheel",
         "Optional light dumbbell"
       ],
-      "later": "Evening gym: quads + pull + Zone 2",
+      "later": "Evening gym: quads + pull + Zone 2 (50 min)",
+      "totalSec": 1500,
       "steps": [
         {
           "title": "360° breathing + pelvic floor",
           "type": "work",
-          "slotSec": 240,
-          "details": "About 5 slow 360° breaths, then 5 × 3 s submaximal pelvic-floor lifts with 6–8 s of complete relaxation after every lift.",
+          "slotSec": 180,
+          "details": "5 slow 360° breaths, then 5 × 3-sec gentle pelvic-floor lifts, fully relaxing for 6–8 sec after each; no constant clenching.",
           "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back; do not force it flat into the floor.",
           "feel": "Lower ribs, belly and back expand on the inhale. Pelvic floor fully relaxes between contractions.",
           "avoid": "No breath holding, hard bracing or continuous pelvic-floor clenching.",
@@ -25,37 +28,44 @@
           "title": "Kneeling Ab Wheel",
           "type": "work",
           "slotSec": 180,
-          "details": "2 × 5–8 controlled reps. Roll only as far as you can keep the ribs, pelvis and abdomen controlled, then pull back without jerking.",
+          "details": "2 × 5–8 controlled rollouts; ~45–60 sec between sets. Keep abdomen/pelvis controlled; progress range before reps.",
           "setup": "Kneel on the mat with the wheel under the shoulders. Lightly brace, keep breathing and move from the shoulders/hips as one controlled unit.",
           "feel": "Strong front-abdominal-wall and deep-core tension while the spine stays controlled.",
           "avoid": "Stop or shorten range if the abdomen domes/cones, the low back pinches, pelvic/perineal symptoms increase, or you need a hard prolonged breath-hold.",
-          "minuteCue": "Reset the breath between reps; range quality matters more than distance."
+          "minuteCue": "Reset the breath between reps; range quality matters more than distance.",
+          "progression": {
+            "sets": 2,
+            "minReps": 5,
+            "maxReps": 8
+          }
         },
         {
-          "title": "Bird Dog Control",
-          "type": "work",
-          "slotSec": 120,
-          "details": "5–8 slow reps / side. Reach opposite arm and leg long without rotating the pelvis.",
-          "setup": "Hands under shoulders, knees under hips. Keep the trunk quiet as the limbs move.",
-          "feel": "Trunk and hip stability with normal breathing.",
-          "avoid": "Do not arch the low back or rotate the pelvis.",
-          "minuteCue": "Move slower and make each side look identical."
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
         },
         {
           "title": "Turkish Get-Up",
           "type": "work",
           "slotSec": 240,
-          "details": "Alternate sides for controlled singles. Start bodyweight or with a very light dumbbell and treat this as movement-quality practice, not a strength test.",
+          "details": "1–2 slow singles per side, alternating. Unloaded or light DB. Technique quality and shoulder comfort first; roughly RPE 6.",
           "setup": "Keep the working arm stacked and stable as you roll, post, bridge/sweep, kneel and stand. Reverse the same sequence under control.",
           "feel": "Whole-body coordination: shoulder/scapular stability, trunk control, hips and legs working together.",
           "avoid": "No rushing, grinding or breath holding. Do not force through right-shoulder pinching, instability or painful overhead range; reduce load/range if needed.",
           "minuteCue": "Switch sides regularly and keep every position deliberate."
         },
         {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
           "title": "Chin tucks",
           "type": "work",
-          "slotSec": 120,
-          "details": "2 × 10 slow controlled reps. Draw the head straight back rather than looking down.",
+          "slotSec": 90,
+          "details": "2 × 8 controlled, keep neck long.",
           "feel": "Gentle work deep in the front of the neck; back of the neck stays long.",
           "avoid": "Do not jam the chin down toward the chest.",
           "minuteCue": "Start the second controlled set."
@@ -63,8 +73,8 @@
         {
           "title": "Wall slides",
           "type": "work",
-          "slotSec": 120,
-          "details": "2 × 10 controlled reps. Slide the arms upward only as far as you can while keeping the ribs controlled.",
+          "slotSec": 90,
+          "details": "2 × 8 smooth pain-free overhead movement; no shoulder pinching.",
           "avoid": "Do not compensate by strongly arching the low back or flaring the ribs.",
           "minuteCue": "Start the second set."
         },
@@ -72,14 +82,30 @@
           "title": "Prone Y–T–W",
           "type": "work",
           "slotSec": 180,
-          "details": "2 rounds of about 6 reps in each Y, T and W position. Move slowly and focus on shoulder-blade control rather than lifting the hands high.",
+          "details": "1–2 controlled rounds × 6 per shape; move through shoulder blades, not lumbar arch.",
           "minuteCue": "Continue the sequence; move into the next letter or second round."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Seated Bent-Knee Hip Lifts",
+          "type": "work",
+          "slotSec": 120,
+          "details": "1 × 6–8 each side; easy activation before evening leg gym, RPE 5–6.",
+          "setup": "Sit tall on a stable seat; raise one bent knee from the hip without leaning back.",
+          "feel": "Controlled work high in the front of the hip, not a cramp.",
+          "avoid": "Do not lean back, force range, or reproduce tingling or numbness.",
+          "minuteCue": "Switch legs and preserve a quiet pelvis."
         },
         {
           "title": "Yoga Flow A — front/back chain",
           "type": "work",
-          "slotSec": 300,
-          "details": "Flow continuously: Downward Dog → Plank → Cobra or Upward Dog → Downward Dog → Low Lunge (Anjaneyasana) + both arms overhead → return and repeat with the other leg.",
+          "slotSec": 120,
+          "details": "Active positions only; avoid prolonged passive hamstring holds; controlled breathing.",
           "setup": "Use the whole mat. In Low Lunge the rear knee can stay down; lift both arms overhead and grow tall through the torso.",
           "feel": "Shoulders, spine, front of hips, calves and posterior chain working together.",
           "avoid": "Do not force Upward Dog if Cobra feels better. Avoid painful end ranges or breath holding.",
@@ -88,250 +114,681 @@
         {
           "title": "Yoga Flow B — spine + side body",
           "type": "work",
-          "slotSec": 180,
-          "details": "Shortened flow: Cat-Cow → Thread the Needle right → Tabletop → Thread the Needle left → Puppy Pose → Child’s Pose side reach right/left. Keep it continuous and relaxed.",
+          "slotSec": 120,
+          "details": "Short active spinal and side-body transitions, no forced end range.",
           "setup": "Move slowly between positions. In Thread the Needle rotate through the upper back rather than forcing the shoulder. In Puppy Pose keep hips roughly over knees and reach the chest forward/down only as comfortable.",
           "feel": "Thoracic rotation, lats, side body, shoulders and spinal movement without loading the legs heavily.",
           "avoid": "Do not force the shoulder into the floor or collapse into the low back.",
           "minuteCue": "Move smoothly; prioritize thoracic rotation and shoulder comfort rather than forcing range."
         },
         {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
           "title": "Deep Squat + Overhead Reach",
           "type": "work",
-          "slotSec": 120,
-          "details": "Move into a comfortable deep squat, keep the heels grounded if possible, reach overhead while staying tall, then stand/reset and repeat slowly.",
+          "slotSec": 60,
+          "details": "Comfortable controlled squat and reach for ~1 min; no forced shoulder range.",
           "setup": "Use a stance that lets you sit deep without pain. Let the knees track naturally over the toes and keep the whole foot connected to the floor.",
           "feel": "Ankles, hips, adductors, upper back and shoulders opening together.",
           "avoid": "Do not force squat depth or overhead range. Keep the movement pain-free and avoid collapsing the chest.",
           "minuteCue": "Keep the reps slow and use each reach to grow taller through the upper back."
         }
-      ],
-      "totalSec": 1800
+      ]
     },
-    "thursday": {
-      "label": "Thursday",
-      "focus": "Posture + hip rotation + windmill + guided standing yoga flow",
+    "tuesday": {
+      "label": "Tuesday",
+      "focus": "Active hip flexion + handstand + shoulders + arms",
       "equipment": [
         "Exercise mat",
         "Wall",
-        "Phone in view for guided pose diagrams"
+        "Dumbbells",
+        "Resistance band"
       ],
-      "later": "Evening gym: quads + pull + hamstrings + cardio",
+      "later": null,
+      "totalSec": 1680,
       "steps": [
         {
           "title": "360° breathing + pelvic floor",
           "type": "work",
+          "slotSec": 180,
+          "details": "5 slow 360° breaths, then 5 × 3-sec gentle pelvic-floor lifts, fully relaxing for 6–8 sec after each; no constant clenching.",
+          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back; do not force it flat into the floor.",
+          "feel": "Lower ribs, belly and back expand on the inhale. Pelvic floor fully relaxes between contractions.",
+          "avoid": "No breath holding, hard bracing or continuous pelvic-floor clenching.",
+          "minuteCue": "Keep the breathing calm and make the relaxation phase as deliberate as the lift."
+        },
+        {
+          "title": "Band-Resisted Standing March",
+          "type": "work",
           "slotSec": 240,
-          "details": "About 5 slow 360° breaths, then 5 × 3 s submaximal pelvic-floor lifts with full 6–8 s relaxation after every rep.",
-          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back.",
-          "avoid": "No continuous gripping or prolonged breath holding.",
-          "minuteCue": "Keep the relaxation phase complete."
+          "details": "2 × 8–10 reps/side, hold top 2 sec and lower slowly; 30–45 sec rest; ~RPE 6–7.",
+          "setup": "Anchor a light band securely around the lifting foot/ankle with appropriate resistance. Stand tall near a support.",
+          "feel": "Active hip flexion with level pelvis.",
+          "avoid": "No trunk lean, painful anterior hip pinch, nerve symptoms, or cramp-like grinding.",
+          "minuteCue": "Pause 2 sec at the top and lower each rep slowly.",
+          "progression": {
+            "sets": 2,
+            "minReps": 8,
+            "maxReps": 10
+          }
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Handstand practice",
+          "type": "work",
+          "slotSec": 180,
+          "details": "3 min of easy wall-assisted attempts or wall lean; stop with right-shoulder pinching, abnormal head pressure or abdominal doming."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Pike push-ups",
+          "type": "work",
+          "slotSec": 240,
+          "details": "3 × 8–12 with ~45–60 sec rest; controlled pain-free range, 2–3 RIR; use incline push-ups if the shoulder pinches.",
+          "progression": {
+            "sets": 3,
+            "minReps": 8,
+            "maxReps": 12
+          }
+        },
+        {
+          "title": "DB lateral raise",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 12–20; controlled 2–3-sec lowering, 1–2 RIR.",
+          "progression": {
+            "sets": 2,
+            "minReps": 12,
+            "maxReps": 20
+          }
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "DB overhead triceps extension",
+          "type": "work",
+          "slotSec": 240,
+          "details": "3 × 10–15; ~45–60-sec rest, 1–2 RIR. If shoulder hurts, use pain-free DB floor press.",
+          "progression": {
+            "sets": 3,
+            "minReps": 10,
+            "maxReps": 15
+          }
+        },
+        {
+          "title": "Alternating / supinating DB curl",
+          "type": "work",
+          "slotSec": 240,
+          "details": "3 × 8–12; steady elbows, no swinging, 1–2 RIR.",
+          "progression": {
+            "sets": 3,
+            "minReps": 8,
+            "maxReps": 12
+          }
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Band External Rotation",
+          "type": "work",
+          "slotSec": 60,
+          "details": "1 × 12–15/side at light resistance, elbow comfortably by ribs; no painful range."
+        }
+      ]
+    },
+    "wednesday": {
+      "label": "Wednesday",
+      "focus": "Lateral hip/trunk + adductors + anti-rotation + L-sit",
+      "equipment": [
+        "Exercise mat",
+        "Light dumbbell",
+        "Resistance band",
+        "Stable support for Copenhagen",
+        "Yoga blocks (if available)"
+      ],
+      "later": null,
+      "totalSec": 1740,
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 180,
+          "details": "5 slow 360° breaths, then 5 × 3-sec gentle pelvic-floor lifts, fully relaxing for 6–8 sec after each; no constant clenching.",
+          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back; do not force it flat into the floor.",
+          "feel": "Lower ribs, belly and back expand on the inhale. Pelvic floor fully relaxes between contractions.",
+          "avoid": "No breath holding, hard bracing or continuous pelvic-floor clenching.",
+          "minuteCue": "Keep the breathing calm and make the relaxation phase as deliberate as the lift."
+        },
+        {
+          "title": "Knee-supported side plank leg raise",
+          "type": "work",
+          "slotSec": 300,
+          "details": "2 × 4–6 slow top-leg lifts/side; ~45–60 sec rest. Start bottom-knee supported; aim for pelvis control before increasing lever.",
+          "setup": "Forearm under shoulder, bottom knee supported. Lift the pelvis, then slowly raise the top leg.",
+          "feel": "Bottom-side trunk/hip supporting, top hip abducting.",
+          "avoid": "Do not let pelvis collapse or hike the hip; regress to knee-supported holds if form fails.",
+          "minuteCue": "Prioritize stable pelvis and short controlled reps."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Knee-supported Copenhagen plank",
+          "type": "work",
+          "slotSec": 300,
+          "details": "Two sets of 10–15-sec holds per side, upper knee on secure stable support; ~45–60 sec rest. If too hard, use side-lying adductor lifts.",
+          "setup": "Upper knee supported on a sturdy, secure surface; lower knee bent. Lift hips only as high as controlled.",
+          "feel": "Inner thigh and lateral trunk working; start with short holds.",
+          "avoid": "No maximal holds, sharp groin pain or pelvic-floor symptoms; use side-lying adduction if too hard.",
+          "minuteCue": "Switch sides and relax between holds."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Bear-Plank DB Drag",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2 × 6 slow drags/side, knees hover briefly and hips stay still. Light DB, 2–3 RIR.",
+          "setup": "Hands under shoulders, knees under hips, toes planted. Keep the pelvis square while the free hand drags the dumbbell across.",
+          "feel": "Deep core, obliques, shoulders and hips stabilising together.",
+          "avoid": "Do not let the hips twist, low back sag or abdomen dome/cone. Put the knees down if control is lost.",
+          "minuteCue": "Move slowly; the goal is anti-rotation, not speed."
+        },
+        {
+          "title": "DB pullover dead bug",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2 × 6/side, exhale during effort; no lumbar arch or abdominal doming.",
+          "setup": "Lie on your back, hips and knees around 90°. Arms start straight above the chest. Use a modest dumbbell.",
+          "feel": "Front abs/deep core resisting extension while the arm and opposite-leg levers lengthen.",
+          "avoid": "For now, do not hold the dumbbell permanently far behind the head while lowering both legs together like a weighted hollow-body leg lower. That is a later progression. Stop/regress if the abdomen domes/cones or the low back takes over.",
+          "minuteCue": "One leg at a time; dumbbell travels chest → controlled behind-head range → chest."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Assisted L-sit progression on yoga blocks",
+          "type": "work",
+          "slotSec": 240,
+          "details": "Three clean 8–15-sec tuck holds. Use stable yoga blocks/supports only; regress to seated tuck/hip compression if unavailable.",
+          "setup": "Blocks beside the hips, shoulders pushed down away from ears, elbows straight. Lean slightly forward as needed to get the hips light.",
+          "feel": "Triceps, shoulders, abs and hip flexors working together. The current assisted version should already feel challenging.",
+          "avoid": "Do not force both feet off the floor just because the exercise is called an L-sit. Do not hold your breath or let the shoulders collapse upward.",
+          "minuteCue": "Quality progression: support hold → one-leg tuck → toe-assisted tuck → only later full tuck."
+        },
+        {
+          "title": "90/90 hip switches",
+          "type": "work",
+          "slotSec": 120,
+          "details": "1–2 × 6/side, slow active rotation with no forced stretch.",
+          "minuteCue": "Keep switching sides smoothly."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        }
+      ]
+    },
+    "thursday": {
+      "label": "Thursday",
+      "focus": "Ab wheel + windmill + shoulder posture + brief active yoga (gym legs later)",
+      "equipment": [
+        "Exercise mat",
+        "Wall",
+        "Ab wheel",
+        "Light dumbbell",
+        "Resistance band"
+      ],
+      "later": "Evening gym: pull-ups + leg press + split squat + leg extension + hamstring curl + cardio (50 min)",
+      "totalSec": 1500,
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 180,
+          "details": "5 slow 360° breaths, then 5 × 3-sec gentle pelvic-floor lifts, fully relaxing for 6–8 sec after each; no constant clenching.",
+          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back; do not force it flat into the floor.",
+          "feel": "Lower ribs, belly and back expand on the inhale. Pelvic floor fully relaxes between contractions.",
+          "avoid": "No breath holding, hard bracing or continuous pelvic-floor clenching.",
+          "minuteCue": "Keep the breathing calm and make the relaxation phase as deliberate as the lift."
         },
         {
           "title": "Kneeling Ab Wheel",
           "type": "work",
           "slotSec": 180,
-          "details": "2 × 5–8 controlled reps. Use a slightly conservative range and keep breathing throughout.",
-          "setup": "Kneel on the mat with the wheel under the shoulders. Keep ribs and pelvis controlled as you roll forward and return.",
-          "feel": "Front abs and deep core resisting spinal extension.",
-          "avoid": "No doming/coning, pelvic/perineal symptom increase, low-back pain or prolonged breath-holding. Shorten the range before removing the exercise.",
-          "minuteCue": "Keep the return smooth; do not yank the wheel back."
+          "details": "2 × 5–8 controlled rollouts, 45–60 sec rest. Keep range symptom-free; do not brace hard through pelvic symptoms.",
+          "setup": "Kneel on the mat with the wheel under the shoulders. Lightly brace, keep breathing and move from the shoulders/hips as one controlled unit.",
+          "feel": "Strong front-abdominal-wall and deep-core tension while the spine stays controlled.",
+          "avoid": "Stop or shorten range if the abdomen domes/cones, the low back pinches, pelvic/perineal symptoms increase, or you need a hard prolonged breath-hold.",
+          "minuteCue": "Reset the breath between reps; range quality matters more than distance.",
+          "progression": {
+            "sets": 2,
+            "minReps": 5,
+            "maxReps": 8
+          }
         },
         {
-          "title": "Bear Rock-Back Control",
-          "type": "work",
-          "slotSec": 60,
-          "details": "6–8 slow rock-backs with a quiet trunk and easy breathing.",
-          "setup": "Hands under shoulders, knees under hips. Hovering is optional; keep it easy after ab wheel.",
-          "feel": "Deep-core control and coordinated hip movement.",
-          "avoid": "No hard bracing, doming or breath holding.",
-          "minuteCue": "Stay smooth and finish fresh."
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
         },
         {
           "title": "DB Windmill",
           "type": "work",
           "slotSec": 120,
-          "details": "Alternate sides with a very light dumbbell or bodyweight. Keep the top arm stacked, hinge through the hips and rotate through the upper back with control.",
+          "details": "One or two sets of 4–6 slow reps per side, bodyweight or very light DB. Hip hinge + trunk control; no forced overhead shoulder position.",
           "setup": "Use a comfortable wider stance. Turn the feet slightly, keep the loaded arm vertical, push the hips back and slide the free hand down the inside of the leg.",
           "feel": "Obliques, hips, hamstrings, upper-back rotation and shoulder/scapular stability working together.",
           "avoid": "Do not chase depth or load. Stop or reduce range if the right shoulder pinches, feels unstable, or the low back takes over.",
           "minuteCue": "Switch sides and keep the overhead arm stacked rather than drifting forward."
         },
         {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
           "title": "Chin tucks",
           "type": "work",
-          "slotSec": 120,
-          "details": "2 × 10 controlled reps."
+          "slotSec": 90,
+          "details": "2 × 8, controlled.",
+          "feel": "Gentle work deep in the front of the neck; back of the neck stays long.",
+          "avoid": "Do not jam the chin down toward the chest.",
+          "minuteCue": "Start the second controlled set."
         },
         {
           "title": "Wall slides",
           "type": "work",
-          "slotSec": 120,
-          "details": "2 × 10 controlled reps with ribs controlled."
+          "slotSec": 90,
+          "details": "2 × 8 within comfortable shoulder range.",
+          "avoid": "Do not compensate by strongly arching the low back or flaring the ribs.",
+          "minuteCue": "Start the second set."
         },
         {
-          "title": "Reverse snow angels",
+          "title": "Band Face Pull + External Rotation",
           "type": "work",
           "slotSec": 180,
-          "details": "2 × 10 slow reps. Focus on shoulder-blade movement rather than range.",
-          "minuteCue": "Continue slowly; do not shrug."
+          "details": "2 × 10–12; pull toward forehead then rotate gently, keeping ribs stable; use light band and avoid shoulder pinch."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
         },
         {
           "title": "90/90 hip switches",
           "type": "work",
           "slotSec": 180,
-          "details": "2 × 8/side, smooth and controlled. Keep this because it gives specific hip internal/external rotation that the yoga flow does not fully replace.",
+          "details": "2 × 6/side, deliberate active hip rotations.",
           "minuteCue": "Keep switching sides smoothly."
         },
         {
           "title": "Chair Pose",
           "type": "work",
-          "slotSec": 35,
+          "slotSec": 40,
           "poseKey": "chair",
           "poseLabel": "Chair Pose",
-          "details": "Feet about hip-width. Sit back like into a chair and reach both arms overhead. Keep the whole foot grounded.",
+          "details": "Active controlled squat hold with steady breathing; RPE 5–6.",
           "avoid": "Reduce depth if the knee pinch appears."
         },
         {
           "title": "Warrior II — LEFT",
           "type": "work",
-          "slotSec": 45,
+          "slotSec": 40,
           "poseKey": "warrior2",
           "poseLabel": "Warrior II",
           "poseSide": "LEFT",
-          "details": "Left knee bends over the left foot; back leg stays long. Arms reach in opposite directions.",
+          "details": "Active left-sided hold, pelvis level, front knee controlled.",
           "avoid": "Do not let the front knee collapse inward."
-        },
-        {
-          "title": "Reverse Warrior — LEFT",
-          "type": "work",
-          "slotSec": 35,
-          "poseKey": "reverse",
-          "poseLabel": "Reverse Warrior",
-          "poseSide": "LEFT",
-          "details": "Keep the left knee bent. Left arm reaches up/back; rear hand rests lightly on the back leg.",
-          "avoid": "Lengthen the side body instead of crunching the low back."
         },
         {
           "title": "Extended Side Angle — LEFT",
           "type": "work",
-          "slotSec": 35,
+          "slotSec": 40,
           "poseKey": "sideangle",
           "poseLabel": "Extended Side Angle",
           "poseSide": "LEFT",
-          "details": "Stay in the left lunge. Left forearm may rest lightly on thigh while the right arm reaches long overhead.",
+          "details": "Short active left-side hold, reach only as shoulder allows.",
           "avoid": "Do not dump bodyweight into the lower arm."
-        },
-        {
-          "title": "Goddess Squat",
-          "type": "work",
-          "slotSec": 50,
-          "poseKey": "goddess",
-          "poseLabel": "Goddess Squat",
-          "details": "Wide stance, toes turned out, knees track outward. Keep chest tall and arms in cactus position.",
-          "avoid": "Stay above any depth that creates knee pinch."
-        },
-        {
-          "title": "Wide-Leg Forward Fold",
-          "type": "work",
-          "slotSec": 55,
-          "poseKey": "fold",
-          "poseLabel": "Wide-Leg Forward Fold",
-          "details": "Keep the stance wide and hinge forward from the hips. Hands can reach toward the floor.",
-          "avoid": "Do not force range by aggressively rounding the low back."
-        },
-        {
-          "title": "Star Pose",
-          "type": "work",
-          "slotSec": 45,
-          "poseKey": "star",
-          "poseLabel": "Star Pose",
-          "details": "Stand tall in a wide stance with arms reaching up and out. Breathe and reset.",
-          "avoid": "Keep shoulders relaxed away from ears."
-        },
-        {
-          "title": "Chair Pose",
-          "type": "work",
-          "slotSec": 35,
-          "poseKey": "chair",
-          "poseLabel": "Chair Pose",
-          "details": "Second round. Sit back and reach overhead.",
-          "avoid": "Reduce depth if the knee pinch appears."
         },
         {
           "title": "Warrior II — RIGHT",
           "type": "work",
-          "slotSec": 45,
+          "slotSec": 40,
           "poseKey": "warrior2",
           "poseLabel": "Warrior II",
           "poseSide": "RIGHT",
-          "details": "Right knee bends over the right foot; back leg stays long. Arms reach in opposite directions.",
+          "details": "Active right-sided hold, pelvis level.",
           "avoid": "Do not let the front knee collapse inward."
-        },
-        {
-          "title": "Reverse Warrior — RIGHT",
-          "type": "work",
-          "slotSec": 35,
-          "poseKey": "reverse",
-          "poseLabel": "Reverse Warrior",
-          "poseSide": "RIGHT",
-          "details": "Keep the right knee bent. Right arm reaches up/back; rear hand rests lightly on the back leg.",
-          "avoid": "Lengthen the side body instead of crunching the low back."
         },
         {
           "title": "Extended Side Angle — RIGHT",
           "type": "work",
-          "slotSec": 35,
+          "slotSec": 40,
           "poseKey": "sideangle",
           "poseLabel": "Extended Side Angle",
           "poseSide": "RIGHT",
-          "details": "Stay in the right lunge. Right forearm may rest lightly on thigh while the left arm reaches long overhead.",
+          "details": "Short active right-side hold, reach only as shoulder allows.",
           "avoid": "Do not dump bodyweight into the lower arm."
         },
         {
           "title": "Goddess Squat",
           "type": "work",
-          "slotSec": 50,
+          "slotSec": 40,
           "poseKey": "goddess",
           "poseLabel": "Goddess Squat",
-          "details": "Wide stance, toes turned out, knees track outward. Keep chest tall.",
+          "details": "Controlled active wide squat hold, stay well below fatigue before evening gym.",
           "avoid": "Stay above any depth that creates knee pinch."
         },
         {
-          "title": "Wide-Leg Forward Fold",
-          "type": "work",
-          "slotSec": 55,
-          "poseKey": "fold",
-          "poseLabel": "Wide-Leg Forward Fold",
-          "details": "Hinge forward from the hips and let the neck relax.",
-          "avoid": "Do not force range."
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
         },
         {
-          "title": "Star Pose",
+          "title": "Open book",
           "type": "work",
-          "slotSec": 45,
-          "poseKey": "star",
-          "poseLabel": "Star Pose",
-          "details": "Stand tall, arms up and out, breathe normally.",
-          "avoid": "Keep shoulders relaxed."
+          "slotSec": 120,
+          "details": "1 × 6 slow thoracic rotations/side, avoid forcing the lumbar spine.",
+          "minuteCue": "Change side."
         }
+      ]
+    },
+    "friday": {
+      "label": "Friday",
+      "focus": "Hip compression + triceps + core + controlled hip stability",
+      "equipment": [
+        "Exercise mat",
+        "Dumbbells",
+        "Stable support"
       ],
-      "totalSec": 1800
+      "later": null,
+      "totalSec": 1620,
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 180,
+          "details": "5 slow 360° breaths, then 5 × 3-sec gentle pelvic-floor lifts, fully relaxing for 6–8 sec after each; no constant clenching.",
+          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back; do not force it flat into the floor.",
+          "feel": "Lower ribs, belly and back expand on the inhale. Pelvic floor fully relaxes between contractions.",
+          "avoid": "No breath holding, hard bracing or continuous pelvic-floor clenching.",
+          "minuteCue": "Keep the breathing calm and make the relaxation phase as deliberate as the lift."
+        },
+        {
+          "title": "Suitcase March + Opposite Knee Drive",
+          "type": "work",
+          "slotSec": 180,
+          "details": "Slow weighted march for 3 min, switch hand halfway. Stay upright, drive knee without side-bending; ~RPE 6.",
+          "setup": "Stand tall with ribs stacked over pelvis. Keep the dumbbell close to one thigh and lift each knee without leaning away from the weight.",
+          "feel": "Obliques, deep core, grip, hip flexors and pelvic stability working together.",
+          "avoid": "Do not side-bend, rush or hold your breath. Use a load you can control without trunk compensation.",
+          "minuteCue": "Switch the dumbbell to the other hand and keep the pelvis level."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Close-grip DB push-ups",
+          "type": "work",
+          "slotSec": 240,
+          "details": "3 × 8–15, ~45 sec rests; keep elbows reasonably close; 1–2 RIR.",
+          "progression": {
+            "sets": 3,
+            "minReps": 8,
+            "maxReps": 15
+          }
+        },
+        {
+          "title": "DB triceps kickback",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2 × 12–20/arm, stable supported hinge; 1–2 RIR.",
+          "progression": {
+            "sets": 2,
+            "minReps": 12,
+            "maxReps": 20
+          }
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Seated Straight-Leg Lift / Compression",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2 × 4–6 small controlled lifts/leg with 2–5-sec holds. Keep 2–3 RIR; stop before high-thigh cramp sensation.",
+          "setup": "Sit tall with legs forward and hands by hips; lift one nearly straight leg a little, then lower.",
+          "feel": "Gentle-to-moderate active front-hip/anterior thigh effort.",
+          "avoid": "Stop well before cramp-like fatigue; do not lean back or provoke foot numbness. Use bent knee or symptom-free supine raise to regress.",
+          "minuteCue": "Keep lifts only 2–5 sec, switch sides, record clean lift height."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Reverse crunch",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 10–12 slow pelvis curls, no swinging or abdominal doming."
+        },
+        {
+          "title": "Supported hip airplanes",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 5/side, use stable support, control pelvis and standing knee."
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Hamstring sweeps",
+          "type": "work",
+          "slotSec": 60,
+          "details": "Gentle active sweeps, 8/side; no aggressive nerve-like stretching."
+        }
+      ]
+    },
+    "saturday": {
+      "label": "Saturday",
+      "focus": "Functional full body + low step-ups + assisted L-sit + biceps",
+      "equipment": [
+        "Exercise mat",
+        "Dumbbells",
+        "Stable low step (20–25 cm)",
+        "Yoga blocks (if available)"
+      ],
+      "later": null,
+      "totalSec": 1740,
+      "steps": [
+        {
+          "title": "360° breathing + pelvic floor",
+          "type": "work",
+          "slotSec": 180,
+          "details": "5 slow 360° breaths, then 5 × 3-sec gentle pelvic-floor lifts, fully relaxing for 6–8 sec after each; no constant clenching.",
+          "setup": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back; do not force it flat into the floor.",
+          "feel": "Lower ribs, belly and back expand on the inhale. Pelvic floor fully relaxes between contractions.",
+          "avoid": "No breath holding, hard bracing or continuous pelvic-floor clenching.",
+          "minuteCue": "Keep the breathing calm and make the relaxation phase as deliberate as the lift."
+        },
+        {
+          "title": "DB squat-to-press / thruster",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 8–10 smooth reps, ~RPE 6–7, 2–3 RIR. Stop if right shoulder or pelvic/low-back symptoms appear.",
+          "demoImage": "https://i.ytimg.com/vi/u3wKkZjE8QM/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=u3wKkZjE8QM",
+          "demoSource": "CrossFit demo",
+          "progression": {
+            "sets": 2,
+            "minReps": 8,
+            "maxReps": 10
+          }
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Low Step-Ups",
+          "type": "work",
+          "slotSec": 300,
+          "details": "2 × 8/leg on a stable ~20–25 cm step. Use front leg to rise, lower slowly for 2–3 sec, RPE 6–7.",
+          "setup": "Use a stable low step; begin with the left leg. Tap back foot lightly at top.",
+          "feel": "Front-leg quad and glute control.",
+          "avoid": "No unstable chair, pushing off strongly with the trailing foot, or knee pinch.",
+          "minuteCue": "Match both sides and use slow lowering.",
+          "progression": {
+            "sets": 2,
+            "minReps": 8,
+            "maxReps": 10
+          }
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Tuck L-sit on yoga blocks",
+          "type": "work",
+          "slotSec": 180,
+          "details": "Two or three clean 10–20-sec holds on stable supports; regress to seated tuck lifts as needed.",
+          "demoImage": "https://i.ytimg.com/vi/lGps-O2k3dE/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=lGps-O2k3dE",
+          "demoSource": "Tuck L-sit demo"
+        },
+        {
+          "title": "Half-Kneeling 1-Arm DB Shoulder Press",
+          "type": "work",
+          "slotSec": 240,
+          "details": "2 × 8–12/side, controlled torso, only pain-free right-shoulder range.",
+          "demoImage": "https://i.ytimg.com/vi/2WoOrh3dqss/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=2WoOrh3dqss",
+          "demoSource": "OPEX demo",
+          "progression": {
+            "sets": 2,
+            "minReps": 8,
+            "maxReps": 12
+          }
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "Strict Alternating / Supinating DB Curl",
+          "type": "work",
+          "slotSec": 240,
+          "details": "3 × 8–12 per arm, 1–2 RIR; no trunk sway.",
+          "demoImage": "https://i.ytimg.com/vi/8d2we4UqOSs/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=8d2we4UqOSs",
+          "demoSource": "Alternating curl demo",
+          "progression": {
+            "sets": 3,
+            "minReps": 8,
+            "maxReps": 12
+          }
+        },
+        {
+          "title": "DB Hammer Curl",
+          "type": "work",
+          "slotSec": 180,
+          "details": "2 × 10–15 per arm, 1–2 RIR.",
+          "progression": {
+            "sets": 2,
+            "minReps": 10,
+            "maxReps": 15
+          }
+        },
+        {
+          "title": "REST / transition",
+          "type": "rest",
+          "slotSec": 30,
+          "details": "Switch equipment and breathe normally."
+        },
+        {
+          "title": "DB Halo + Shoulder Mobility",
+          "type": "work",
+          "slotSec": 120,
+          "details": "1–2 gentle controlled rounds, keep DB light. Omit loaded halo if right shoulder pinches.",
+          "demoImage": "https://i.ytimg.com/vi/UNkaHC8g8a4/hqdefault.jpg",
+          "demoUrl": "https://www.youtube.com/watch?v=UNkaHC8g8a4",
+          "demoSource": "Dumbbell halo demo"
+        }
+      ]
     },
     "sunday": {
       "label": "Sunday",
-      "focus": "Recovery + mobility",
+      "focus": "Short active recovery + optional swimming",
       "equipment": [
         "Exercise mat",
-        "Optional pool / bike / walking shoes"
+        "Stable support (optional)"
       ],
-      "later": "Optional swim or Zone 2 outside the 30-minute mobility timer",
+      "later": "Optional swim 30–60 min; otherwise easy walk 25–40 min. No strenuous workout required.",
+      "totalSec": 840,
       "steps": [
         {
           "title": "Calm 360° breathing",
           "type": "work",
           "slotSec": 180,
-          "details": "Lie on your back with knees bent and feet flat. Keep a comfortable neutral low back — do NOT force it into the floor. Put your hands around the lower ribs. Inhale slowly through the nose and let the lower ribs, belly and back expand 360°. Let the pelvic floor soften on the inhale. Exhale slowly and let the ribs settle without hard bracing.",
+          "details": "Easy relaxed breathing. Full pelvic-floor relaxation; no strenuous Kegels.",
           "setup": "On your back, knees bent, feet flat. Support your head if that is more comfortable.",
           "feel": "Expansion around lower ribs, belly and back; calm breathing and pelvic-floor relaxation.",
           "avoid": "Do not flatten the low back, suck the belly in, brace hard or hold your breath.",
@@ -340,81 +797,41 @@
         {
           "title": "90/90 hip switches",
           "type": "work",
-          "slotSec": 180,
-          "details": "8 / side, smooth and controlled.",
+          "slotSec": 120,
+          "details": "6–8 active rotations/side; no forced stretch.",
           "minuteCue": "Keep switching sides smoothly."
         },
         {
           "title": "Cossack squat / adductor mobility",
           "type": "work",
-          "slotSec": 240,
-          "details": "2 × 6 / side. Stay in a comfortable range.",
+          "slotSec": 180,
+          "details": "Two rounds of 5–6 controlled reps per side, comfortable range.",
           "minuteCue": "Change the side you are emphasizing."
         },
         {
-          "title": "Hamstring sweeps",
+          "title": "Open book",
           "type": "work",
           "slotSec": 120,
-          "details": "10 / side.",
-          "minuteCue": "1-minute marker: continue, change side or start the next set as planned."
-        },
-        {
-          "title": "Half split",
-          "type": "work",
-          "slotSec": 240,
-          "details": "From half-kneeling, shift hips back over the rear knee and straighten the front leg until you feel a hamstring stretch. Keep pelvis square and spine long.",
-          "minuteCue": "Change side."
-        },
-        {
-          "title": "Seated forward fold",
-          "type": "work",
-          "slotSec": 180,
-          "details": "2 × 60 s.",
-          "minuteCue": "Relax shoulders, re-lengthen spine; do not force deeper."
-        },
-        {
-          "title": "Hip-flexor stretch",
-          "type": "work",
-          "slotSec": 120,
-          "details": "Half-kneeling: one knee down, opposite foot forward. Gently tuck the pelvis (belt buckle slightly toward ribs) and squeeze the glute of the kneeling-side leg. Then shift the whole pelvis only a little forward. The stretch should be at the front of the rear hip/thigh.",
-          "setup": "Hands may rest on hips or front thigh for balance.",
-          "feel": "Front of hip / upper thigh of the leg whose knee is on the floor.",
-          "avoid": "Do not just lunge far forward or arch the low back.",
+          "details": "6 smooth upper-back rotations/side.",
           "minuteCue": "Change side."
         },
         {
           "title": "Ankle rocks",
           "type": "work",
           "slotSec": 120,
-          "details": "Face a wall or use a split/kneeling stance with one foot flat. Keep the heel planted and move the knee forward over the toes, then back. Let the knee track roughly over the 2nd–3rd toe. Hands can touch the wall or knee for balance, but they do not drive the movement.",
+          "details": "8–10/side, heel down; easy movement.",
           "setup": "Start with toes a few centimetres from a wall; adjust distance so the heel stays down.",
           "feel": "Movement/stretch around the ankle and calf while the heel stays planted.",
           "avoid": "Do not lift the heel or let the knee collapse inward.",
           "minuteCue": "Change ankle."
         },
         {
-          "title": "Open book",
+          "title": "Hamstring sweeps",
           "type": "work",
           "slotSec": 120,
-          "details": "8 / side.",
-          "minuteCue": "Change side."
-        },
-        {
-          "title": "Lat / overhead stretch",
-          "type": "work",
-          "slotSec": 120,
-          "details": "60 s / side.",
-          "minuteCue": "Change side."
-        },
-        {
-          "title": "Doorway pec + child's pose side reach",
-          "type": "work",
-          "slotSec": 180,
-          "details": "Finish easy; slow breathing.",
-          "minuteCue": "Change stretch / side."
+          "details": "8 gentle dynamic sweeps/side; no prolonged forward folds."
         }
-      ],
-      "totalSec": 1800
+      ]
     }
   }
 }
