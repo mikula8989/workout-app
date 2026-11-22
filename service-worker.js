@@ -1,4 +1,4 @@
-const CACHE = "workout-app-v19-landscape-exercise-images";
+const CACHE = "workout-app-v20-flexible-gym-calendar";
 const SHELL = ["./program.json","./adaptive.js","./","./index.html","./style.css","./app.js","./manifest.json","./icon-192.png","./icon-512.png","./program-overrides.json","./gym-overrides.json","./poses/chair_pose.jpg","./poses/warrior_ii.jpg","./poses/reverse_warrior.jpg","./poses/extended_side_angle.jpg","./poses/goddess_squat.jpg","./poses/wide_leg_forward_fold.jpg","./poses/star_pose.jpg","./poses/yoga_pose_sprite_full.webp","./poses/yoga_pose_sprite_clean.webp"];
 const EXERCISE_IMAGES = [
   "./assets/exercises/ab_wheel.webp",

@@ -537,3 +537,35 @@ h2{margin:0;font-size:20px}
   .exercise-zoom-card{padding:8px}
   .exercise-zoom-head h2{font-size:15px}
 }
+
+
+/* v20: Flexible date-based gym check-ins and rolling training balance. */
+.gym-flex-card{border-color:#50565c;background:linear-gradient(145deg,#1b2125,#19191b)}
+.gym-flex-card .section-heading{margin-bottom:10px}
+.gym-flex-controls{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px;align-items:end}
+.gym-today-toggle{padding:13px 12px;text-align:center;min-height:54px;font-weight:850;border-color:#676b70}
+.gym-today-toggle.selected{background:#d9eee3!important;color:#142a20!important;border-color:#a4ccb8!important}
+.gym-today-toggle:disabled{opacity:.45}
+.gym-template-label{display:flex;flex-direction:column;gap:6px;color:#aaaab1;font-size:11px;font-weight:800;letter-spacing:.04em}
+.gym-template-label select{width:100%;height:54px;padding:0 10px;border-radius:12px;border:1px solid #616168;background:#2b2b30;color:#f7f7f7;font-size:12px;font-weight:750}
+.gym-template-label select:disabled{opacity:.5}
+.gym-flex-details{margin-top:12px;color:#b4e5cd;font-weight:750}
+.gym-done-btn{width:100%;margin-top:12px;padding:12px 16px}
+.gym-flex-card.not-today{opacity:.85}
+.balance-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:8px}
+.balance-count{font-size:12px;color:#c8c8cd;font-variant-numeric:tabular-nums}
+.balance-state{white-space:nowrap}
+@media(max-width:520px){
+  .gym-flex-controls{grid-template-columns:1fr}
+  .gym-today-toggle,.gym-template-label select{min-height:50px}
+  .balance-row{grid-template-columns:minmax(0,1fr) auto;gap:5px}
+  .balance-row .balance-state{grid-column:2;text-align:center;font-size:10px;padding:4px 6px}
+  .balance-count{grid-column:2;grid-row:1}
+}
+
+.gym-yesterday-toggle{margin-top:9px;padding:4px 0;border:0;background:transparent;color:#bfc2c9;text-decoration:underline;text-underline-offset:3px;font-size:12px;font-weight:750;cursor:pointer}
+.gym-yesterday-toggle:disabled{opacity:.4;cursor:default}
+
+.day-tab.gym-day-mark{border-color:#b69a5c;color:#e9d5ab}
+.day-tab.gym-day-done{border-color:#77a38d;color:#b5e5cd}
+.day-tab.gym-day-mark.active{color:#1d251f}

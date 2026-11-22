@@ -1,11 +1,11 @@
 // Adaptive weekly training layer.
-// Tracks what was actually completed, asks about yesterday's gym,
-// and reshapes today's 30-minute morning session around missed work.
+// Tracks confirmed training, lets any calendar day become a gym day,
+// and adjusts mornings for recovery and 14-day strength/mobility balance.
 
 const ADAPT_SESSION_LOG_KEY = "workoutSessionLogV2";
 const ADAPT_GYM_LOG_KEY = "workoutGymLogV1";
 const ADAPT_TOP_PRIORITIES = ["quads","biceps","triceps","hips","hip_flexion","lateral_core","adductors","posture"];
-const ADAPT_BALANCE_TAGS = ["quads","biceps","triceps","hips","hip_flexion","lateral_core","adductors","posture","hamstrings","glutes","back","shoulders","core"];
+const ADAPT_BALANCE_TAGS = ["quads","biceps","triceps","hips","hip_flexion","lateral_core","adductors","posture","hamstrings","glutes","back","shoulders","core","mobility"];
 const ADAPT_PRIORITY_RANK = {quads:0,biceps:0,triceps:0,hips:0,hip_flexion:0,lateral_core:0,adductors:0,posture:0,hamstrings:1,glutes:1,back:1,shoulders:1,core:2,skill:2,conditioning:3,mobility:3};
 
 let adaptSessionActualSec = [];
@@ -32,6 +32,219 @@ function adaptWeekStartKey(){
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,"0"), day=String(d.getDate()).padStart(2,"0");
   return y+"-"+m+"-"+day;
 }
+
+/* Flexible gym calendar: Monday/Thursday are template locations, not fixed appointments. */
+const ADAPT_GYM_TEMPLATES = Object.freeze({
+  A:{dayKey:"monday",coverage:{quads:3,back:2.5,hamstrings:.6,glutes:.7,biceps:.6,shoulders:.4,cardio:1}},
+  B:{dayKey:"thursday",coverage:{quads:2.5,back:2.5,hamstrings:1.7,glutes:.7,biceps:.7,shoulders:.4,cardio:1}}
+});
+const ADAPT_TARGETS_14 = Object.freeze({
+  quads:4,biceps:4,triceps:4,hips:6,hip_flexion:4,lateral_core:4,
+  adductors:4,posture:6,hamstrings:3,glutes:3,back:4,shoulders:4,core:4,
+  mobility:9,conditioning:2
+});
+const ADAPT_GYM_RECOVERY_TAGS = ["quads","hamstrings","glutes","back","biceps","shoulders"];
+const ADAPT_RECOVERY_STEPS = [
+  {title:"90/90 hip switches",details:"Slow hip rotations, easy range; switch sides evenly.",equipment:["Exercise mat"]},
+  {title:"Open book",details:"Gentle upper-back rotation on both sides. Relax shoulders.",equipment:["Exercise mat"]},
+  {title:"Ankle rocks",details:"Slow ankle mobility, keep heel planted; change legs halfway.",equipment:["Wall"]},
+  {title:"Hamstring sweeps",details:"Relaxed dynamic hamstring mobility. Do not force the stretch.",equipment:["Exercise mat"]},
+  {title:"Chin tucks",details:"Light neck retraction and slow breathing; no strain.",equipment:["Exercise mat"]},
+  {title:"Wall slides",details:"Easy shoulder blade motion in a pain-free range.",equipment:["Wall"]},
+  {title:"Calm 360° breathing",details:"Breathe softly into lower ribs and belly without bracing.",equipment:["Exercise mat"]},
+  {title:"Yoga Flow B — spine + side body",details:"Slow spinal and side-body mobility, no loaded stretching.",equipment:["Exercise mat"]},
+  {title:"Cossack squat / adductor mobility",details:"Easy supported lateral shifts, stay above painful depth.",equipment:["Stable support"]},
+  {title:"Band External Rotation",details:"Very light shoulder control, stop if pinching.",equipment:["Light resistance band"]}
+];
+function adaptDateForDayKey(dayKey){
+  let offset=WEEK.indexOf(dayKey)-WEEK.indexOf(dayKeyFromToday());
+  if(offset<0) offset+=7; // Weekday tabs preview the next occurrence, including across Sunday.
+  return adaptDateKeyForOffset(offset);
+}
+function adaptDaysBetween(older,newer){
+  const a=new Date(older+"T12:00:00"),b=new Date(newer+"T12:00:00");
+  return Math.round((b.getTime()-a.getTime())/86400000);
+}
+function adaptGymLog(date){
+  return readJson(ADAPT_GYM_LOG_KEY,{})[date] || null;
+}
+function adaptGymTemplateKey(log){
+  if(log && ADAPT_GYM_TEMPLATES[log.templateKey]) return log.templateKey;
+  return log && log.dayKey==="thursday" ? "B" : "A"; // Old records had no templateKey.
+}
+function adaptGymTemplate(key){
+  const info=ADAPT_GYM_TEMPLATES[key] || ADAPT_GYM_TEMPLATES.A;
+  const plan=PROGRAM?.days?.[info.dayKey]?.gymPlan || null;
+  return {key:key,label:plan?.title || "Gym "+key,coverage:{...info.coverage},gymPlan:plan};
+}
+function adaptGymEntry(date){
+  const log=adaptGymLog(date);
+  if(!log || !["planned","done"].includes(log.status)) return null;
+  return {log:log,template:adaptGymTemplate(adaptGymTemplateKey(log))};
+}
+function adaptSuggestedGymType(){
+  const gyms=readJson(ADAPT_GYM_LOG_KEY,{});
+  const completed=Object.keys(gyms).filter(d=>d<localDateKey() && gyms[d]?.status==="done").sort();
+  if(!completed.length) return "A";
+  return adaptGymTemplateKey(gyms[completed[completed.length-1]])==="A" ? "B" : "A";
+}
+function adaptSetGymToday(willGo,chosenType){
+  const date=localDateKey(), logs=readJson(ADAPT_GYM_LOG_KEY,{});
+  if(!willGo) delete logs[date];
+  else{
+    const prior=logs[date] || {};
+    const templateKey=ADAPT_GYM_TEMPLATES[chosenType] ? chosenType : (ADAPT_GYM_TEMPLATES[prior.templateKey] ? prior.templateKey : adaptSuggestedGymType());
+    logs[date]={...prior,dayKey:dayKeyFromToday(),templateKey:templateKey,
+      status:prior.status==="done" ? "done" : "planned",
+      coverage:{...adaptGymTemplate(templateKey).coverage},
+      label:adaptGymTemplate(templateKey).label,loggedAt:new Date().toISOString()};
+  }
+  writeJson(ADAPT_GYM_LOG_KEY,logs);
+  adaptUseNormalToday=false;
+  renderHome();
+}
+function adaptMarkGymDoneToday(){
+  const date=localDateKey(),logs=readJson(ADAPT_GYM_LOG_KEY,{});
+  const prior=logs[date];
+  if(!prior || !["planned","done"].includes(prior.status)) return;
+  prior.status="done";
+  prior.coverage={...adaptGymTemplate(adaptGymTemplateKey(prior)).coverage};
+  prior.loggedAt=new Date().toISOString();
+  writeJson(ADAPT_GYM_LOG_KEY,logs);
+  adaptUseNormalToday=false;
+  renderHome();
+}
+function adaptToggleYesterdayGym(chosenType){
+  const date=adaptDateKeyForOffset(-1),logs=readJson(ADAPT_GYM_LOG_KEY,{});
+  if(logs[date]?.status==="done") delete logs[date];
+  else{
+    const templateKey=ADAPT_GYM_TEMPLATES[chosenType] ? chosenType : adaptSuggestedGymType();
+    const template=adaptGymTemplate(templateKey);
+    logs[date]={dayKey:adaptDayKeyForDateKey(date),templateKey,status:"done",
+      coverage:{...template.coverage},label:template.label,loggedAt:new Date().toISOString()};
+  }
+  writeJson(ADAPT_GYM_LOG_KEY,logs);
+  adaptUseNormalToday=false;
+  renderHome();
+}
+function adaptGymRecovery(date){
+  const entry=adaptGymEntry(date);
+  if(entry) return {kind:"today",tags:new Set(ADAPT_GYM_RECOVERY_TAGS.filter(t=>(entry.template.coverage[t]||0)>.2)),label:entry.template.label};
+  const gyms=readJson(ADAPT_GYM_LOG_KEY,{});
+  const earlier=Object.keys(gyms).filter(d=>adaptDaysBetween(d,date)===1 && ["done","planned"].includes(gyms[d]?.status));
+  if(earlier.length){
+    const template=adaptGymTemplate(adaptGymTemplateKey(gyms[earlier[0]]));
+    return {kind:"yesterday",tags:new Set(ADAPT_GYM_RECOVERY_TAGS.filter(t=>(template.coverage[t]||0)>.2)),label:template.label};
+  }
+  return null;
+}
+function adaptWithGymCalendar(base,dayKey,date){
+  const gym=adaptGymEntry(date);
+  const clean={...base};
+  clean.focus=String(base.focus||"").replace(/\s*\(gym[^)]*\)/ig,"").trim();
+  clean.gymPlan=gym ? gym.template.gymPlan : null;
+  clean.later=gym ? (gym.log.status==="done" ? "✓ Gym completed: " : "🏋 Gym planned: ")+gym.template.label : "";
+  return clean;
+}
+function adaptIsDemanding(step){
+  if(!step || step.type==="rest") return false;
+  const t=String(step.title||"").toLowerCase();
+  if(/breathing|chin tuck|wall slide|90\/90|ankle rock|open book|hamstring sweep|yoga flow|chair pose|warrior|side angle|goddess|mobility|band external rotation|face pull|prone y|snow angel/.test(t)) return false;
+  return /ab wheel|turkish get|windmill|db |dumbbell|step.up|split squat|hack squat|pull.up|leg press|leg extension|leg curl|pike push|handstand|l.sit|side plank|copenhagen|bear.plank|suitcase|reverse crunch|straight.leg lift|hip lifts|march|squat|deadlift|row|push.up|thruster/i.test(t);
+}
+function adaptRecoveryDay(base,recovery){
+  if(!recovery) return {day:base,added:[],removed:[]};
+  const used=new Set((base.steps||[]).map(s=>String(s.title||"").toLowerCase()));
+  const added=[],removed=[];
+  const newSteps=(base.steps||[]).map(step=>{
+    if(!adaptIsDemanding(step)) return {...step};
+    const tags=adaptStepMeta(step).tags;
+    const overlap=tags.some(t=>recovery.tags.has(t));
+    const gymDayExtra=recovery.kind==="today" && (Number(step.slotSec||0)>=240 || /turkish get|thruster|handstand/.test(String(step.title).toLowerCase()));
+    // Preserve the two programmed ab-wheel sessions even when gym days move.
+    if(!overlap && !gymDayExtra) return {...step};
+    const choice=ADAPT_RECOVERY_STEPS.find(c=>!used.has(c.title.toLowerCase())) || ADAPT_RECOVERY_STEPS[added.length%ADAPT_RECOVERY_STEPS.length];
+    used.add(choice.title.toLowerCase());
+    removed.push(step.title);
+    added.push(choice.title);
+    return {...choice,type:"work",slotSec:step.slotSec,adaptive:true,recovery:true};
+  });
+  const equipment=[...new Set([...(base.equipment||[]),...newSteps.flatMap(s=>s.equipment||[])])];
+  return {day:{...base,equipment,steps:newSteps,focus:(recovery.kind==="today"?"Gym-day lighter morning · ":"Post-gym recovery · ")+base.focus},added,removed};
+}
+function adaptRollingCoverage(){
+  const today=localDateKey(),start=adaptDateKeyForOffset(-13);
+  const sessions=readJson(ADAPT_SESSION_LOG_KEY,{}),gyms=readJson(ADAPT_GYM_LOG_KEY,{});
+  const allDates=[...new Set([...Object.keys(sessions),...Object.keys(gyms)])].filter(d=>d>=start && d<=today).sort();
+  const completedDates=allDates.filter(d=>Boolean(sessions[d]?.steps?.length) || gyms[d]?.status==="done");
+  const hasHistory=completedDates.length>0;
+  const elapsed=hasHistory ? Math.max(7,Math.min(14,adaptDaysBetween(completedDates[0],today)+1)) : 0;
+  const credit={};Object.keys(ADAPT_TARGETS_14).forEach(t=>credit[t]=0);
+  for(const date of allDates){
+    const daily={};
+    const session=sessions[date];
+    if(session && Array.isArray(session.steps)){
+      for(const step of session.steps){
+        const completion=step.status==="full" ? 1 : step.status==="partial" ? .5 : 0;
+        if(!completion || step.protected && /breath|pelvic floor/.test(String(step.title).toLowerCase())) continue;
+        const tags=step.adaptiveFor?.length ? step.adaptiveFor : (step.tags||adaptStepMeta(step).tags);
+        for(const tag of tags) if(tag in credit) daily[tag]=Math.max(daily[tag]||0,completion);
+      }
+    }
+    const gym=gyms[date];
+    if(gym?.status==="done"){
+      const coverage=gym.coverage && Object.keys(gym.coverage).length ? gym.coverage : adaptGymTemplate(adaptGymTemplateKey(gym)).coverage;
+      for(const [tag,value] of Object.entries(coverage)){
+        if(tag in credit) daily[tag]=Math.max(daily[tag]||0,Math.min(1,Number(value)||0));
+      }
+    }
+    for(const [tag,value] of Object.entries(daily)) credit[tag]+=value;
+  }
+  const targets={},debt={};
+  for(const [tag,target] of Object.entries(ADAPT_TARGETS_14)){
+    targets[tag]=hasHistory ? Math.max(1,Math.round(target*elapsed/14*10)/10) : 0;
+    debt[tag]=hasHistory ? Math.max(0,targets[tag]-credit[tag]) : 0;
+  }
+  return {credit,targets,debt,hasHistory,elapsed,windowDays:14,completedDays:completedDates.length};
+}
+function adaptRenderGymToday(){
+  const card=document.getElementById("gymFlexCard");
+  if(!card) return;
+  const isToday=currentDayKey===dayKeyFromToday();
+  const note=document.getElementById("gymFlexNote");
+  const btn=document.getElementById("gymTodayToggle");
+  const done=document.getElementById("gymTodayDoneBtn");
+  const select=document.getElementById("gymTemplateSelect");
+  const details=document.getElementById("gymFlexDetails");
+  const yesterdayBtn=document.getElementById("gymYesterdayToggle");
+  card.classList.toggle("not-today",!isToday);
+  btn.disabled=!isToday;
+  select.disabled=!isToday;
+  if(yesterdayBtn){
+    yesterdayBtn.disabled=!isToday;
+    const yesterdayLog=adaptGymLog(adaptDateKeyForOffset(-1));
+    yesterdayBtn.textContent=yesterdayLog?.status==="done" ? "↩ Undo yesterday’s gym" : "+ Log yesterday’s gym";
+  }
+  const entry=adaptGymEntry(localDateKey());
+  const suggested=adaptSuggestedGymType();
+  const type=entry ? entry.template.key : suggested;
+  select.value=type;
+  btn.textContent=entry ? (entry.log.status==="done" ? "↩ Undo gym check-in" : "✕ Cancel today's gym") : "🏋 I'm going to the gym today";
+  btn.classList.toggle("selected",!!entry);
+  done.classList.toggle("hidden",!isToday || !entry || entry.log.status==="done");
+  const recent=adaptGymRecovery(localDateKey());
+  if(!isToday){
+    note.textContent="Select today's tab to change your gym attendance.";
+    details.textContent="";
+  }else if(entry){
+    note.textContent=entry.log.status==="done" ? "Gym confirmed. Its workload counts toward your rolling balance." : "Gym scheduled today. Morning workout and tomorrow's recovery will adapt. Confirm after training.";
+    details.textContent=entry.template.label+" · "+(entry.log.status==="done"?"Completed":"Planned");
+  }else{
+    note.textContent="Monday and Thursday are suggestions only. Mark any day you actually plan to go.";
+    details.textContent=recent?.kind==="yesterday" ? "Recovery today after "+recent.label+"." : "Suggested next session: "+adaptGymTemplate(suggested).label;
+  }
+}
+
 function adaptStepMeta(step){
   const t=(step && step.title ? step.title : "").toLowerCase();
   const tags=[];
@@ -51,6 +264,8 @@ function adaptStepMeta(step){
   if(t.includes("handstand") || t.includes("l-sit")) tags.push("skill");
   if(t.includes("burpee") || t.includes("conditioning") || t.includes("mountain climber") || t.includes("thruster")) tags.push("conditioning");
   if(t.includes("stretch") || t.includes("forward fold") || t.includes("hamstring sweep") || t.includes("ankle rock") || t.includes("open book") || t.includes("yoga") || t.includes("chair pose") || t.includes("warrior") || t.includes("goddess") || t.includes("star pose") || t.includes("halo") || t.includes("deep squat + overhead reach")) tags.push("mobility");
+  if(t.includes("90/90") || t.includes("hip airplane") || t.includes("cossack")) tags.push("mobility");
+  if(t.includes("band external rotation")) tags.push("posture","shoulders");
   if(t.includes("windmill")) tags.push("hips","hamstrings","shoulders","core","mobility");
   if(t.includes("clean → front-rack reverse lunge") || t.includes("clean -> front-rack reverse lunge")) tags.push("core","conditioning");
   if(t.includes("bear-plank db drag")) tags.push("hips","shoulders","core","conditioning");
@@ -69,58 +284,12 @@ function adaptDebtWeight(tag){
   if(tag==="core") return .45;
   return .25;
 }
-function adaptGymPlanForDay(dayKey){
-  const later=PROGRAM && PROGRAM.days && PROGRAM.days[dayKey] ? (PROGRAM.days[dayKey].later || "") : "";
-  if(!/gym/i.test(later)) return null;
-  const tx=later.toLowerCase();
-  const coverage={};
-  if(/hack squat|leg press|cyclist squat|split squat|leg extension/.test(tx)) coverage.quads=3;
-  if(/hamstring curl|rdl|romanian|back extension/.test(tx)){ coverage.hamstrings=1.5; coverage.glutes=1; }
-  if(/pull-up|pull up|row|face pull/.test(tx)) coverage.back=2;
-  if(/face pull|rear-delt/.test(tx)) coverage.posture=.5;
-  if(/\b(?:db|biceps|hammer|supinating|strict) curl\b/.test(tx)) coverage.biceps=1;
-  if(/triceps|dip/.test(tx)) coverage.triceps=1;
-  return {label:later.replace(/^Evening gym:\s*/i,""),coverage:coverage};
+function adaptGymPlanForDay(dayKey,date){
+  const entry=adaptGymEntry(date || adaptDateForDayKey(dayKey));
+  return entry ? {label:entry.template.label,coverage:entry.template.coverage} : null;
 }
 function adaptCalculateDebt(){
-  const debt={};
-  ADAPT_BALANCE_TAGS.forEach(t=>debt[t]=0);
-  debt.skill=0; debt.conditioning=0; debt.mobility=0;
-  const sessions=readJson(ADAPT_SESSION_LOG_KEY,{});
-  const gyms=readJson(ADAPT_GYM_LOG_KEY,{});
-  const start=adaptWeekStartKey(), end=localDateKey();
-  const dates=[...new Set([...Object.keys(sessions),...Object.keys(gyms)])].filter(d=>d>=start && d<=end).sort();
-  const sub=(tag,amount)=>{ debt[tag]=Math.max(0,(debt[tag]||0)-amount); };
-  const add=(tag,amount)=>{ debt[tag]=Math.min(5,(debt[tag]||0)+amount); };
-  dates.forEach(date=>{
-    const log=sessions[date];
-    if(log && log.steps){
-      log.steps.forEach(st=>{
-        const completion=st.status==="full" ? 1 : st.status==="partial" ? .5 : 0;
-        const tags=st.tags || [];
-        if(st.adaptiveFor && st.adaptiveFor.length){
-          st.adaptiveFor.forEach(tag=>sub(tag,completion));
-          return;
-        }
-        if(st.protected) return;
-        tags.forEach(tag=>{
-          if(ADAPT_PRIORITY_RANK[tag]===undefined) return;
-          const w=adaptDebtWeight(tag);
-          if(completion>0) sub(tag,completion*w*.8);
-          if(completion<1) add(tag,(1-completion)*w);
-        });
-      });
-    }
-    const gym=gyms[date];
-    if(gym && gym.coverage){
-      Object.entries(gym.coverage).forEach(entry=>{
-        const tag=entry[0], amount=Number(entry[1])||0;
-        if(gym.status==="done") sub(tag,amount);
-        else if(gym.status==="skipped") add(tag,amount);
-      });
-    }
-  });
-  return debt;
+  return adaptRollingCoverage().debt;
 }
 function adaptBalanceLabel(value){
   if(value>=1.5) return ["Missing work","missing"];
@@ -130,11 +299,17 @@ function adaptBalanceLabel(value){
 function adaptRenderWeeklyBalance(){
   const wrap=document.getElementById("weeklyBalanceList");
   if(!wrap) return;
-  const debt=adaptCalculateDebt();
+  const balance=adaptRollingCoverage();
+  const text=document.getElementById("balanceExplanation");
+  if(text) text.textContent=balance.hasHistory ?
+    "Rolling 14-day view · "+balance.completedDays+" training days logged · only confirmed work counts" :
+    "No confirmed training logged yet. Finish a morning workout or confirm a gym visit to start tracking.";
   wrap.innerHTML=ADAPT_BALANCE_TAGS.map(tag=>{
-    const state=adaptBalanceLabel(debt[tag]||0);
+    const value=balance.credit[tag]||0, goal=balance.targets[tag]||0;
+    const state=balance.hasHistory ? adaptBalanceLabel(Math.max(0,goal-value)) : ["Waiting for logs","ok"];
     const name=tag.split("_").map(x=>x.charAt(0).toUpperCase()+x.slice(1)).join(" ");
-    return '<div class="balance-row"><strong>'+name+'</strong><span class="balance-state '+state[1]+'">'+state[0]+'</span></div>';
+    const amount=balance.hasHistory ? Math.round(value*10)/10+" / "+goal+" days" : "—";
+    return '<div class="balance-row"><strong>'+name+'</strong><span class="balance-count">'+amount+'</span><span class="balance-state '+state[1]+'">'+state[0]+'</span></div>';
   }).join("");
 }
 function adaptYesterdayPerformedTitles(){
@@ -205,97 +380,105 @@ function adaptPickCandidate(tag,usedTitles,yesterdayTitles){
   const list=adaptReplacementLibrary()[tag] || [];
   return list.find(x=>!usedTitles.has(x.title.toLowerCase()) && !yesterdayTitles.has(x.title.toLowerCase())) || null;
 }
-function adaptBuildDay(dayKey){
-  const base=PROGRAM.days[dayKey];
-  if(!base) return base;
-  if(["monday","thursday","sunday"].includes(dayKey)){ adaptInfo=null; return base; }
-  if(dayKey!==dayKeyFromToday()){ adaptInfo=null; return base; }
-  if(adaptUseNormalToday) return base;
-  adaptInfo=null;
-  const logs=readJson(ADAPT_SESSION_LOG_KEY,{});
-  if(logs[localDateKey()]) return base;
 
-  const debt=adaptCalculateDebt();
-  const tomorrow=WEEK[(WEEK.indexOf(dayKey)+1)%7];
+function adaptBuildDay(dayKey){
+  const source=PROGRAM?.days?.[dayKey];
+  if(!source) return source;
+  const date=adaptDateForDayKey(dayKey);
+  const template=adaptWithGymCalendar(source,dayKey,date);
+  const isToday=date===localDateKey();
+  if(isToday) adaptInfo=null;
+  // Never rewrite the displayed routine after its completion has already been logged.
+  if(isToday && readJson(ADAPT_SESSION_LOG_KEY,{})[date]) return template;
+  if(isToday && adaptUseNormalToday) return template;
+  const recovery=adaptGymRecovery(date);
+  const lighter=adaptRecoveryDay(template,recovery);
+  let day=lighter.day;
+  if(isToday && recovery && lighter.removed.length){
+    adaptInfo={
+      tags:[...recovery.tags],added:lighter.added,removed:lighter.removed,
+      reason:(recovery.kind==="today"?"Gym today: lighter morning. ":"Yesterday's gym: muscle recovery. ")+recovery.label
+    };
+  }
+  if(!isToday || recovery || dayKey==="sunday") return day;
+  const completed=readJson(ADAPT_SESSION_LOG_KEY,{});
+  if(completed[date]) return day;
+  return adaptAdaptForCoverage(day,dayKey,date);
+}
+function adaptAdaptForCoverage(base,dayKey,date){
+  const balance=adaptRollingCoverage();
+  if(!balance.hasHistory) return base;
+  const debt=balance.debt;
   const usedTitles=new Set((base.steps||[]).filter(s=>s.type!=="rest").map(s=>s.title.toLowerCase()));
   const yesterdayTitles=adaptYesterdayPerformedTitles();
+  const sessionLogs=readJson(ADAPT_SESSION_LOG_KEY,{});
+  const previous=sessionLogs[adaptDateKeyForOffset(-1)]?.steps||[];
+  const yesterdayTags=new Set(previous.filter(s=>s.status!=="skipped" && !s.protected).flatMap(s=>s.tags||[]));
   const candidates=[];
-  let budget=960;
-
-  const ordered=Object.keys(debt).filter(tag=>(debt[tag]||0)>=.45).sort((a,b)=>{
-    const ra=ADAPT_PRIORITY_RANK[a]===undefined?9:ADAPT_PRIORITY_RANK[a];
-    const rb=ADAPT_PRIORITY_RANK[b]===undefined?9:ADAPT_PRIORITY_RANK[b];
-    if(ra!==rb) return ra-rb;
-    return (debt[b]||0)-(debt[a]||0);
-  });
-
-  ordered.forEach(tag=>{
-    if(tag==="quads" && dayKey!=="saturday") return; // Avoid moving missed gym-leg volume onto recovery or pre-gym mornings.
-    if(budget<150) return;
-    if(adaptHasPlannedTag(dayKey,tag,true)) return;
-    if((ADAPT_PRIORITY_RANK[tag]===undefined?9:ADAPT_PRIORITY_RANK[tag])>0 && adaptHasPlannedTag(tomorrow,tag,true)) return;
-    if(ADAPT_TOP_PRIORITIES.includes(tag) && adaptHasPlannedTag(tomorrow,tag,true) && (debt[tag]||0)<1.5) return;
-    let count=1;
-    if(tag==="quads" && debt[tag]>=2) count=Math.min(3,Math.ceil(debt[tag]));
-    for(let i=0;i<count;i++){
-      const c=adaptPickCandidate(tag,usedTitles,yesterdayTitles);
-      if(!c || c.slotSec>budget) break;
-      candidates.push(Object.assign({},c,{adaptive:true}));
-      usedTitles.add(c.title.toLowerCase());
-      budget-=c.slotSec;
-    }
-  });
+  let budget=540; // Rebalance at most nine minutes of a 25–30-minute morning.
+  const tomorrow=WEEK[(WEEK.indexOf(dayKey)+1)%7];
+  const ordered=Object.keys(debt).filter(tag=>debt[tag]>=.8 && ADAPT_PRIORITY_RANK[tag]!==undefined)
+    .sort((a,b)=>(ADAPT_PRIORITY_RANK[a]||0)-(ADAPT_PRIORITY_RANK[b]||0) || (debt[b]-debt[a]));
+  for(const tag of ordered){
+    if(candidates.length>=2 || budget<180) break;
+    if(yesterdayTags.has(tag)) continue;
+    if(adaptHasPlannedTag(dayKey,tag,false)) continue;
+    if(adaptHasPlannedTag(tomorrow,tag,false)) continue;
+    const candidate=adaptPickCandidate(tag,usedTitles,yesterdayTitles);
+    if(!candidate || candidate.slotSec>budget) continue;
+    candidates.push({...candidate,adaptive:true});
+    usedTitles.add(candidate.title.toLowerCase());
+    budget-=candidate.slotSec;
+  }
   if(!candidates.length) return base;
-
-  const groups=[];
-  let pendingRest=[];
+  const groups=[],pendingRest=[];
   (base.steps||[]).forEach((s,i)=>{
-    if(s.type==="rest"){ pendingRest.push(i); return; }
-    const meta=adaptStepMeta(s);
-    const inds=pendingRest.concat([i]);
-    groups.push({indices:inds,sec:inds.reduce((sum,j)=>sum+Number(base.steps[j].slotSec||0),0),meta:meta,title:s.title});
-    pendingRest=[];
+    if(s.type==="rest"){pendingRest.push(i);return;}
+    const meta=adaptStepMeta(s), inds=pendingRest.concat([i]);
+    groups.push({indices:inds,sec:inds.reduce((sum,j)=>sum+Number(base.steps[j].slotSec||0),0),meta,title:s.title});
+    pendingRest.length=0;
   });
-
-  let insertedSec=candidates.reduce((a,s)=>a+s.slotSec,0);
-  const removable=groups.filter(g=>!g.meta.protected && g.meta.priority>0).sort((a,b)=>{
-    if(a.meta.priority!==b.meta.priority) return b.meta.priority-a.meta.priority;
-    return b.sec-a.sec;
-  });
+  const removable=groups.filter(g=>!g.meta.protected && g.meta.priority>0 && !g.meta.tags.some(tag=>candidates.some(c=>c.adaptiveFor?.includes(tag))))
+    .sort((a,b)=>b.meta.priority-a.meta.priority || b.sec-a.sec);
+  let insertedSec=candidates.reduce((sum,s)=>sum+s.slotSec,0), removedSec=0;
   const removed=[];
-  let removedSec=0;
-  for(const g of removable){
+  for(const group of removable){
     if(removedSec>=insertedSec) break;
-    removed.push(g);
-    removedSec+=g.sec;
+    removed.push(group);
+    removedSec+=group.sec;
   }
-  while(candidates.length && candidates.reduce((a,s)=>a+s.slotSec,0)>removedSec) candidates.pop();
+  while(candidates.length && candidates.reduce((sum,s)=>sum+s.slotSec,0)>removedSec) candidates.pop();
   if(!candidates.length) return base;
-  insertedSec=candidates.reduce((a,s)=>a+s.slotSec,0);
-
+  insertedSec=candidates.reduce((sum,s)=>sum+s.slotSec,0);
   const removeIndexes=new Set(removed.flatMap(g=>g.indices));
-  const kept=(base.steps||[]).filter((_,i)=>!removeIndexes.has(i)).map(s=>Object.assign({},s));
+  const kept=(base.steps||[]).filter((_,i)=>!removeIndexes.has(i)).map(s=>({...s}));
   const diff=removedSec-insertedSec;
-  if(diff>0){
-    const each=Math.floor(diff/candidates.length), rem=diff%candidates.length;
-    candidates.forEach((s,i)=>s.slotSec+=each+(i<rem?1:0));
+  const filler=[];
+  const used=new Set([...kept,...candidates].map(s=>String(s.title||"").toLowerCase()));
+  let extra=diff;
+  for(const gentle of ADAPT_RECOVERY_STEPS){
+    if(extra<90) break;
+    if(used.has(gentle.title.toLowerCase())) continue;
+    const slotSec=Math.min(180,extra);
+    filler.push({...gentle,type:"work",slotSec,adaptive:true,recovery:true});
+    used.add(gentle.title.toLowerCase());
+    extra-=slotSec;
   }
-  const newSteps=kept.slice(0,1).concat(candidates,kept.slice(1));
-  const total=newSteps.reduce((a,s)=>a+Number(s.slotSec||0),0);
-  const target=base.totalSec || (base.steps||[]).reduce((a,s)=>a+Number(s.slotSec||0),0);
+  if(extra>0) candidates[0].slotSec+=extra;
+  const newSteps=kept.slice(0,1).concat(candidates,filler,kept.slice(1));
+  const target=base.totalSec || base.steps.reduce((sum,s)=>sum+Number(s.slotSec||0),0);
+  const total=newSteps.reduce((sum,s)=>sum+Number(s.slotSec||0),0);
   if(total!==target) candidates[candidates.length-1].slotSec+=target-total;
-
-  const equipment=(base.equipment||[]).slice();
-  candidates.flatMap(c=>c.equipment||[]).forEach(x=>{ if(!equipment.includes(x)) equipment.push(x); });
-  const tags=[...new Set(candidates.flatMap(c=>c.adaptiveFor||[]))];
+  const equipment=[...new Set([...(base.equipment||[]),...candidates.flatMap(s=>s.equipment||[]),...filler.flatMap(s=>s.equipment||[])])];
   adaptInfo={
-    tags:tags,
-    added:candidates.map(c=>c.title),
+    tags:[...new Set(candidates.flatMap(c=>c.adaptiveFor||[]))],
+    added:[...candidates,...filler].map(c=>c.title),
     removed:removed.map(g=>g.title),
-    reason:"Recovering missed work: "+tags.map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(" · ")
+    reason:"14-day balance: adding undertrained categories"
   };
-  return Object.assign({},base,{focus:"Adapted · "+base.focus,equipment:equipment,steps:newSteps,totalSec:target});
+  return {...base,focus:"Balanced · "+base.focus,equipment,steps:newSteps,totalSec:target};
 }
+
 function adaptGetDisplayDay(){
   return adaptBuildDay(currentDayKey);
 }
@@ -317,6 +500,8 @@ renderHome = function(){
   const day=adaptGetDisplayDay();
   $("#dayTitle").textContent=day.label;
   $("#focusText").textContent=day.focus;
+  const heroTime=document.querySelector(".hero-card .big-time");
+  if(heroTime) heroTime.textContent=fmt(day.totalSec || day.steps.reduce((sum,s)=>sum+Number(s.slotSec||0),0));
   $("#laterText").textContent=day.later ? day.later : "";
   $("#laterText").style.display=day.later ? "block" : "none";
   $("#exerciseCount").textContent=nonRestSteps(day).length+" blocks";
@@ -327,42 +512,49 @@ renderHome = function(){
     return '<li><strong>'+s.title+'</strong>'+badge+' <span class="muted">· '+fmt(s.slotSec)+'</span><br><span class="muted tiny">'+(s.details||"")+'</span></li>';
   }).join("");
   renderGymPlan(day);
+  adaptRenderGymToday();
   $("#startBtn").textContent="START "+fmt(day.totalSec || day.steps.reduce((sum,s)=>sum+(s.slotSec||0),0));
   adaptRenderCard();
   adaptRenderWeeklyBalance();
   renderDayTabs();
+  document.querySelectorAll("#dayTabs .day-tab").forEach((tab,index)=>{
+    const date=adaptDateForDayKey(WEEK[index]);
+    const entry=adaptGymEntry(date);
+    if(!entry) return;
+    tab.textContent+=" ●";
+    tab.classList.add("gym-day-mark",entry.log.status==="done"?"gym-day-done":"gym-day-planned");
+    tab.title+=(entry.log.status==="done"?" · Gym completed":" · Gym planned");
+  });
 };
 function adaptPendingGymPrompt(){
-  const date=adaptDateKeyForOffset(-1);
-  const dayKey=adaptDayKeyForDateKey(date);
-  const plan=adaptGymPlanForDay(dayKey);
-  if(!plan) return null;
-  const logs=readJson(ADAPT_GYM_LOG_KEY,{});
-  if(logs[date]) return null;
-  return {date:date,dayKey:dayKey,plan:plan};
+  const today=localDateKey(),gyms=readJson(ADAPT_GYM_LOG_KEY,{});
+  const dates=Object.keys(gyms).filter(d=>d<today && adaptDaysBetween(d,today)<=7 && gyms[d]?.status==="planned").sort();
+  if(!dates.length) return null;
+  const date=dates[0], log=gyms[date], plan=adaptGymTemplate(adaptGymTemplateKey(log));
+  return {date,dayKey:log.dayKey||adaptDayKeyForDateKey(date),plan};
 }
 function adaptMaybeShowGymPrompt(){
-  const pending=adaptPendingGymPrompt();
-  const modal=document.getElementById("gymPrompt");
+  const pending=adaptPendingGymPrompt(), modal=document.getElementById("gymPrompt");
   if(!modal) return;
-  if(!pending){ modal.classList.add("hidden"); return; }
+  if(!pending){modal.classList.add("hidden");return;}
   modal.dataset.date=pending.date;
   modal.dataset.day=pending.dayKey;
-  document.getElementById("gymPromptText").textContent=PROGRAM.days[pending.dayKey].label+": "+pending.plan.label;
+  document.getElementById("gymPromptTitle").textContent="Did you go to the gym?";
+  document.getElementById("gymPromptText").textContent=pending.date+" · "+pending.plan.label+". Confirm actual attendance so the next workouts recover properly.";
   modal.classList.remove("hidden");
 }
 function adaptSaveGymAnswer(went){
-  const modal=document.getElementById("gymPrompt");
-  const date=modal && modal.dataset ? modal.dataset.date : null;
-  const dayKey=modal && modal.dataset ? modal.dataset.day : null;
-  if(!date || !dayKey) return;
-  const plan=adaptGymPlanForDay(dayKey);
-  const logs=readJson(ADAPT_GYM_LOG_KEY,{});
-  logs[date]={dayKey:dayKey,status:went?"done":"skipped",coverage:plan?plan.coverage:{},label:plan?plan.label:"Gym",loggedAt:new Date().toISOString()};
+  const modal=document.getElementById("gymPrompt"),date=modal?.dataset?.date;
+  if(!date) return;
+  const logs=readJson(ADAPT_GYM_LOG_KEY,{}),prior=logs[date]||{};
+  const template=adaptGymTemplate(adaptGymTemplateKey(prior));
+  logs[date]={...prior,dayKey:prior.dayKey||adaptDayKeyForDateKey(date),templateKey:template.key,
+    status:went?"done":"skipped",coverage:{...template.coverage},label:template.label,loggedAt:new Date().toISOString()};
   writeJson(ADAPT_GYM_LOG_KEY,logs);
   modal.classList.add("hidden");
   adaptUseNormalToday=false;
   renderHome();
+  adaptMaybeShowGymPrompt();
 }
 function adaptRenderSessionReview(){
   const wrap=document.getElementById("sessionReviewList");
@@ -513,6 +705,23 @@ function adaptBindUI(){
   if(normal) normal.onclick=()=>{ adaptUseNormalToday=!adaptUseNormalToday; renderHome(); };
   if(yes) yes.onclick=()=>adaptSaveGymAnswer(true);
   if(no) no.onclick=()=>adaptSaveGymAnswer(false);
+  const todayBtn=document.getElementById("gymTodayToggle");
+  const doneBtn=document.getElementById("gymTodayDoneBtn");
+  const templateSelect=document.getElementById("gymTemplateSelect");
+  const yesterdayBtn=document.getElementById("gymYesterdayToggle");
+  if(yesterdayBtn) yesterdayBtn.onclick=()=>{
+    if(currentDayKey===dayKeyFromToday()) adaptToggleYesterdayGym(templateSelect?.value);
+  };
+  if(todayBtn) todayBtn.onclick=()=>{
+    if(currentDayKey!==dayKeyFromToday()) return;
+    const log=adaptGymEntry(localDateKey());
+    adaptSetGymToday(!log,templateSelect?.value);
+  };
+  if(doneBtn) doneBtn.onclick=adaptMarkGymDoneToday;
+  if(templateSelect) templateSelect.onchange=()=>{
+    if(adaptGymEntry(localDateKey())) adaptSetGymToday(true,templateSelect.value);
+    else adaptRenderGymToday();
+  };
   $("#startBtn").onclick=startSession;
   $("#nextBtn").onclick=skipStep;
   $("#prevBtn").onclick=previousStep;

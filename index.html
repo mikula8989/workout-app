@@ -10,7 +10,7 @@
   <title>Workout</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon-192.png" />
-  <link rel="stylesheet" href="./style.css?v=19" />
+  <link rel="stylesheet" href="./style.css?v=20" />
 </head>
 <body>
   <main id="app" class="app-shell">
@@ -37,10 +37,30 @@
         <p id="laterText" class="later muted"></p>
       </section>
 
+      <section id="gymFlexCard" class="card gym-flex-card">
+        <div class="section-heading">
+          <h2>Gym schedule</h2>
+          <span class="status-pill">FLEXIBLE</span>
+        </div>
+        <p class="tiny muted" id="gymFlexNote">Choose a day you actually train. Morning sessions will adapt.</p>
+        <div class="gym-flex-controls">
+          <button id="gymTodayToggle" class="ghost gym-today-toggle" type="button">🏋 I'm going to the gym today</button>
+          <label class="gym-template-label" for="gymTemplateSelect">Session
+            <select id="gymTemplateSelect" aria-label="Gym workout type">
+              <option value="A">Gym A · Quads + Back</option>
+              <option value="B">Gym B · Pull-ups + Legs</option>
+            </select>
+          </label>
+        </div>
+        <div id="gymFlexDetails" class="tiny gym-flex-details"></div>
+        <button id="gymYesterdayToggle" type="button" class="gym-yesterday-toggle">+ Log yesterday’s gym</button>
+        <button id="gymTodayDoneBtn" type="button" class="primary gym-done-btn hidden">✓ Gym finished — log it</button>
+      </section>
+
       <section id="adaptiveCard" class="card adaptive-card hidden">
         <div class="section-heading">
           <h2>Adapted today</h2>
-          <span class="status-pill">WEEKLY BALANCE</span>
+          <span class="status-pill">14-DAY BALANCE</span>
         </div>
         <p id="adaptiveReason" class="muted"></p>
         <div id="adaptiveChanges" class="adaptive-changes"></div>
@@ -49,10 +69,10 @@
 
       <section id="weeklyBalanceCard" class="card">
         <div class="section-heading">
-          <h2>Weekly balance</h2>
+          <h2>Rolling balance</h2>
           <span class="muted">auto</span>
         </div>
-        <p class="tiny muted">Priority: Quads · Biceps · Triceps · Hips · Posture</p>
+        <p id="balanceExplanation" class="tiny muted">Loading recent completed training…</p>
         <div id="weeklyBalanceList" class="weekly-balance-list"></div>
       </section>
 
@@ -174,7 +194,7 @@
     </div>
   </main>
 
-  <script src="./app.js?v=19"></script>
-  <script src="./adaptive.js?v=19"></script>
+  <script src="./app.js?v=20"></script>
+  <script src="./adaptive.js?v=20"></script>
 </body>
 </html>
