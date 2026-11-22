@@ -1,4 +1,104 @@
 const $ = (s) => document.querySelector(s);
+// Each known exercise gets a local, offline-friendly landscape technique illustration.
+// When adding a new exercise, add its lowercase title here and put its WebP in assets/exercises/.
+const EXERCISE_IMAGE_FILES = Object.freeze({
+  "360° breathing + pelvic floor": "breathing",
+  "calm 360° breathing": "breathing",
+  "90/90 hip switches": "hip_90_90",
+  "alternating / supinating db curl": "supinating_curl",
+  "strict alternating / supinating db curl": "supinating_curl",
+  "alternating db curl": "supinating_curl",
+  "ankle rocks": "ankle_rocks",
+  "assisted l-sit progression on yoga blocks": "tuck_lsit",
+  "tuck l-sit on yoga blocks": "tuck_lsit",
+  "band external rotation": "band_external_rotation",
+  "band face pull + external rotation": "facepull_external_rotation",
+  "band-resisted standing march": "band_march",
+  "bear-plank db drag": "bear_plank_drag",
+  "chair pose": "chair_pose",
+  "chin tucks": "chin_tucks",
+  "close-grip db push-ups": "close_grip_pushups",
+  "cossack squat / adductor mobility": "cossack_squat",
+  "db halo + shoulder mobility": "db_halo",
+  "db hammer curl": "hammer_curl",
+  "hammer curl": "hammer_curl",
+  "db windmill": "db_windmill",
+  "db lateral raise": "lateral_raise",
+  "db overhead triceps extension": "overhead_triceps",
+  "db pullover dead bug": "pullover_deadbug",
+  "db squat-to-press / thruster": "thruster",
+  "db triceps kickback": "triceps_kickback",
+  "deep squat + overhead reach": "deep_squat_reach",
+  "extended side angle — left": "extended_side_angle",
+  "extended side angle — right": "extended_side_angle",
+  "goddess squat": "goddess_squat",
+  "half-kneeling 1-arm db shoulder press": "half_kneeling_press",
+  "hamstring sweeps": "hamstring_sweeps",
+  "handstand practice": "handstand",
+  "knee-supported copenhagen plank": "copenhagen_short",
+  "knee-supported side plank leg raise": "sideplank_leg_raise",
+  "knee-supported side plank hold": "sideplank_leg_raise",
+  "kneeling ab wheel": "ab_wheel",
+  "low step-ups": "low_stepups",
+  "stable step-ups": "low_stepups",
+  "open book": "open_book",
+  "pike push-ups": "pike_pushups",
+  "prone y–t–w": "prone_ytw",
+  "reverse crunch": "reverse_crunch",
+  "seated bent-knee hip lifts": "seated_knee_lift",
+  "seated straight-leg lift / compression": "seated_straight_leg_lift",
+  "suitcase march + opposite knee drive": "suitcase_march",
+  "supported hip airplanes": "hip_airplanes",
+  "turkish get-up": "turkish_getup",
+  "wall slides": "wall_slides",
+  "warrior ii — left": "warrior_ii",
+  "warrior ii — right": "warrior_ii",
+  "yoga flow a — front/back chain": "yoga_flow_a",
+  "yoga flow b — spine + side body": "yoga_flow_b",
+  "short-stance db split squat": "split_squat",
+  "supported short-stance split squat": "split_squat",
+  "goblet squat": "goblet_squat",
+  "single-leg db rdl": "single_leg_rdl",
+  "one-arm db row": "one_arm_db_row",
+  "close-grip db floor press": "floor_press",
+  "side-lying adductor raise": "adductor_raise",
+  "dead-bug heel taps": "deadbug_heeltaps",
+  "reverse snow angels": "reverse_snow_angels",
+  "db romanian deadlift": "db_rdl",
+  "hack squat": "hack_squat",
+  "negative pull-ups": "negative_pullup",
+  "leg extension": "leg_extension",
+  "chest-supported row": "chest_supported_row",
+  "45° back extension": "back_extension",
+  "leg press": "leg_press",
+  "seated hamstring curl": "seated_ham_curl",
+  "bike + hack-squat warm-up": "cardio_bike",
+  "bike + leg-press ramp sets": "cardio_bike",
+  "cardio": "cardio_bike",
+  "zone 2 cardio": "cardio_bike",
+  "pull-ups / assisted pull-ups": "pullup"
+});
+function exerciseImageForStep(step){
+  if(!step || step.type==="rest") return null;
+  if(typeof step.image==="string" && step.image.trim()) return step.image;
+  const slug=EXERCISE_IMAGE_FILES[String(step.title || "").trim().toLowerCase()];
+  return slug ? "./assets/exercises/"+slug+".webp" : null;
+}
+function openExerciseImage(src, title){
+  const modal=document.getElementById("exerciseImageModal");
+  if(!modal || !src) return;
+  document.getElementById("exerciseLargeImg").src=src;
+  document.getElementById("exerciseLargeImg").alt=title+" exercise illustrated";
+  document.getElementById("exerciseLargeTitle").textContent=title;
+  modal.classList.remove("hidden");
+  document.body.classList.add("exercise-modal-open");
+  document.getElementById("exerciseImageClose").focus();
+}
+function closeExerciseImage(){
+  document.getElementById("exerciseImageModal")?.classList.add("hidden");
+  document.body.classList.remove("exercise-modal-open");
+}
+
 const homeView = $("#homeView"), sessionView = $("#sessionView"), doneView = $("#doneView");
 
 let PROGRAM = null;
@@ -74,6 +174,25 @@ function renderGymPlan(day){
   card.classList.remove("hidden");
   title.textContent=plan.title+" · "+fmt(plan.totalSec || plan.steps.reduce((a,s)=>a+(s.slotSec||0),0));
   list.innerHTML=plan.steps.map(s=>'<li><strong>'+s.title+'</strong> <span class="muted">· '+fmt(s.slotSec||0)+'</span><br><span class="muted tiny">'+(s.details||"")+'</span></li>').join("");
+  plan.steps.forEach((step,index)=>{
+    const imgSrc=exerciseImageForStep(step);
+    if(!imgSrc) return;
+    const li=list.children[index];
+    if(!li) return;
+    const button=document.createElement("button");
+    button.className="gym-exercise-preview";
+    button.type="button";
+    button.setAttribute("aria-label","Show "+step.title+" exercise illustration");
+    const img=document.createElement("img");
+    img.src=imgSrc;
+    img.alt="";
+    img.loading="lazy";
+    const label=document.createElement("span");
+    label.textContent="View movement ↗";
+    button.append(img,label);
+    button.onclick=()=>openExerciseImage(imgSrc,step.title);
+    li.appendChild(button);
+  });
 }
 
 function renderDayTabs(){
@@ -381,13 +500,36 @@ function renderPoseGuide(step){
   if(!box || !art) return;
 
   art.innerHTML="";
-  art.classList.remove("mirror","exercise-demo-art");
+  art.classList.remove("mirror","exercise-demo-art","exercise-landscape-art");
   art.style.backgroundImage="none";
   art.style.backgroundSize="";
   art.style.backgroundRepeat="";
   art.style.backgroundPosition="";
   art.removeAttribute("role");
   art.removeAttribute("aria-label");
+
+  const localImage=exerciseImageForStep(step);
+  if(localImage){
+    art.classList.add("exercise-demo-art","exercise-landscape-art");
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="exercise-image-open";
+    button.setAttribute("aria-label","Enlarge illustration for "+step.title);
+    const img=document.createElement("img");
+    img.className="exercise-demo-img";
+    img.src=localImage;
+    img.alt=step.title+": side-by-side exercise positions";
+    img.loading="eager";
+    img.decoding="async";
+    img.onerror=()=>box.classList.add("hidden");
+    button.appendChild(img);
+    button.onclick=()=>openExerciseImage(localImage,step.title);
+    art.appendChild(button);
+    document.getElementById("poseGuideName").textContent=step.title;
+    document.getElementById("poseGuideSide").textContent="Tap to enlarge";
+    box.classList.remove("hidden");
+    return;
+  }
 
   if(step.poseKey && step.type!=="rest"){
     art.style.backgroundImage='url("./poses/yoga_pose_sprite_clean.webp")';
@@ -990,6 +1132,13 @@ document.getElementById("normalWorkoutBtn").onclick=()=>{
 document.getElementById("gymYesBtn").onclick=()=>saveGymAnswer(true);
 document.getElementById("gymNoBtn").onclick=()=>saveGymAnswer(false);
 
+document.getElementById("exerciseImageClose").onclick=closeExerciseImage;
+document.getElementById("exerciseImageModal").addEventListener("click",e=>{
+  if(e.target.id==="exerciseImageModal") closeExerciseImage();
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape" && !document.getElementById("exerciseImageModal").classList.contains("hidden")) closeExerciseImage();
+});
 $("#startBtn").onclick=startSession;
 $("#pauseBtn").onclick=togglePause;
 $("#nextBtn").onclick=skipStep;

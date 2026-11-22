@@ -10,7 +10,7 @@
   <title>Workout</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon-192.png" />
-  <link rel="stylesheet" href="./style.css?v=13" />
+  <link rel="stylesheet" href="./style.css?v=19" />
 </head>
 <body>
   <main id="app" class="app-shell">
@@ -161,9 +161,20 @@
         </div>
       </div>
     </div>
+
+    <div id="exerciseImageModal" class="exercise-zoom-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="exerciseLargeTitle">
+      <div class="exercise-zoom-card">
+        <div class="exercise-zoom-head">
+          <h2 id="exerciseLargeTitle">Exercise</h2>
+          <button id="exerciseImageClose" class="ghost" type="button" aria-label="Close enlarged illustration">✕</button>
+        </div>
+        <img id="exerciseLargeImg" alt="" />
+        <p class="exercise-zoom-caption">Movement positions from left to right. Move slowly and control each repetition.</p>
+      </div>
+    </div>
   </main>
 
-  <script src="./app.js?v=18"></script>
-  <script src="./adaptive.js?v=18"></script>
+  <script src="./app.js?v=19"></script>
+  <script src="./adaptive.js?v=19"></script>
 </body>
 </html>

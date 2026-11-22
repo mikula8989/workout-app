@@ -455,3 +455,85 @@ h2{margin:0;font-size:20px}
   font-size:11px;
   text-align:right;
 }
+
+
+/* v19: Large side-by-side exercise illustrations, consistent across the program. */
+.pose-guide .pose-art.exercise-landscape-art{
+  aspect-ratio:16 / 9 !important;
+  width:100% !important;
+  height:auto !important;
+  padding:0 !important;
+  margin:0 !important;
+  background:#f8f6f1 !important;
+  overflow:hidden !important;
+}
+.exercise-image-open{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  padding:0;
+  border:0;
+  background:#f8f6f1;
+  cursor:zoom-in;
+}
+.exercise-image-open .exercise-demo-img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain !important;
+}
+.gym-exercise-preview{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:5px 9px 5px 5px;
+  margin:9px 0 0;
+  border-radius:11px;
+  border:1px solid #45454a;
+  background:#222226;
+  color:#eee;
+  font-size:12px;
+  font-weight:700;
+  cursor:zoom-in;
+}
+.gym-exercise-preview img{
+  width:88px;
+  height:50px;
+  object-fit:cover;
+  border-radius:7px;
+}
+.exercise-zoom-overlay{
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  background:rgba(0,0,0,.92);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:max(10px,env(safe-area-inset-top)) 8px max(10px,env(safe-area-inset-bottom));
+}
+.exercise-zoom-overlay.hidden{display:none!important}
+.exercise-modal-open{overflow:hidden}
+.exercise-zoom-card{
+  width:min(960px,100%);
+  max-height:94dvh;
+  overflow:auto;
+  background:#202024;
+  border-radius:18px;
+  border:1px solid #45454a;
+  padding:12px;
+  box-shadow:0 22px 65px rgba(0,0,0,.48);
+}
+.exercise-zoom-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}
+.exercise-zoom-head h2{font-size:18px;line-height:1.2}
+.exercise-zoom-head button{flex-shrink:0}
+.exercise-zoom-card img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;border-radius:9px;background:#f8f6f1}
+.exercise-zoom-caption{margin:9px 4px 0;font-size:12px;line-height:1.4;color:#bcbcc3}
+@media(max-width:520px){
+  .app-shell{padding-left:9px;padding-right:9px}
+  .phase-card:has(.pose-guide:not(.hidden)){padding-left:7px !important;padding-right:7px !important}
+  .pose-guide:has(.exercise-landscape-art){border-radius:14px !important;margin-top:8px!important}
+  .pose-guide:has(.exercise-landscape-art) .pose-guide-caption{padding:7px 8px 9px!important;font-size:12px!important}
+  .pose-guide:has(.exercise-landscape-art) .pose-guide-caption .muted{font-size:10px!important}
+  .exercise-zoom-card{padding:8px}
+  .exercise-zoom-head h2{font-size:15px}
+}
