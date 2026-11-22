@@ -1,4 +1,4 @@
-const CACHE = "workout-app-v20-flexible-gym-calendar";
+const CACHE = "workout-app-v21-short-stance-split-squat";
 const SHELL = ["./program.json","./adaptive.js","./","./index.html","./style.css","./app.js","./manifest.json","./icon-192.png","./icon-512.png","./program-overrides.json","./gym-overrides.json","./poses/chair_pose.jpg","./poses/warrior_ii.jpg","./poses/reverse_warrior.jpg","./poses/extended_side_angle.jpg","./poses/goddess_squat.jpg","./poses/wide_leg_forward_fold.jpg","./poses/star_pose.jpg","./poses/yoga_pose_sprite_full.webp","./poses/yoga_pose_sprite_clean.webp"];
 const EXERCISE_IMAGES = [
   "./assets/exercises/ab_wheel.webp",
@@ -53,6 +53,7 @@ const EXERCISE_IMAGES = [
   "./assets/exercises/sideplank_leg_raise.webp",
   "./assets/exercises/single_leg_rdl.webp",
   "./assets/exercises/split_squat.webp",
+  "./assets/exercises/split_squat_v2.webp",
   "./assets/exercises/suitcase_march.webp",
   "./assets/exercises/supinating_curl.webp",
   "./assets/exercises/thruster.webp",
