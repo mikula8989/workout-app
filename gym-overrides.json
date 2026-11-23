@@ -1,100 +1,105 @@
 {
-  "version": "2026-11-21-v3-gym-50min",
+  "version": "2026-11-23-v22-gym-65-70-min",
   "days": {
     "monday": {
-      "later": "Evening gym: Hack Squat · Negative Pull-ups · Leg Extension · Chest-Supported Row · 45° Back Extension · Zone 2 (50 min)",
+      "later": "Optional Gym A when scheduled: split squat · leg extension · pull-up skill · row · back extension · bike",
       "gymPlan": {
-        "title": "Gym A — Quads + Back",
-        "totalSec": 3000,
+        "title": "Gym A — Quads + Pull-Up Skill + Back Extension",
+        "totalSec": 3870,
         "steps": [
           {
-            "title": "Bike + hack-squat warm-up",
-            "slotSec": 300,
-            "details": "Easy bike ~3 min plus 2 progressively heavier ramp sets; do not rush into working load."
-          },
-          {
-            "title": "Hack Squat",
-            "slotSec": 600,
-            "details": "3 × 8–12 · 2–3 RIR · lower 2–3 sec · rest ~90–120 sec · comfortable pain-free knee/hip depth."
-          },
-          {
-            "title": "Negative Pull-Ups",
+            "title": "Bike + ramp warm-up",
             "slotSec": 360,
-            "details": "3 × 3–5 controlled lowers, each 4–6 sec. Keep shoulders comfortable."
+            "details": "4 min easy bike, then gradual low-load practice sets for split squat and knee extension. No exhausting warm-up."
+          },
+          {
+            "title": "Supported Short-Stance Split Squat",
+            "slotSec": 840,
+            "details": "3 × 8–12 PER LEG · start left, match right · 2–3 RIR · short stance, mostly upright torso, front knee travels forward comfortably, 2–3 s lowering · ~90–120 s between left+right pairs · gradual load/ROM progression."
           },
           {
             "title": "Leg Extension",
-            "slotSec": 420,
-            "details": "3 × 10–15 · 1–2 RIR · controlled eccentric · ~60–75 sec rests."
+            "slotSec": 480,
+            "details": "3 × 10–15 · 1–2 RIR · slow 2–3 sec eccentric and controlled knee extension · ~90 s rest. Progress clean reps then weight; do not judge by next-day soreness."
+          },
+          {
+            "title": "Negative Pull-Ups",
+            "slotSec": 450,
+            "details": "3 × 3–5 controlled 4–6-sec lowers (or 3–6 assisted FULL reps if possible) · 2–3 reps in reserve in assisted sets · avoid shoulder discomfort; track total quality reps."
           },
           {
             "title": "Chest-Supported Row",
             "slotSec": 300,
-            "details": "2 × 8–12 · 2–3 RIR · no torso momentum."
+            "details": "2 × 8–12 · 2–3 RIR · maintain scapular pulling strength, not maximal back hypertrophy."
           },
           {
             "title": "45° Back Extension",
-            "slotSec": 240,
-            "details": "2 × 10–15 · hip-hinge emphasis, controlled comfortable low-back position."
+            "slotSec": 360,
+            "details": "2 × 10–15 · controlled 2-sec lower; hip-hinge with comfortable lumbar posture, avoid loaded hyperextension or radiating symptoms."
           },
           {
-            "title": "Zone 2 cardio",
-            "slotSec": 600,
-            "details": "Bike or StairMaster; steady conversational intensity."
+            "title": "Zone 2 cardio bike",
+            "slotSec": 900,
+            "details": "15 min steady moderate bike, conversational breathing. If legs very fatigued, reduce intensity rather than grinding."
           },
           {
             "title": "Equipment transitions",
             "slotSec": 180,
-            "details": "Move calmly between stations; breathe and set up the next station."
+            "details": "Set up machines and drink water."
           }
         ]
       }
     },
     "thursday": {
-      "later": "Evening gym: Pull-ups · Leg Press · Supported Short-Stance Split Squat · Leg Extension · Seated Hamstring Curl · cardio (50 min)",
+      "later": "Optional Gym B when scheduled: pull-ups · leg press · split squat · leg extension · ham curl · TRX face pull · stairs",
       "gymPlan": {
-        "title": "Gym B — Pull-Ups + Unilateral Quads",
-        "totalSec": 3000,
+        "title": "Gym B — Quads + Pull-Ups + TRX Face Pull",
+        "totalSec": 4050,
         "steps": [
           {
             "title": "Bike + leg-press ramp sets",
-            "slotSec": 300,
-            "details": "Easy bike and gradual leg-press warm-up; no fatiguing mobility circuit."
+            "slotSec": 360,
+            "details": "4 min easy bike plus two smooth leg-press ramp sets; keep knees comfortable."
           },
           {
             "title": "Pull-Ups / Assisted Pull-Ups",
-            "slotSec": 420,
-            "details": "3 × 4–8 clean reps · ~2–3 RIR · full controlled range."
+            "slotSec": 600,
+            "details": "4 × 4–8 clean reps · 2–3 RIR · consistent full controlled range and ~2 min rest; track total clean reps and assistance used. Goal: more unassisted reps, not maximum back size."
           },
           {
             "title": "Leg Press",
-            "slotSec": 540,
-            "details": "3 × 10–15 · knee-friendly depth, comfortable feet placement, full-foot pressure, 2–3 RIR."
+            "slotSec": 450,
+            "details": "2 × 10–12 · 2–3 RIR · slightly lower foot placement only if heels stay planted, pelvis stable, knees/hips pain-free. Use knee-friendly depth; can substitute heel-elevated Smith squat."
           },
           {
             "title": "Supported Short-Stance Split Squat",
-            "slotSec": 540,
-            "details": "2 × 8–10 per leg · start left, match reps right · front knee travels forward comfortably · 2–3 sec lower."
+            "slotSec": 660,
+            "details": "2 × 8–12 PER LEG · 2–3 RIR · control front-knee travel and mostly upright torso; 90–120 s between pairs; start weaker side."
           },
           {
             "title": "Leg Extension",
-            "slotSec": 300,
-            "details": "2 × 12–15 · controlled descent, 1–2 RIR."
+            "slotSec": 480,
+            "details": "3 × 12–15 · 1–2 RIR · 2–3 sec lower · ~90 s rest. Directly prioritize quads."
           },
           {
             "title": "Seated Hamstring Curl",
             "slotSec": 300,
-            "details": "2 × 10–15 · smooth full pain-free range; avoid back movement."
+            "details": "2 × 10–15 · 2–3 RIR · controlled pain-free range, no abrupt increase when hamstrings sore. Maintenance, not quad work."
           },
           {
-            "title": "Cardio",
-            "slotSec": 480,
-            "details": "Easy/moderate bike; if time permits elsewhere, supplement with Sunday swim or walking."
+            "title": "TRX Face Pull",
+            "slotSec": 420,
+            "details": "3 × 10–15 with suspension straps (TRX), pull hands toward face and rotate outward only as pain-free; 1–2 RIR, progress by changing body angle. Keep neck long, ribs controlled, allow shoulder blades to move naturally."
+          },
+          {
+            "title": "StairMaster cardio",
+            "slotSec": 600,
+            "details": "10 min easy/moderate continuous stair climbing; if heavy quad fatigue or knee discomfort, substitute low-resistance bike."
           },
           {
             "title": "Equipment transitions",
-            "slotSec": 120,
-            "details": "Switch machines and set equipment safely."
+            "slotSec": 180,
+            "details": "Change machines and rest before harder sets."
           }
         ]
       }

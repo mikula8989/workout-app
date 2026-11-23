@@ -35,15 +35,15 @@ function adaptWeekStartKey(){
 
 /* Flexible gym calendar: Monday/Thursday are template locations, not fixed appointments. */
 const ADAPT_GYM_TEMPLATES = Object.freeze({
-  A:{dayKey:"monday",coverage:{quads:3,back:2.5,hamstrings:.6,glutes:.7,biceps:.6,shoulders:.4,cardio:1}},
-  B:{dayKey:"thursday",coverage:{quads:2.5,back:2.5,hamstrings:1.7,glutes:.7,biceps:.7,shoulders:.4,cardio:1}}
+  A:{dayKey:"monday",coverage:{quads:1,back:1,hamstrings:.6,glutes:.7,biceps:.3,shoulders:.4,conditioning:1}},
+  B:{dayKey:"thursday",coverage:{quads:1,back:1,hamstrings:1,glutes:.5,biceps:.3,shoulders:.5,posture:1,conditioning:1}}
 });
 const ADAPT_TARGETS_14 = Object.freeze({
   quads:4,biceps:4,triceps:4,hips:6,hip_flexion:4,lateral_core:4,
   adductors:4,posture:6,hamstrings:3,glutes:3,back:4,shoulders:4,core:4,
   mobility:9,conditioning:2
 });
-const ADAPT_GYM_RECOVERY_TAGS = ["quads","hamstrings","glutes","back","biceps","shoulders"];
+const ADAPT_GYM_RECOVERY_TAGS = ["quads","hamstrings","glutes","back","shoulders"];
 const ADAPT_RECOVERY_STEPS = [
   {title:"90/90 hip switches",details:"Slow hip rotations, easy range; switch sides evenly.",equipment:["Exercise mat"]},
   {title:"Open book",details:"Gentle upper-back rotation on both sides. Relax shoulders.",equipment:["Exercise mat"]},
@@ -149,8 +149,8 @@ function adaptWithGymCalendar(base,dayKey,date){
 function adaptIsDemanding(step){
   if(!step || step.type==="rest") return false;
   const t=String(step.title||"").toLowerCase();
-  if(/breathing|chin tuck|wall slide|90\/90|ankle rock|open book|hamstring sweep|yoga flow|chair pose|warrior|side angle|goddess|mobility|band external rotation|face pull|prone y|snow angel/.test(t)) return false;
-  return /ab wheel|turkish get|windmill|db |dumbbell|step.up|split squat|hack squat|pull.up|leg press|leg extension|leg curl|pike push|handstand|l.sit|side plank|copenhagen|bear.plank|suitcase|reverse crunch|straight.leg lift|hip lifts|march|squat|deadlift|row|push.up|thruster/i.test(t);
+  if(/breathing|chin tuck|wall slide|90\/90|ankle rock|open book|hamstring sweep|yoga flow|chair pose|warrior|side angle|goddess|mobility|band external rotation|face pull|prone y|snow angel|seated straight-leg lift/.test(t)) return false;
+  return /ab wheel|turkish get|windmill|db |dumbbell|step.up|split squat|hack squat|pull.up|leg press|leg extension|leg curl|pike push|handstand|l.sit|side plank|copenhagen|bear.plank|suitcase|reverse crunch|straight.leg lift|hip lifts|glute bridge|march|squat|deadlift|row|push.up|thruster/i.test(t);
 }
 function adaptRecoveryDay(base,recovery){
   if(!recovery) return {day:base,added:[],removed:[]};
@@ -160,7 +160,9 @@ function adaptRecoveryDay(base,recovery){
     if(!adaptIsDemanding(step)) return {...step};
     const tags=adaptStepMeta(step).tags;
     const overlap=tags.some(t=>recovery.tags.has(t));
-    const gymDayExtra=recovery.kind==="today" && (Number(step.slotSec||0)>=240 || /turkish get|thruster|handstand/.test(String(step.title).toLowerCase()));
+    const gymDayExtra=recovery.kind==="today" && /turkish get|thruster|handstand|step.up|split squat|goblet squat|db romanian deadlift/.test(String(step.title).toLowerCase());
+    // Direct biceps/triceps remain home-only priorities: gym has no direct arm training.
+    if(recovery.kind==="today" && tags.some(t=>t==="biceps"||t==="triceps")) return {...step};
     // Preserve the two programmed ab-wheel sessions even when gym days move.
     if(!overlap && !gymDayExtra) return {...step};
     const choice=ADAPT_RECOVERY_STEPS.find(c=>!used.has(c.title.toLowerCase())) || ADAPT_RECOVERY_STEPS[added.length%ADAPT_RECOVERY_STEPS.length];
@@ -195,7 +197,8 @@ function adaptRollingCoverage(){
     if(gym?.status==="done"){
       const coverage=gym.coverage && Object.keys(gym.coverage).length ? gym.coverage : adaptGymTemplate(adaptGymTemplateKey(gym)).coverage;
       for(const [tag,value] of Object.entries(coverage)){
-        if(tag in credit) daily[tag]=Math.max(daily[tag]||0,Math.min(1,Number(value)||0));
+        const key=tag==="cardio" ? "conditioning" : tag;
+        if(key in credit) daily[key]=Math.max(daily[key]||0,Math.min(1,Number(value)||0));
       }
     }
     for(const [tag,value] of Object.entries(daily)) credit[tag]+=value;
@@ -252,11 +255,11 @@ function adaptStepMeta(step){
   if(t.includes("360° breathing") || t.includes("pelvic floor")){ tags.push("core"); protectedStep=true; }
   if(t.includes("deep core + control primer")){ tags.push("core"); protectedStep=true; }
   if(t.includes("chin tuck") || t.includes("wall slide") || t.includes("y–t–w") || t.includes("y-t-w") || t.includes("reverse snow angel") || t.includes("face pull") || t.includes("deep squat + overhead reach")) tags.push("posture");
-  if(t.includes("90/90") || t.includes("hip airplane") || t.includes("copenhagen") || t.includes("side plank leg raise") || t.includes("reverse lunge") || t.includes("half-kneeling") || t.includes("turkish get-up") || t.includes("deep squat + overhead reach")) tags.push("hips");
+  if(t.includes("90/90") || t.includes("hip airplane") || t.includes("glute bridge") || t.includes("copenhagen") || t.includes("side plank leg raise") || t.includes("reverse lunge") || t.includes("half-kneeling") || t.includes("turkish get-up") || t.includes("deep squat + overhead reach")) tags.push("hips");
   if(t.includes("curl")) tags.push("biceps");
   if(t.includes("triceps") || t.includes("close-grip")) tags.push("triceps");
   if(t.includes("goblet squat") || t.includes("split squat") || t.includes("step-up") || t.includes("hack squat") || t.includes("leg press") || t.includes("leg extension") || t.includes("cyclist squat") || t.includes("reverse lunge") || t.includes("thruster")) tags.push("quads");
-  if(t.includes("split squat") || t.includes("step-up") || t.includes("deadlift") || t.includes("back extension") || t.includes("reverse lunge") || t.includes("thruster")) tags.push("glutes");
+  if(t.includes("glute bridge") || t.includes("split squat") || t.includes("step-up") || t.includes("deadlift") || t.includes("back extension") || t.includes("reverse lunge") || t.includes("thruster")) tags.push("glutes");
   if(t.includes("hamstring curl") || t.includes("romanian deadlift") || t.includes("deadlift") || t.includes("back extension")) tags.push("hamstrings");
   if(t.includes("pull-up") || t.includes("pull up") || t.includes("row") || t.includes("pulldown")) tags.push("back");
   if(t.includes("lateral raise") || t.includes("shoulder press") || t.includes("pike push") || t.includes("handstand") || t.includes("rear-delt") || t.includes("halo") || t.includes("thruster") || t.includes("turkish get-up") || t.includes("deep squat + overhead reach")) tags.push("shoulders");
@@ -273,7 +276,8 @@ function adaptStepMeta(step){
   if(t.includes("band-resisted standing march") || t.includes("seated bent-knee hip lifts") || t.includes("seated straight-leg lift") || t.includes("l-sit")) tags.push("hip_flexion");
   if(t.includes("side plank") || t.includes("bear-plank db drag") || t.includes("windmill")) tags.push("lateral_core");
   if(t.includes("copenhagen") || t.includes("adductor") || t.includes("cossack")) tags.push("adductors");
-  if(t.includes("ab wheel")) protectedStep=true;
+  if(t.includes("ab wheel") || t.includes("seated straight-leg lift") || t.includes("hamstring sweep") || t.includes("yoga flow a")) protectedStep=true;
+  if(t.includes("single-leg glute bridge")) tags.push("glutes","hips","core");
   const unique=[...new Set(tags)];
   const priority=unique.length ? Math.min(...unique.map(x=>ADAPT_PRIORITY_RANK[x]===undefined?3:ADAPT_PRIORITY_RANK[x])) : 3;
   return {tags:unique,priority:priority,protected:protectedStep};
@@ -423,7 +427,7 @@ function adaptAdaptForCoverage(base,dayKey,date){
     if(candidates.length>=2 || budget<180) break;
     if(yesterdayTags.has(tag)) continue;
     if(adaptHasPlannedTag(dayKey,tag,false)) continue;
-    if(adaptHasPlannedTag(tomorrow,tag,false)) continue;
+    if(adaptHasPlannedTag(tomorrow,tag,true)) continue;
     const candidate=adaptPickCandidate(tag,usedTitles,yesterdayTitles);
     if(!candidate || candidate.slotSec>budget) continue;
     candidates.push({...candidate,adaptive:true});
