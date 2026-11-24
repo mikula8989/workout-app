@@ -13,6 +13,8 @@ let adaptSessionTotalSec = 1800;
 let adaptPendingReview = null;
 let adaptInfo = null;
 let adaptUseNormalToday = false;
+// Keep the user’s unconfirmed A/B selection across renderHome() redraws.
+let adaptSelectedGymType = null;
 
 function adaptDateKeyForOffset(offsetDays){
   const d=new Date();
@@ -100,6 +102,8 @@ function adaptSetGymToday(willGo,chosenType){
       label:adaptGymTemplate(templateKey).label,loggedAt:new Date().toISOString()};
   }
   writeJson(ADAPT_GYM_LOG_KEY,logs);
+  if(willGo) adaptSelectedGymType=ADAPT_GYM_TEMPLATES[chosenType] ? chosenType : adaptGymTemplateKey(logs[date]);
+  else adaptSelectedGymType=null;
   adaptUseNormalToday=false;
   renderHome();
 }
@@ -230,7 +234,8 @@ function adaptRenderGymToday(){
   }
   const entry=adaptGymEntry(localDateKey());
   const suggested=adaptSuggestedGymType();
-  const type=entry ? entry.template.key : suggested;
+  // For an unplanned day, display the user’s tentative choice rather than resetting to the suggestion.
+  const type=entry ? entry.template.key : (adaptSelectedGymType || suggested);
   select.value=type;
   btn.textContent=entry ? (entry.log.status==="done" ? "↩ Undo gym check-in" : "✕ Cancel today's gym") : "🏋 I'm going to the gym today";
   btn.classList.toggle("selected",!!entry);
@@ -723,7 +728,9 @@ function adaptBindUI(){
   };
   if(doneBtn) doneBtn.onclick=adaptMarkGymDoneToday;
   if(templateSelect) templateSelect.onchange=()=>{
-    if(adaptGymEntry(localDateKey())) adaptSetGymToday(true,templateSelect.value);
+    if(currentDayKey!==dayKeyFromToday()) return;
+    adaptSelectedGymType=templateSelect.value;
+    if(adaptGymEntry(localDateKey())) adaptSetGymToday(true,adaptSelectedGymType);
     else adaptRenderGymToday();
   };
   $("#startBtn").onclick=startSession;
