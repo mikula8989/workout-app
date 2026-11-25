@@ -15,6 +15,8 @@ let adaptInfo = null;
 let adaptUseNormalToday = false;
 // Keep the user’s unconfirmed A/B selection across renderHome() redraws.
 let adaptSelectedGymType = null;
+let adaptCurrentSessionDate = null;
+let adaptWasEarlyExit = false;
 
 function adaptDateKeyForOffset(offsetDays){
   const d=new Date();
@@ -390,6 +392,148 @@ function adaptPickCandidate(tag,usedTitles,yesterdayTitles){
   return list.find(x=>!usedTitles.has(x.title.toLowerCase()) && !yesterdayTitles.has(x.title.toLowerCase())) || null;
 }
 
+
+// Final pass for every displayed/started routine. Adaptive substitutions used to
+// leave orphaned transition blocks, including REST followed immediately by REST.
+function adaptNormalizeDay(day){
+  if(!day || !Array.isArray(day.steps)) return day;
+  const normalized=[];
+  for(const item of day.steps){
+    if(!item || !Number.isFinite(Number(item.slotSec)) || Number(item.slotSec)<=0) continue;
+    const step={...item};
+    if(step.type==="rest" && (!normalized.length || normalized[normalized.length-1].type==="rest")) continue;
+    normalized.push(step);
+  }
+  while(normalized.length && normalized[normalized.length-1].type==="rest") normalized.pop();
+  const totalSec=normalized.reduce((sum,step)=>sum+Number(step.slotSec||0),0);
+  return {...day,steps:normalized,totalSec};
+}
+function adaptPlannedSetsFromLog(step,dayKey){
+  if(Number(step.plannedSets)>0) return Number(step.plannedSets);
+  const template=(PROGRAM?.days?.[dayKey]?.steps||[]).find(s=>s.title===step.title);
+  const scheme=repScheme(template);
+  return scheme?.sets || 0;
+}
+function adaptCompletedSets(step,total){
+  if(step.status==="skipped") return 0;
+  if(step.status==="full") return total;
+  if(Number.isFinite(Number(step.completedSets)) && step.completedSets!==null && step.completedSets!==undefined) return Math.max(0,Math.min(total,Number(step.completedSets)));
+  return step.status==="partial" ? Math.max(1,Math.floor(total/2)) : 0;
+}
+// Carry over *missed* direct arm sets explicitly, rather than assuming that
+// a later scheduled arm day retroactively replaces an interrupted session.
+
+function adaptLogYesterdayMissedArm(tag){
+  if(!["biceps","triceps"].includes(tag)) return;
+  const date=adaptDateKeyForOffset(-1);
+  const yesterdayDay=adaptDayKeyForDateKey(date);
+  const planned=(PROGRAM?.days?.[yesterdayDay]?.steps||[]).filter(step=>step.type!=="rest"&&adaptStepMeta(step).tags.includes(tag));
+  if(!planned.length) return;
+  const logs=readJson(ADAPT_SESSION_LOG_KEY,{});
+  const current=logs[date]||{dayKey:yesterdayDay,steps:[]};
+  // Do not overwrite already logged work; only recover missing records.
+  const priorNames=new Set((current.steps||[]).map(step=>step.title));
+  const additions=planned.filter(step=>!priorNames.has(step.title)).map(step=>{
+    const meta=adaptStepMeta(step);
+    return {title:step.title,status:"skipped",actualSec:0,plannedSec:step.slotSec||0,
+      plannedSets:repScheme(step)?.sets||0,completedSets:0,
+      tags:meta.tags,protected:meta.protected,adaptiveFor:[],manualBackfill:true};
+  });
+  if(!additions.length) return;
+  logs[date]={...current,dayKey:yesterdayDay,savedAt:new Date().toISOString(),
+    sessionStatus:"interrupted",manualBackfill:true,
+    steps:[...(current.steps||[]),...additions]};
+  writeJson(ADAPT_SESSION_LOG_KEY,logs);
+  renderHome();
+}
+function adaptRenderMissedArmBackfill(){
+  const card=document.getElementById("missedArmBackfill");
+  if(!card) return;
+  if(currentDayKey!==dayKeyFromToday()){card.classList.add("hidden");return;}
+  const date=adaptDateKeyForOffset(-1),dayKey=adaptDayKeyForDateKey(date);
+  const planned=(PROGRAM?.days?.[dayKey]?.steps||[]).filter(s=>s.type!=="rest");
+  const log=readJson(ADAPT_SESSION_LOG_KEY,{})[date];
+  const recorded=new Set((log?.steps||[]).map(s=>s.title));
+  let available=false;
+  for(const tag of ["biceps","triceps"]){
+    const button=document.getElementById("missed"+(tag==="biceps"?"Biceps":"Triceps")+"Btn");
+    if(!button) continue;
+    const missing=planned.filter(s=>adaptStepMeta(s).tags.includes(tag)).some(s=>!recorded.has(s.title));
+    button.classList.toggle("hidden",!missing);
+    if(missing) available=true;
+  }
+  card.classList.toggle("hidden",!available);
+}
+
+function adaptPendingArmMakeup(date){
+  const logs=readJson(ADAPT_SESSION_LOG_KEY,{});
+  const missed=[];
+  for(let daysBack=1;daysBack<=7;daysBack++){
+    const past=adaptDateKeyForOffset(-daysBack);
+    const log=logs[past];
+    if(!log || !Array.isArray(log.steps)) continue;
+    for(const step of log.steps){
+      if(step.makeupFor) continue; // A makeup is a credit, not a new missed obligation.
+      const tags=step.tags?.length ? step.tags : adaptStepMeta(step).tags;
+      const tag=tags.includes("biceps") ? "biceps" : tags.includes("triceps") ? "triceps" : null;
+      if(!tag) continue;
+      const sets=adaptPlannedSetsFromLog(step,log.dayKey);
+      if(!sets) continue;
+      const deficit=sets-adaptCompletedSets(step,sets);
+      if(deficit>0) missed.push({tag,date:past,remaining:Math.ceil(deficit)});
+    }
+  }
+  // Subtract make-up sessions actually performed, by missed date and muscle.
+  for(const log of Object.values(logs)){
+    if(!log || !Array.isArray(log.steps)) continue;
+    for(const step of log.steps){
+      if(!step.makeupFor || !["biceps","triceps"].includes(step.makeupTag)) continue;
+      const total=adaptPlannedSetsFromLog(step,log.dayKey);
+      let credit=adaptCompletedSets(step,total);
+      for(const item of missed.filter(item=>item.date===step.makeupFor && item.tag===step.makeupTag)){
+        const used=Math.min(item.remaining,credit);
+        item.remaining-=used;credit-=used;
+        if(credit<=0) break;
+      }
+    }
+  }
+  return missed.filter(s=>s.remaining>0).sort((a,b)=>a.date.localeCompare(b.date));
+}
+function adaptApplyArmMakeup(base,dayKey,date){
+  // Never add sets to an already scheduled arm block, and never concentrate
+  // more than 4 extra sets / 10 minutes into a single morning.
+  if(dayKey==="sunday") return {day:base,added:[]};
+  const already=new Set((base.steps||[]).filter(s=>s.type!=="rest").flatMap(s=>adaptStepMeta(s).tags));
+  const yesterday=readJson(ADAPT_SESSION_LOG_KEY,{})[adaptDateKeyForOffset(-1)];
+  const doneYesterday=new Set((yesterday?.steps||[]).filter(s=>s.status!=="skipped").flatMap(s=>s.tags||adaptStepMeta(s).tags));
+  const due=adaptPendingArmMakeup(date),insert=[];
+  let extra=0;
+  for(const tag of ["biceps","triceps"]){
+    if(already.has(tag) || doneYesterday.has(tag)) continue;
+    const item=due.find(m=>m.tag===tag);
+    if(!item) continue;
+    const sets=Math.min(2,item.remaining);
+    if(sets<1) continue;
+    const baseExercise=tag==="biceps"
+      ? adaptReplacementLibrary().biceps[0] // Home DB hammer curls
+      : adaptReplacementLibrary().triceps[1]; // Home close-grip DB floor press
+    const candidate={...baseExercise,slotSec:sets*150,
+      details:sets+" × "+(tag==="biceps"?"10–15 controlled hammer curls per arm":"8–15 close-grip DB floor presses")+
+        " · 1–2 RIR · rest 60–90 s as needed. Short make-up for missed "+tag+" work on "+item.date+".",
+      progression:{sets,minReps:tag==="biceps"?10:8,maxReps:15},
+      adaptive:true,makeupFor:item.date,makeupTag:tag,adaptiveFor:[tag]};
+    if(base.totalSec + extra + candidate.slotSec>2400) continue;
+    insert.push(candidate);extra+=candidate.slotSec;
+  }
+  if(!insert.length) return {day:base,added:[]};
+  const steps=(base.steps||[]).map(s=>({...s}));
+  const first=steps.findIndex(s=>s.type!=="rest");
+  steps.splice(first+1,0,...insert);
+  const equipment=[...new Set([...(base.equipment||[]),...insert.flatMap(s=>s.equipment||[])])];
+  return {day:{...base,steps,equipment,focus:"Missed arms recovery · "+base.focus,
+    totalSec:steps.reduce((sum,s)=>sum+Number(s.slotSec||0),0)},added:insert};
+}
+
 function adaptBuildDay(dayKey){
   const source=PROGRAM?.days?.[dayKey];
   if(!source) return source;
@@ -397,22 +541,35 @@ function adaptBuildDay(dayKey){
   const template=adaptWithGymCalendar(source,dayKey,date);
   const isToday=date===localDateKey();
   if(isToday) adaptInfo=null;
-  // Never rewrite the displayed routine after its completion has already been logged.
-  if(isToday && readJson(ADAPT_SESSION_LOG_KEY,{})[date]) return template;
-  if(isToday && adaptUseNormalToday) return template;
+  // After the workout was logged, keep its original schedule stable.
+  const saved=readJson(ADAPT_SESSION_LOG_KEY,{});
+  if(isToday && saved[date] && saved[date].sessionStatus!=="in_progress") return adaptNormalizeDay(template);
+  if(isToday && adaptUseNormalToday) return adaptNormalizeDay(template);
   const recovery=adaptGymRecovery(date);
   const lighter=adaptRecoveryDay(template,recovery);
   let day=lighter.day;
   if(isToday && recovery && lighter.removed.length){
-    adaptInfo={
-      tags:[...recovery.tags],added:lighter.added,removed:lighter.removed,
-      reason:(recovery.kind==="today"?"Gym today: lighter morning. ":"Yesterday's gym: muscle recovery. ")+recovery.label
-    };
+    adaptInfo={tags:[...recovery.tags],added:lighter.added,removed:lighter.removed,
+      reason:(recovery.kind==="today"?"Gym today: lighter morning. ":"Yesterday's gym: muscle recovery. ")+recovery.label};
   }
-  if(!isToday || recovery || dayKey==="sunday") return day;
-  const completed=readJson(ADAPT_SESSION_LOG_KEY,{});
-  if(completed[date]) return day;
-  return adaptAdaptForCoverage(day,dayKey,date);
+  if(!isToday) return adaptNormalizeDay(day);
+  if(dayKey!=="sunday"){
+    // First compensate for definitely skipped biceps/triceps sets.
+    const makeup=adaptApplyArmMakeup(adaptNormalizeDay(day),dayKey,date);
+    day=makeup.day;
+    if(makeup.added.length){
+      adaptInfo={
+        tags:[...new Set([...(adaptInfo?.tags||[]),...makeup.added.flatMap(s=>s.adaptiveFor||[])])],
+        added:[...(adaptInfo?.added||[]),...makeup.added.map(s=>s.title)],
+        removed:adaptInfo?.removed||[],
+        reason:(adaptInfo?.reason ? adaptInfo.reason+" · " : "")+
+          "Recovering skipped arm sets from unfinished mornings (maximum 2 sets per muscle today)"
+      };
+      return adaptNormalizeDay(day);
+    }
+  }
+  if(!recovery && dayKey!=="sunday") day=adaptAdaptForCoverage(day,dayKey,date);
+  return adaptNormalizeDay(day);
 }
 function adaptAdaptForCoverage(base,dayKey,date){
   const balance=adaptRollingCoverage();
@@ -525,6 +682,7 @@ renderHome = function(){
   $("#startBtn").textContent="START "+fmt(day.totalSec || day.steps.reduce((sum,s)=>sum+(s.slotSec||0),0));
   adaptRenderCard();
   adaptRenderWeeklyBalance();
+  adaptRenderMissedArmBackfill();
   renderDayTabs();
   document.querySelectorAll("#dayTabs .day-tab").forEach((tab,index)=>{
     const date=adaptDateForDayKey(WEEK[index]);
@@ -565,28 +723,54 @@ function adaptSaveGymAnswer(went){
   renderHome();
   adaptMaybeShowGymPrompt();
 }
+function adaptReviewRows(){
+  const drafts=readJson(PROGRESS_DRAFT_KEY,{});
+  return (steps||[]).map((s,i)=>{
+    if(s.type==="rest") return null;
+    const scheme=repScheme(s);
+    const draft=drafts[draftKey(currentDayKey,s.title)];
+    const loggedSets=((draft?.reps)||[]).filter(v=>Number(v)>0).length;
+    const actual=Math.min(Number(s.slotSec||0),Number(adaptSessionActualSec[i]||0)+
+      (i===stepIndex ? Math.max(0,Number(stepElapsed||0)) : 0));
+    const ratio=s.slotSec ? actual/s.slotSec : 0;
+    const status=scheme && loggedSets>0
+      ? (loggedSets>=scheme.sets ? "full" : "partial")
+      : (ratio>=.8 ? "full" : ratio>=.15 ? "partial" : "skipped");
+    const meta=adaptStepMeta(s);
+    const plannedSets=scheme?.sets||0;
+    const completedSets=status==="skipped" ? 0 :
+      (status==="full" ? plannedSets : (loggedSets>0?loggedSets:Math.max(1,Math.floor(plannedSets/2))));
+    return {title:s.title,status,actualSec:actual,plannedSec:Number(s.slotSec||0),
+      plannedSets,completedSets,tags:meta.tags,protected:meta.protected,
+      adaptiveFor:s.adaptiveFor||[],adaptive:!!s.adaptive,
+      makeupFor:s.makeupFor||null,makeupTag:s.makeupTag||null};
+  }).filter(Boolean);
+}
+function adaptStoredRows(rows){
+  return rows.map(x=>({title:x.title,status:x.status,actualSec:x.actualSec,
+    plannedSec:x.plannedSec,plannedSets:x.plannedSets,completedSets:x.completedSets,
+    tags:x.tags,protected:x.protected,adaptiveFor:x.adaptiveFor,
+    makeupFor:x.makeupFor,makeupTag:x.makeupTag}));
+}
+// Save provisional evidence of interrupted workouts even if the user backgrounds
+// the app or closes the final review without pressing Save.
+function adaptAutosaveSessionProgress(state="in_progress"){
+  if(!adaptCurrentSessionDate || !steps?.length) return;
+  const logs=readJson(ADAPT_SESSION_LOG_KEY,{});
+  const previous=logs[adaptCurrentSessionDate];
+  if(previous?.savedByUser) return;
+  const rows=adaptReviewRows();
+  logs[adaptCurrentSessionDate]={
+    dayKey:currentDayKey,savedAt:new Date().toISOString(),
+    sessionStatus:state,autoSaved:true,
+    adaptive:rows.some(x=>x.adaptive),steps:adaptStoredRows(rows)
+  };
+  writeJson(ADAPT_SESSION_LOG_KEY,logs);
+}
 function adaptRenderSessionReview(){
   const wrap=document.getElementById("sessionReviewList");
   if(!wrap) return;
-  adaptPendingReview=(steps||[]).map((s,i)=>{
-    if(s.type==="rest") return null;
-    const scheme=repScheme(s);
-    let status=null;
-    if(scheme){
-      const drafts=readJson(PROGRESS_DRAFT_KEY,{});
-      const d=drafts[draftKey(currentDayKey,s.title)];
-      const completed=((d && d.reps)||[]).filter(v=>Number(v)>0).length;
-      status=completed>=scheme.sets ? "full" : completed>0 ? "partial" : null;
-    }
-    if(!status){
-      const actual=Math.min(Number(s.slotSec||0),Number(adaptSessionActualSec[i]||0));
-      const ratio=s.slotSec ? actual/s.slotSec : 0;
-      status=ratio>=.8 ? "full" : ratio>=.15 ? "partial" : "skipped";
-    }
-    const meta=adaptStepMeta(s);
-    return {title:s.title,status:status,actualSec:Math.min(Number(s.slotSec||0),Number(adaptSessionActualSec[i]||0)),plannedSec:Number(s.slotSec||0),tags:meta.tags,protected:meta.protected,adaptiveFor:s.adaptiveFor||[],adaptive:!!s.adaptive};
-  }).filter(Boolean);
-
+  adaptPendingReview=adaptReviewRows();
   wrap.innerHTML=adaptPendingReview.map((r,ri)=>{
     return '<div class="review-row" data-review="'+ri+'">'+
       '<div class="review-copy"><strong>'+r.title+'</strong><span class="tiny muted">'+fmt(r.actualSec)+' / '+fmt(r.plannedSec)+'</span></div>'+
@@ -600,7 +784,10 @@ function adaptRenderSessionReview(){
     btn.onclick=()=>{
       const row=btn.closest(".review-row");
       const ri=Number(row.dataset.review);
-      adaptPendingReview[ri].status=btn.dataset.status;
+      const item=adaptPendingReview[ri];
+      item.status=btn.dataset.status;
+      item.completedSets=item.status==="full" ? item.plannedSets :
+        (item.status==="partial" ? Math.max(1,Math.floor(item.plannedSets/2)) : 0);
       row.querySelectorAll(".review-choice").forEach(x=>x.classList.toggle("active",x===btn));
     };
   });
@@ -608,16 +795,17 @@ function adaptRenderSessionReview(){
 function adaptSaveSessionReview(){
   if(!adaptPendingReview) return;
   const logs=readJson(ADAPT_SESSION_LOG_KEY,{});
-  logs[localDateKey()]={
-    dayKey:currentDayKey,
-    savedAt:new Date().toISOString(),
+  const date=adaptCurrentSessionDate||localDateKey();
+  logs[date]={dayKey:currentDayKey,savedAt:new Date().toISOString(),
+    sessionStatus:adaptWasEarlyExit?"interrupted":"completed",
+    savedByUser:true,autoSaved:false,
     adaptive:adaptPendingReview.some(x=>x.adaptive),
-    steps:adaptPendingReview.map(x=>({title:x.title,status:x.status,actualSec:x.actualSec,plannedSec:x.plannedSec,tags:x.tags,protected:x.protected,adaptiveFor:x.adaptiveFor}))
-  };
+    steps:adaptStoredRows(adaptPendingReview)};
   writeJson(ADAPT_SESSION_LOG_KEY,logs);
   commitCompletedProgressForDay();
   adaptPendingReview=null;
   adaptUseNormalToday=false;
+  adaptCurrentSessionDate=null;
   exitSession();
   renderHome();
 }
@@ -646,7 +834,9 @@ commitCompletedProgressForDay = function(){
 startSession = async function(){
   setupAudio();
   sessionHistorySnapshot=readJson(PROGRESS_HISTORY_KEY,{});
-  const day=adaptGetDisplayDay();
+  const day=adaptNormalizeDay(adaptGetDisplayDay());
+  adaptCurrentSessionDate=localDateKey();
+  adaptWasEarlyExit=false;
   steps=day.steps.map(s=>Object.assign({},s));
   adaptSessionActualSec=Array(steps.length).fill(0);
   stepIndex=0;
@@ -654,6 +844,7 @@ startSession = async function(){
   stepElapsed=0;
   adaptSessionTotalSec=day.totalSec || steps.reduce((a,b)=>a+b.slotSec,0);
   totalRemaining=adaptSessionTotalSec;
+  adaptAutosaveSessionProgress();
   homeView.classList.add("hidden"); doneView.classList.add("hidden"); sessionView.classList.remove("hidden");
   await requestFullscreen();
   await requestWakeLock();
@@ -665,6 +856,7 @@ startSession = async function(){
 };
 advanceStep = function(){
   adaptFinalizeCurrentVisit();
+  adaptAutosaveSessionProgress();
   if(stepIndex>=steps.length-1){
     finishSession(false,true);
     return;
@@ -697,6 +889,9 @@ renderTimers = function(){
 };
 finishSession = async function(early,alreadyFinalized){
   if(!alreadyFinalized) adaptFinalizeCurrentVisit();
+  adaptWasEarlyExit=!!early;
+  adaptAutosaveSessionProgress(early?"interrupted":"completed");
+  wakeLockAutoPaused=false;
   running=false;
   clearInterval(timerId);
   timerId=null;
@@ -733,6 +928,10 @@ function adaptBindUI(){
     if(adaptGymEntry(localDateKey())) adaptSetGymToday(true,adaptSelectedGymType);
     else adaptRenderGymToday();
   };
+  const missedBiceps=document.getElementById("missedBicepsBtn");
+  const missedTriceps=document.getElementById("missedTricepsBtn");
+  if(missedBiceps) missedBiceps.onclick=()=>adaptLogYesterdayMissedArm("biceps");
+  if(missedTriceps) missedTriceps.onclick=()=>adaptLogYesterdayMissedArm("triceps");
   $("#startBtn").onclick=startSession;
   $("#nextBtn").onclick=skipStep;
   $("#prevBtn").onclick=previousStep;

@@ -112,6 +112,7 @@ let timerId = null;
 let running = false;
 let soundEnabled = true;
 let wakeLock = null;
+let wakeLockAutoPaused = false;
 let deferredPrompt = null;
 let sessionHistorySnapshot = {};
 const WEEK = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
@@ -411,15 +412,33 @@ function beep(kind="next"){
   }
 }
 
+// Screen Wake Lock is a foreground-only browser permission. It is released when
+// Android backgrounds the PWA; re-request it when the user returns.
 async function requestWakeLock(){
   const status=$("#wakeStatus");
-  if("wakeLock" in navigator){
-    try{
-      wakeLock = await navigator.wakeLock.request("screen");
-      status.textContent = "Screen wake lock active";
-      wakeLock.addEventListener("release",()=> status.textContent="Screen wake lock released");
-    }catch(e){ status.textContent = "Wake lock unavailable — keep screen awake manually"; }
-  }else status.textContent = "Wake Lock API not supported on this browser";
+  if(document.visibilityState!=="visible" || sessionView.classList.contains("hidden")) return;
+  if(wakeLock && !wakeLock.released) return;
+  if(!("wakeLock" in navigator)){
+    status.textContent="Screen-awake support depends on your browser";
+    return;
+  }
+  try{
+    const sentinel=await navigator.wakeLock.request("screen");
+    if(document.visibilityState!=="visible" || sessionView.classList.contains("hidden")){
+      try{ await sentinel.release(); }catch(_){}
+      return;
+    }
+    wakeLock=sentinel;
+    status.textContent="Screen kept awake while Workout is open";
+    sentinel.addEventListener("release",()=>{
+      if(wakeLock===sentinel) wakeLock=null;
+      // Backgrounding to Messenger is normal, not a workout error.
+      if(status) status.textContent="";
+    });
+  }catch(_){
+    // The browser may deny the lock while switching applications.
+    status.textContent="";
+  }
 }
 async function requestFullscreen(){
   try{
@@ -613,6 +632,7 @@ function renderStep(){
   renderTimers();
 }
 function togglePause(){
+  wakeLockAutoPaused=false;
   running=!running;
   $("#pauseBtn").textContent=running ? "Pause" : "Resume";
 }
@@ -630,7 +650,24 @@ async function exitSession(){
   sessionView.classList.add("hidden"); doneView.classList.add("hidden"); homeView.classList.remove("hidden");
 }
 document.addEventListener("visibilitychange", async ()=>{
-  if(document.visibilityState==="visible" && !wakeLock && !sessionView.classList.contains("hidden")) await requestWakeLock();
+  if(sessionView.classList.contains("hidden")) return;
+  if(document.visibilityState==="hidden"){
+    // Timers cannot count accurately in a throttled background tab. Suspend,
+    // persist a provisional workout log, and resume automatically on return.
+    if(running){
+      running=false;
+      wakeLockAutoPaused=true;
+      $("#pauseBtn").textContent="Resume";
+    }
+    if(typeof adaptAutosaveSessionProgress==="function") adaptAutosaveSessionProgress();
+    return;
+  }
+  await requestWakeLock();
+  if(wakeLockAutoPaused && !sessionView.classList.contains("hidden")){
+    wakeLockAutoPaused=false;
+    running=true;
+    $("#pauseBtn").textContent="Pause";
+  }
 });
 window.addEventListener("beforeinstallprompt",(e)=>{
   e.preventDefault(); deferredPrompt=e; $("#installBtn").classList.remove("hidden");

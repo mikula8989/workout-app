@@ -75,6 +75,14 @@
         <p id="balanceExplanation" class="tiny muted">Loading recent completed training…</p>
         <div id="weeklyBalanceList" class="weekly-balance-list"></div>
       </section>
+      <section id="missedArmBackfill" class="card hidden" aria-label="Restore yesterday's missed arm work">
+        <div class="section-heading"><h2>Unfinished yesterday?</h2></div>
+        <p class="tiny muted">If you stopped yesterday's morning session without saving, mark only the arm work you actually missed. This adjusts upcoming workouts.</p>
+        <div class="session-controls">
+          <button id="missedBicepsBtn" class="ghost" type="button">Missed biceps</button>
+          <button id="missedTricepsBtn" class="ghost" type="button">Missed triceps</button>
+        </div>
+      </section>
 
       <section class="card">
         <div class="section-heading">
@@ -194,7 +202,7 @@
     </div>
   </main>
 
-  <script src="./app.js?v=21"></script>
-  <script src="./adaptive.js?v=23"></script>
+  <script src="./app.js?v=24"></script>
+  <script src="./adaptive.js?v=24"></script>
 </body>
 </html>
